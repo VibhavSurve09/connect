@@ -1,0 +1,29 @@
+import { useState } from 'react';
+import ProvidersForm from './ProviderForm';
+import Prefrences from './Prefrences';
+import UserForm from './UserForm';
+
+//TODO: Creating Silder Form
+export default function Form() {
+  const [page, setPage] = useState(0);
+  const pageIncrementer = () => {
+    if (page < 0 && page > 2) return;
+    setPage(page + 1);
+  };
+
+  const pageDecrementer = () => {
+    if (page < 0) return;
+    setPage(page - 1);
+  };
+  return (
+    <div>
+      {page === 0 && <ProvidersForm />}
+      {page === 1 && <UserForm />}
+      {page === 2 && <Prefrences />}
+      {page < 2 && <button onClick={pageIncrementer}>Next</button>}
+      <br />
+      {page <= 2 && page > 0 && <button onClick={pageDecrementer}>Prev</button>}
+      {page === 2 && <button>Finish</button>}
+    </div>
+  );
+}

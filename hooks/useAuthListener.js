@@ -1,18 +1,20 @@
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { useState } from "react";
-const auth = getAuth();
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { useState } from 'react';
+import app from '../lib/firebase';
+
+const auth = getAuth(app);
 export default function useAuthListener() {
   const [user, setAuthUser] = useState(
-    JSON.parse(localStorage.getItem("authUser")) //? This should work in client side
+    typeof window !== 'undefined' ? localStorage.getItem('authUser') : null
   );
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      setAuthUser(localStorage.setItem("authUser", JSON.stringify(auth)));
+      setAuthUser(localStorage.setItem('authUser', JSON.stringify(auth)));
     } else {
       // User is signed out
-      localStorage.removeItem("authUser");
+      localStorage.removeItem('authUser');
       setAuthUser(null);
     }
-    return { user };
+    return user;
   });
 }
