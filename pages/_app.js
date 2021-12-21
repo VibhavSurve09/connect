@@ -7,7 +7,7 @@ import Layout from '../layout/Layout';
 import firebase from '../lib/firebase';
 import '../styles/globals.css';
 function MyApp({ Component, pageProps }) {
-  const user = useAuthListener();
+  const { user } = useAuthListener();
   return (
     <FirebaseContext.Provider value={(firebase, FieldValue)}>
       <UserContext.Provider value={user}>

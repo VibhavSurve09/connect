@@ -1,11 +1,16 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import ProvidersForm from './ProviderForm';
 import Prefrences from './Prefrences';
 import UserForm from './UserForm';
-
+import { useRouter } from 'next/router';
+import { getAuth } from '@firebase/auth';
+import app from '../../lib/firebase';
+import { doesUserDataExist } from '../../services/auth';
 //TODO: Creating Silder Form
 export default function Form() {
   const [page, setPage] = useState(0);
+  const router = useRouter();
+  const auth = getAuth(app);
   const pageIncrementer = () => {
     if (page < 0 && page > 2) return;
     setPage(page + 1);
