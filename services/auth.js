@@ -9,17 +9,15 @@ import {
 
 import app from '../lib/firebase';
 const db = getFirestore(app);
-const userCollectionRef = collection(db, 'Users');
+const userCollectionRef = collection(db, 'users');
 const prefrencesCollectionRef = collection(db, 'Prefrences');
 
-export const doesUserDataExist = async (emaiAddress) => {
-  const userQuery = query(
-    userCollectionRef,
-    where('emailAddress', '==', emaiAddress)
-  );
+export const getUserDataById = async (uid) => {
+  const userQuery = query(userCollectionRef, where('uid', '==', uid));
   const userSnapShot = await getDocs(userQuery);
-
-  return userSnapShot.empty ? true : false;
+  const userData = [];
+  userSnapShot.forEach((doc) => {
+    userData.push({ ...doc.data(), docId: doc.id });
+  });
+  return userData;
 };
-
-export const doesUserNameExist = (userName) => {};
