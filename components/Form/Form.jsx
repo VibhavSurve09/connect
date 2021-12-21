@@ -21,8 +21,9 @@ export default function Form() {
     if (page < 0) return;
     setPage(page - 1);
   };
-  const userData = useUser();
-  console.log(userData);
+  //!Dont uncomment it
+  // const userData = useUser();
+  // console.log(userData);
   return (
     <div>
       {page === 0 && <ProvidersForm />}
