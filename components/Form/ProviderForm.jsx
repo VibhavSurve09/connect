@@ -5,7 +5,6 @@ import {
   GithubAuthProvider,
 } from 'firebase/auth';
 import app from '../../lib/firebase';
-import { doesUserExist } from '../../services/auth';
 
 export default function ProviderForms() {
   const googleAuthProvider = new GoogleAuthProvider();
@@ -19,11 +18,6 @@ export default function ProviderForms() {
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
-        if (doesUserExist(user.email)) {
-          console.log('User Does Not exist');
-        } else {
-          console.log('User Exits');
-        }
         // ...
       })
       .catch((error) => {

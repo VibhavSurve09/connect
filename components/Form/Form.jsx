@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { getAuth } from '@firebase/auth';
 import app from '../../lib/firebase';
 import { doesUserDataExist } from '../../services/auth';
+import { useUser } from '../../hooks/useUser';
 //TODO: Creating Silder Form
 export default function Form() {
   const [page, setPage] = useState(0);
@@ -20,6 +21,8 @@ export default function Form() {
     if (page < 0) return;
     setPage(page - 1);
   };
+  const userData = useUser();
+  console.log(userData);
   return (
     <div>
       {page === 0 && <ProvidersForm />}
