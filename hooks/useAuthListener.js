@@ -9,20 +9,6 @@ export default function useAuthListener() {
       ? localStorage.getItem('connect_authUser')
       : null
   );
-<<<<<<< HEAD
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setAuthUser(
-        localStorage.setItem('connect_authUser', JSON.stringify(auth))
-      );
-    } else {
-      // User is signed out
-      localStorage.removeItem('connect_authUser');
-      setAuthUser(null);
-    }
-    return user;
-  });
-=======
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -35,5 +21,4 @@ export default function useAuthListener() {
     });
   }, [user]);
   return { user };
->>>>>>> vibhav/auth
 }
