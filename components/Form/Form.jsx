@@ -7,6 +7,7 @@ import { getAuth } from '@firebase/auth';
 import app from '../../lib/firebase';
 import { doesUserDataExist } from '../../services/auth';
 import { useUser } from '../../hooks/useUser';
+
 //TODO: Creating Silder Form
 export default function Form() {
   const [page, setPage] = useState(0);
