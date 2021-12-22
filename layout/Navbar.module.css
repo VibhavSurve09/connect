@@ -1,39 +1,16 @@
- .random{ margin-left: 10%;}
- .random1{margin-right: 10%;}
- .random2{ box-shadow: 0 5px 6px 0 rgba(0,0,0,.2);}
- .body1{background-color: #FAFAFA;}
- .footer1{
-    padding:20px;
-    color: white;
-    background-color: #1C1D1F;
-    text-align: center;
-  }
-  .body2{background-color: white; box-shadow: 0 0 6px 6px rgba(0,0,0,.2);}
-  .body3{align-content:center;}
+.random {
+  margin-left: 10%;
+}
+.random1 {
+  margin-right: 10%;
+}
+.random2 {
+  box-shadow: 0 5px 6px 0 rgba(0, 0, 0, 0.2);
+}
 
-  .leftcontainer {
-    float: left;
-    margin-top: 5%;
-    width: 50%;
-    display: flex;
-  }
-  
-  .rightcontainer {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    margin-top: 10%;
-    background: #FAFAFA;
-    width: 50%;
-    float: left;
-  }
-  
-  .leftcontent {
-    width: 100%;
-    height: 21vw;
-  }
-  
-  .rightcontent {
-    max-width: 70%;
-    font-size: xx-large;
-  }
+.footer1 {
+  padding: 20px;
+  color: white;
+  background-color: #1c1d1f;
+  text-align: center;
+}
