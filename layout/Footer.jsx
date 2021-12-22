@@ -1,3 +1,4 @@
+import styles from "./Navbar.module.css";
 export default function Footer() {
-  return <div>Copyright Connect</div>;
+  return <footer className={styles.footer1}>📱 ConnectU &copy;</footer>;
 }

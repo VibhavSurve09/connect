@@ -2,7 +2,7 @@ import Link from 'next/link';
 import styles from "./Navbar.module.css";
 export default function Navbar() {
   return (
-      <nav className='flex items-center justify-between flex-wrap bg-gradient-to-r from-indigo-300 via-indigo-200 to-indigo-50 p-6 relative'>
+      <nav className={`flex items-center justify-between flex-wrap bg-gradient-to-r to-indigo-300 via-indigo-200 from-indigo-50 p-6 relative ${styles.random2}`}>
       
           <div className={`text-sm relative ${styles.random}`}>
 
@@ -15,7 +15,7 @@ export default function Navbar() {
             </div>
 
             <div
-              className='inline-block lg:mt-0 px-5 py-2 leading-none text-white text-xl hover:text-black hover:font-semibold hover:text-xl font-bold'
+              className='inline-block lg:mt-0 px-5 py-2 text-purple-800 text-xl hover:text-black font-bold'
             >
               <Link href='#'>
               About
@@ -24,7 +24,7 @@ export default function Navbar() {
           </div>
           <div className={styles.random1}>
             <div
-              className='inline-block text-base px-5 py-2 leading-none border rounded bg-gray-200 text-black border-black hover:border-transparent font-semibold hover:text-purple-800 hover:font-black hover:bg-teal-100 mt-4 lg:mt-0'
+              className='inline-block lg:mt-0 text-base px-5 py-2 leading-none border rounded bg-gray-200 text-black border-black hover:border-transparent font-semibold hover:text-purple-800 hover:font-black hover:bg-white'
             >
               <Link href='#'>
               Log in
@@ -32,7 +32,7 @@ export default function Navbar() {
             </div>
 
             <div
-              className='inline-block text-base px-5 py-2 leading-none border rounded bg-gray-200 text-black border-black hover:border-transparent font-semibold hover:text-purple-800 hover:font-black hover:bg-teal-100 mt-4 lg:mt-0 ml-4'
+              className='inline-block lg:mt-0 text-base px-5 py-2 leading-none border rounded bg-gray-200 text-black border-black hover:border-transparent font-semibold hover:text-purple-800 hover:font-black hover:bg-white ml-4'
             >
               <Link href='#'>
               Sign Up
@@ -41,6 +41,5 @@ export default function Navbar() {
           </div>
        
       </nav>
-   
   );
 }
