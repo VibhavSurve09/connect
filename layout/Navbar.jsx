@@ -34,14 +34,13 @@ export default function Navbar() {
             <Link href='#'>📱 ConnectU</Link>
           </h1>
         </div>
-
-        <div className='inline-block lg:mt-0 px-5 py-2 text-purple-800 text-xl hover:text-black font-bold'>
-          <Link href='#'>About</Link>
-        </div>
       </div>
       {user ? (
         <>
           <div className={styles.random1}>
+            <div className='inline-block lg:mt-0 px-5 py-2 text-purple-800 text-xl hover:text-black font-bold mr-4'>
+              <Link href='#'>About</Link>
+            </div>
             <div className='inline-block lg:mt-0 text-base px-5 py-2 leading-none border rounded bg-gray-200 text-black border-black hover:border-transparent font-semibold hover:text-purple-800 hover:font-black hover:bg-white'>
               {/* <Link href='#'>Sign Out</Link> */}
               <button onClick={handleLogOut}>Sign Out</button>
@@ -52,6 +51,9 @@ export default function Navbar() {
       ) : (
         <>
           <div className={styles.random1}>
+            <div className='inline-block lg:mt-0 px-5 py-2 text-purple-800 text-xl hover:text-black font-bold mr-4'>
+              <Link href='#'>About</Link>
+            </div>
             <div className='inline-block lg:mt-0 text-base px-5 py-2 leading-none border rounded bg-gray-200 text-black border-black hover:border-transparent font-semibold hover:text-purple-800 hover:font-black hover:bg-white'>
               <Link href='#'>Log in</Link>
             </div>
