@@ -2,12 +2,12 @@ import Link from 'next/link';
 import styles from "./Navbar.module.css";
 export default function Navbar() {
   return (
-      <nav className={`flex items-center justify-between flex-wrap bg-gradient-to-r to-indigo-300 via-indigo-200 from-indigo-50 p-6 relative ${styles.random2}`}>
+      <nav className={`dark flex items-center justify-between flex-wrap bg-gradient-to-r to-indigo-300 via-indigo-200 from-indigo-50 p-6 relative ${styles.random2}`}>
       
           <div className={`text-sm relative ${styles.random}`}>
 
           <div
-              className='font-bold text-black text-xl items-center flex-shrink-0 inline-block px-5 py-2 font-serif'
+              className='font-bold dark:text-white-black text-xl items-center flex-shrink-0 inline-block px-5 py-2 font-serif'
             >
             <h1>
               <Link href='#'>📱 ConnectU</Link>

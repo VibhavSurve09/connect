@@ -3,7 +3,7 @@ import Image from 'next/image';
 import studentImage from '../../public/images/students-home-picture.png';
 export default function Body() {
   return (
-    <body className={`h-screen ${styles.body1}`}>
+    <body className='dark h-screen'>
       <div className={styles.leftcontainer}>
         <div className={styles.leftcontent}>
           <Image src={studentImage} alt='Student Picture' />
@@ -12,10 +12,8 @@ export default function Body() {
       </div>
       <div className={styles.rightcontainer}>
         <div className={styles.rightcontent}>
-          <p>
             Welcome to your community. Find other students based on your
             preferences and collaborate on projects. Build something innovative.
-          </p>
         </div>
       </div>
     </body>
