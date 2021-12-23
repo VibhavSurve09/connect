@@ -35,31 +35,6 @@ export default function Navbar() {
           </h1>
         </div>
 
-<<<<<<< HEAD
-          <div
-              className='font-bold text-black text-xl items-center flex-shrink-0 inline-block px-5 py-2 font-serif'
-            >
-            <h1>
-              <Link href='#'>📱 ConnectU</Link>
-            </h1>
-            </div>
-          </div>
-
-          <div className={styles.random1}>
-          <div
-              className='inline-block lg:mt-0 px-5 py-2 text-purple-800 text-xl hover:text-black font-bold mr-4'
-            >
-              <Link href='#'>
-              About
-              </Link>
-            </div>
-            <div
-              className='inline-block lg:mt-0 text-base px-5 py-2 leading-none border rounded bg-gray-200 text-black border-black hover:border-transparent font-semibold hover:text-purple-800 hover:font-black hover:bg-white'
-            >
-              <Link href='#'>
-              Log in
-              </Link>
-=======
         <div className='inline-block lg:mt-0 px-5 py-2 text-purple-800 text-xl hover:text-black font-bold'>
           <Link href='#'>About</Link>
         </div>
@@ -79,7 +54,6 @@ export default function Navbar() {
           <div className={styles.random1}>
             <div className='inline-block lg:mt-0 text-base px-5 py-2 leading-none border rounded bg-gray-200 text-black border-black hover:border-transparent font-semibold hover:text-purple-800 hover:font-black hover:bg-white'>
               <Link href='#'>Log in</Link>
->>>>>>> vibhav/auth
             </div>
 
             <div className='inline-block lg:mt-0 text-base px-5 py-2 leading-none border rounded bg-gray-200 text-black border-black hover:border-transparent font-semibold hover:text-purple-800 hover:font-black hover:bg-white ml-4'>
