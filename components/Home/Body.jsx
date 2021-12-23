@@ -13,7 +13,7 @@ export default function Body() {
       <div className={styles.rightcontainer}>
         <div className={styles.rightcontent}>
           <p>
-            Welcome to your own community. Find other students based on your
+            Welcome to your community. Find other students based on your
             preferences and collaborate on projects. Build something innovative.
           </p>
         </div>

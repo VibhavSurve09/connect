@@ -13,16 +13,16 @@ export default function Navbar() {
               <Link href='#'>📱 ConnectU</Link>
             </h1>
             </div>
+          </div>
 
-            <div
-              className='inline-block lg:mt-0 px-5 py-2 text-purple-800 text-xl hover:text-black font-bold'
+          <div className={styles.random1}>
+          <div
+              className='inline-block lg:mt-0 px-5 py-2 text-purple-800 text-xl hover:text-black font-bold mr-4'
             >
               <Link href='#'>
               About
               </Link>
             </div>
-          </div>
-          <div className={styles.random1}>
             <div
               className='inline-block lg:mt-0 text-base px-5 py-2 leading-none border rounded bg-gray-200 text-black border-black hover:border-transparent font-semibold hover:text-purple-800 hover:font-black hover:bg-white'
             >
