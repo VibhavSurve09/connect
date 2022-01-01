@@ -7,7 +7,6 @@ export default function Body() {
       <div className={styles.leftcontainer}>
         <div className={styles.leftcontent}>
           <Image src={studentImage} alt='Student Picture' />
-          {/* <img src='https://img.freepik.com/free-vector/college-students-around-blank-banner_179970-1862.jpg?size=626ext=jpg' /> */}
         </div>
       </div>
       <div className={styles.rightcontainer}>

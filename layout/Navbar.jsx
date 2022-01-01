@@ -5,6 +5,8 @@ import { UserContext } from '../context/User';
 import { getAuth, signOut } from 'firebase/auth';
 import app from '../lib/firebase';
 import { useUser } from '../hooks/useUser';
+import profileImagePlaceHolder from '../public/images/avatar.webp';
+import Image from 'next/image';
 const auth = getAuth(app);
 export default function Navbar() {
   const user = useContext(UserContext);
@@ -23,6 +25,7 @@ export default function Navbar() {
       const { currentUser } = user;
       setCurrentUserData(currentUser);
     }
+    return () => {};
   }, [user]);
   return (
     <nav
@@ -46,7 +49,18 @@ export default function Navbar() {
               <button onClick={handleLogOut}>Sign Out</button>
             </div>
           </div>
-          <p>Hi Welcome {currentUserData.displayName}</p>
+          {/* Profile Picture */}
+          <Image
+            alt={`${currentUserData.displayName} profile picture`}
+            src={
+              currentUserData.photoURL
+                ? `${currentUserData.photoURL}`
+                : profileImagePlaceHolder
+            }
+            class='mx-auto object-cover rounded-full'
+            height={50}
+            width={50}
+          />
         </>
       ) : (
         <>
