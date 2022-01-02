@@ -1,3 +1,3 @@
 export default function UserForm() {
-  return <div>In user Form</div>;
+  return <div className='h-screen'>In user Form</div>;
 }
