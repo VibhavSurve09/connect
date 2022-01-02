@@ -46,7 +46,7 @@ export default function Navbar() {
               <button onClick={handleLogOut}>Sign Out</button>
             </div>
           </div>
-          <p>Hi Welcome {currentUserData.displayName}</p>
+          <p>Welcome <i><b>{currentUserData.displayName}</b></i> !</p>
         </>
       ) : (
         <>
