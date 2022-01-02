@@ -49,18 +49,13 @@ export default function Navbar() {
               <button onClick={handleLogOut}>Sign Out</button>
             </div>
           </div>
-          {/* Profile Picture */}
-          <Image
-            alt={`${currentUserData.displayName} profile picture`}
-            src={
-              currentUserData.photoURL
-                ? `${currentUserData.photoURL}`
-                : profileImagePlaceHolder
-            }
-            class='mx-auto object-cover rounded-full'
-            height={50}
-            width={50}
-          />
+          <p>
+            Welcome{' '}
+            <i>
+              <b>{currentUserData.displayName}</b>
+            </i>{' '}
+            !
+          </p>
         </>
       ) : (
         <>

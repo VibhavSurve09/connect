@@ -1,7 +1,8 @@
 import styles from "./UserForm.module.css";
-export default function Prefrences() {
-  return <div className="h-screen bg-gray-100">
-    <br />
+export default function Personalinfo() {
+  return (
+    <div className="h-screen bg-gray-100">
+      <br />
       <br />
       <div className={`mt-10 sm:mt-0 max-w-screen-xl ${styles.form1}`}>
         <div className={`hidden sm:block `} aria-hidden="true">
@@ -13,7 +14,7 @@ export default function Prefrences() {
           <div className="md:col-span-1">
             <div className="px-4 sm:px-0">
               <h3 className="text-lg font-medium leading-6 text-gray-900">
-                Preferences
+                Personal Information
               </h3>
               <p className="mt-1 text-sm text-gray-600">
                 Use a permanent address where you can receive mail.
@@ -175,5 +176,6 @@ export default function Prefrences() {
           </div>
         </div>
       </div>
-  </div>;
+    </div>
+  );
 }

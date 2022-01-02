@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import ProviderForms from '../components/Form/ProviderForm';
 import UserForm from '../components/Form/UserForm';
 import Body from '../components/Home/Body';
+import Form from '../components/Form/Form';
 import { UserContext } from '../context/User';
 export default function Home() {
   const user = useContext(UserContext);
@@ -15,7 +16,8 @@ export default function Home() {
       </Head>
       {user ? (
         <>
-          <UserForm />
+        {/* <UserForm /> */}
+          <Form/>
         </>
       ) : (
         <>
