@@ -7,14 +7,15 @@ import { getAuth } from '@firebase/auth';
 import app from '../../lib/firebase';
 import { doesUserDataExist } from '../../services/auth';
 import { useUser } from '../../hooks/useUser';
-import Personalinfo from "./Personalinfo"
+import Personalinfo from './Personalinfo';
+import Submitted from './Submitted';
 //TODO: Creating Silder Form
 export default function Form() {
   const [page, setPage] = useState(0);
   const router = useRouter();
   const auth = getAuth(app);
   const pageIncrementer = () => {
-    if (page < 0 && page > 3) return;
+    if (page < 0 && page > 4) return;
     setPage(page + 1);
   };
 
@@ -29,12 +30,13 @@ export default function Form() {
     <div>
       {page === 0 && <ProvidersForm />}
       {page === 1 && <UserForm />}
-      {page === 2 && <Personalinfo/>}
+      {page === 2 && <Personalinfo />}
       {page === 3 && <Prefrences />}
       {page < 3 && <button onClick={pageIncrementer}>Next</button>}
       <br />
       {page <= 3 && page > 0 && <button onClick={pageDecrementer}>Prev</button>}
-      {page === 3 && <button>Finish</button>}
+      {page === 3 && <button onClick={pageIncrementer}>Finish</button>}
+      {page === 4 && <Submitted />}
     </div>
   );
 }
