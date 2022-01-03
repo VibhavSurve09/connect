@@ -1,26 +1,25 @@
 import styles from "./UserForm.module.css";
 export default function UserForm() {
   return (
-    <div className="h-auto bg-gray-100">
+    <div className="h-screen bg-gray-100">
       <br />
       <br />
-      <p>
-        <div className={styles.container}>
-          <ul className={styles.pbar}>
-            <li className={styles.active}>step 1</li>
-            <li>step 2</li>
-            <li>step 3</li>
-          </ul>
-        </div>
-      </p>
+      <div className={styles.container}>
+        <ul className={styles.pbar}>
+          <li className={styles.active}>step 1</li>
+          <li>step 2</li>
+          <li>step 3</li>
+        </ul>
+      </div>
       <br />
       <br />
       <div className="w-full bg-gray-300 h-1 -mt-9 ">
         <div className={`bg-indigo-300 h-1 ${styles.hrr}`}></div>
       </div>
-      <br /><br/>
       <br />
-      <div class={`max-w-screen-xl ${styles.form1}`}>
+      <br />
+      <br />
+      <div className={`max-w-screen-xl ${styles.form1}`}>
         <div>
           <div className="hidden sm:block" aria-hidden="true">
             <div className="py-5">
