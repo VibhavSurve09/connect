@@ -14,6 +14,7 @@ export default function Body() {
         <div className={styles.rightcontent}>
             Welcome to your community. Find other students based on your
             preferences and collaborate on projects. Build something innovative.
+            
         </div>
       </div>
     </div>

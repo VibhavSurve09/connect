@@ -3,6 +3,19 @@ export default function Prefrences() {
   return <div className="h-screen bg-gray-100">
     <br />
       <br />
+      <p>
+        <div className={styles.container}>
+          <ul className={styles.pbar}>
+            <li>step 1</li>
+            <li>step 2</li>
+            <li className={styles.active}>step 3</li>
+          </ul>
+        </div>
+      </p>
+      <br /><br />
+      <div className="w-full bg-gray-300 h-1 -mt-9 ">
+        <div className={`bg-indigo-300 h-1 ${styles.hrr2}`}></div>
+      </div><br/><br /><br/>
       <div className={`mt-10 sm:mt-0 max-w-screen-xl ${styles.form1}`}>
         <div className={`hidden sm:block `} aria-hidden="true">
           <div className="py-5">

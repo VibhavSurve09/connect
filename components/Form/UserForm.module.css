@@ -1,6 +1,39 @@
-.form1{border: 3px solid gray;
+    .form1{border: 3px solid gray;
     margin:auto;
     align-items: center;
     background-color: #FAFAFA;}
-    
-.form2{font-size: x-large; font-family: Georgia, 'Times New Roman', Times, serif; text-align: center;}
+
+
+    .container{width:100%;}
+	
+	.pbar{
+		counter-reset:step;}
+
+	.pbar li{
+		list-style-type:none; float:left; position:relative; text-align:center; width:33.33%;}
+
+	.pbar li:before{
+	content:counter(step);
+	counter-increment:step;
+	width:30px;
+	height:30px;
+	line-height:30px;
+	border:1px solid black;
+	display:block;
+	text-align:center;
+	margin:0 auto 10px auto;
+	border-radius:50%;
+	background-color:white;}
+	
+
+	.pbar li.active{
+		color:#120A8F;}
+        
+    .active{ font-weight: bolder;}
+
+	.pbar li.active:before{
+		border-color:#324AB2; background-color: #A5B4FC; color: white;}
+
+    .hrr{width: 16.5%;}
+    .hrr1{width: 50%;}
+    .hrr2{width: 83.5%;}
