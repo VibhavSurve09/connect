@@ -1,7 +1,7 @@
 import styles from './UserForm.module.css';
 export default function UserForm() {
   return (
-    <div className='h-screen bg-gray-100'>
+    <div className='h-auto bg-gray-100'>
       <br />
       <br />
       <div className={styles.container}>

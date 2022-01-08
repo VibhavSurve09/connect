@@ -28,15 +28,14 @@ export default function Form() {
   // console.log(userData);
   return (
     <div>
-      {page === 0 && <ProvidersForm />}
-      {page === 1 && <UserForm />}
-      {page === 2 && <Personalinfo />}
-      {page === 3 && <Prefrences />}
-      {page < 3 && <button onClick={pageIncrementer}>Next</button>}
+      {page === 0 && <UserForm />}
+      {page === 1 && <Personalinfo />}
+      {page === 2 && <Prefrences />}
+      {page < 2 && <button onClick={pageIncrementer}>Next</button>}
       <br />
-      {page <= 3 && page > 0 && <button onClick={pageDecrementer}>Prev</button>}
-      {page === 3 && <button onClick={pageIncrementer}>Finish</button>}
-      {page === 4 && <Submitted />}
+      {page <= 2 && page > 0 && <button onClick={pageDecrementer}>Prev</button>}
+      {page === 2 && <button onClick={pageIncrementer}>Finish</button>}
+      {page === 3 && <Submitted />}
     </div>
   );
 }
