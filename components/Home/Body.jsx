@@ -1,44 +1,70 @@
 import styles from './Body.module.css';
+import Link from 'next/link';
 import Image from 'next/image';
+import { useState } from 'react';
 import studentImage from '../../public/images/students-home-picture.png';
-import Statistic from './Statistic';
-export default function Body() {
+import AuthenticationModal from '../Modal/AuthenticationModal';
+import Statistics from './Statistics';
+export default function () {
+  const [showModal, setShowModal] = useState(false);
   return (
-    <section className='dark:bg-coolGray-800 dark:text-coolGray-100'>
-      <div className='container flex flex-col justify-center p-6 mx-auto sm:py-12 lg:py-24 lg:flex-row lg:justify-between'>
-        <div className='flex flex-col justify-center p-6 text-center rounded-sm lg:max-w-md xl:max-w-lg lg:text-left'>
-          <h1 className='text-5xl font-bold leading-none sm:text-6xl'>
-            Ac mattis
-            <span className='dark:text-violet-400'>senectus</span>erat pharetra
-          </h1>
-          <p className='mt-6 mb-8 text-lg sm:mb-12'>
-            Dictum aliquam porta in condimentum ac integer
-            <br className='hidden md:inline lg:hidden'></br>
-            turpis pulvinar, est scelerisque ligula sem
-          </p>
-          <div className='flex flex-col space-y-4 sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start'>
-            <a
-              href='#'
-              className='px-8 py-3 text-lg font-semibold rounded dark:bg-violet-400 dark:text-coolGray-900'
+    <div className={`h-max ${styles.bodycolor}`}>
+      <div className='lg:flex'>
+        <div className='flex items-center justify-center w-full px-6 py-8 lg:h-[32rem] lg:w-1/2'>
+          <div className='max-w-xl'>
+            {showModal ? (
+              <AuthenticationModal closeButton={setShowModal} />
+            ) : null}
+            <h2 className='text-2xl font-semibold text-gray-800 dark:text-white lg:text-3xl'>
+              Build Your New{' '}
+              <span className='text-indigo-400 dark:text-blue-400'>Idea</span>{' '}
+              today
+            </h2>
+
+            <p className='mt-2 text-sm text-gray-500 dark:text-gray-400 lg:text-base'>
+              Welcome to your community. Find other students based on your
+              preferences and collaborate on projects. Build something
+              innovative.
+            </p>
+
+            <div
+              className={`${
+                showModal && 'opacity-10'
+              } flex flex-col mt-6 space-y-3 lg:space-y-0 lg:flex-row`}
             >
-              Suspendisse
-            </a>
-            <a
-              href='#'
-              className='px-8 py-3 text-lg font-semibold border rounded dark:border-coolGray-100'
-            >
-              Malesuada
-            </a>
+              <button
+                onClick={() => {
+                  setShowModal(true);
+                }}
+                className='block px-3 py-2 text-sm font-semibold text-center text-white transition-colors duration-200 transform bg-indigo-400 rounded-md hover:bg-gray-700'
+              >
+                Get Started
+              </button>
+
+              <button
+                className='block px-3 py-2 text-sm font-semibold text-center
+                  text-gray-700 transition-colors duration-200 transform
+                  bg-gray-200 rounded-md lg:mx-4 hover:bg-gray-300'
+              >
+                Learn More
+              </button>
+            </div>
           </div>
         </div>
-        <div className='flex items-center justify-center p-6 mt-8 lg:mt-0 h-72 sm:h-80 lg:h-96 xl:h-112 2xl:h-128'>
-          <Image
-            src={studentImage}
-            alt=''
-            className='object-contain h-72 sm:h-80 lg:h-96 xl:h-112 2xl:h-128 dark:bg-coolGray-500'
-          />
+
+        <div className='w-full h-64 lg:w-1/2 lg:h-auto lg:mt-16 lg:ml-20'>
+          <div className='w-full h-full bg-cover'>
+            <div className='w-full h-full'>
+              <Image
+                className={`${showModal && 'opacity-10'}`}
+                src={studentImage}
+                alt='Student Picture'
+              />
+            </div>
+          </div>
         </div>
       </div>
-    </section>
+      <Statistics />
+    </div>
   );
 }

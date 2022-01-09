@@ -7,72 +7,60 @@ import app from '../lib/firebase';
 import { useUser } from '../hooks/useUser';
 import profileImagePlaceHolder from '../public/images/avatar.webp';
 import Image from 'next/image';
+import UserNavbar from './UserNavbar';
+import NonUserNavbar from './NonUserNavbar';
 const auth = getAuth(app);
 export default function Navbar() {
   const user = useContext(UserContext);
-  const [currentUserData, setCurrentUserData] = useState({});
-  const handleLogOut = () => {
-    signOut(auth)
-      .then(() => {
-        // Sign-out successful.
-      })
-      .catch((error) => {
-        // An error happened.
-      });
-  };
+  const [isHamburgerActive, setActive] = useState(false);
+  const [userAuthData, setUserAuthData] = useState(null);
   useEffect(() => {
     if (user) {
       const { currentUser } = user;
-      setCurrentUserData(currentUser);
+      setUserAuthData(currentUser);
     }
     return () => {};
   }, [user]);
   return (
     <nav
-      className={`flex items-center justify-between flex-wrap bg-gradient-to-r to-indigo-300 via-indigo-200 from-indigo-50 p-6 relative ${styles.random2}`}
+      className={`w-full px-6 py-3 lg:flex lg:justify-between lg:items-center bg-gradient-to-r to-indigo-300 via-indigo-200 from-indigo-50 ${styles.boxshadow}`}
     >
-      <div className={`text-sm relative ${styles.random}`}>
-        <div className='font-bold text-black text-xl items-center flex-shrink-0 inline-block px-5 py-2 font-serif'>
+      <div className='flex items-center justify-between'>
+        <div className='font-bold text-black text-xl items-center flex-shrink-0 inline-block px-5 py-2'>
           <h1>
             <Link href='#'>📱 ConnectU</Link>
           </h1>
         </div>
       </div>
-      {user ? (
-        <>
-          <div className={styles.random1}>
-            <div className='inline-block lg:mt-0 px-5 py-2 text-purple-800 text-xl hover:text-black font-bold mr-4'>
-              <Link href='#'>About</Link>
-            </div>
-            <div className='inline-block lg:mt-0 text-base px-5 py-2 leading-none border rounded bg-gray-200 text-black border-black hover:border-transparent font-semibold hover:text-purple-800 hover:font-black hover:bg-white'>
-              {/* <Link href='#'>Sign Out</Link> */}
-              <button onClick={handleLogOut}>Sign Out</button>
-            </div>
-          </div>
-          <p>
-            Welcome{' '}
-            <i>
-              <b>{currentUserData.displayName}</b>
-            </i>{' '}
-            !
-          </p>
-        </>
-      ) : (
-        <>
-          <div className={styles.random1}>
-            <div className='inline-block lg:mt-0 px-5 py-2 text-purple-800 text-xl hover:text-black font-bold mr-4'>
-              <Link href='#'>About</Link>
-            </div>
-            <div className='inline-block lg:mt-0 text-base px-5 py-2 leading-none border rounded bg-gray-200 text-black border-black hover:border-transparent font-semibold hover:text-purple-800 hover:font-black hover:bg-white'>
-              <Link href='#'>Log in</Link>
-            </div>
 
-            <div className='inline-block lg:mt-0 text-base px-5 py-2 leading-none border rounded bg-gray-200 text-black border-black hover:border-transparent font-semibold hover:text-purple-800 hover:font-black hover:bg-white ml-4'>
-              <Link href='#'>Sign Up</Link>
-            </div>
-          </div>
-        </>
-      )}
+      <div className='flex lg:hidden float-right -mt-9'>
+        <button
+          type='button'
+          className='text-gray-500 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400 focus:outline-none focus:text-gray-600 dark:focus:text-gray-400'
+          aria-label='toggle menu'
+          onClick={() => setActive(!isHamburgerActive)}
+        >
+          <svg viewBox='0 0 24 24' className='w-6 h-6 fill-current'>
+            <path
+              fillRule='evenodd'
+              d='M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z'
+            ></path>
+          </svg>
+        </button>
+      </div>
+      <div
+        className={`${
+          isHamburgerActive ? 'max-h-44' : 'max-h-0 lg:max-h-32'
+        }  transition-all overflow-hidden duration-500 menu w-full flex-grow lg:flex lg:items-center lg:w-auto lg:px-3`}
+      >
+        {user ? (
+          <>
+            <UserNavbar userData={userAuthData} />
+          </>
+        ) : (
+          <NonUserNavbar />
+        )}
+      </div>
     </nav>
   );
 }

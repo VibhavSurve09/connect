@@ -1,9 +1,3 @@
-.random {
-  margin-left: 10%;
-}
-.random1 {
-  margin-right: 10%;
-}
-.random2 {
+.boxshadow {
   box-shadow: 0 5px 6px 0 rgba(0, 0, 0, 0.2);
 }
