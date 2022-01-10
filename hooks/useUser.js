@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getUserDataById } from '../services/auth';
+import { getUserDataById } from '../services/firebase';
 
 export const useUser = (userId) => {
   const [userData, setUserData] = useState([]);
