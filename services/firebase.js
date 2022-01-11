@@ -1,16 +1,7 @@
-import { getStorage, ref, uploadBytes } from 'firebase/storage';
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  doc,
-  query,
-  where,
-} from 'firebase/firestore';
-import app from '../lib/firebase';
-const storage = getStorage(app);
-const db = getFirestore(app);
-const userCollectionRef = collection(db, 'users');
+import { uploadBytes } from 'firebase/storage';
+import { getDocs, doc, query, where } from 'firebase/firestore';
+import { storage } from '../constants/firebase';
+import { userCollectionRef } from '../constants/firebase';
 export const uploadPhoto = (displayName, profilePicture) => {
   const imgRef = ref(storage, `${displayName}.png`);
   uploadBytes(imgRef, displayName)
