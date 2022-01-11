@@ -4,11 +4,9 @@ import {
   getAuth,
   GithubAuthProvider,
 } from 'firebase/auth';
-import app from '../../lib/firebase';
-
+import { auth } from '../../constants/firebase';
 export default function ProviderForms() {
   const googleAuthProvider = new GoogleAuthProvider();
-  const auth = getAuth(app);
   const gitHubAuthProvider = new GithubAuthProvider();
   const googleSignIn = () => {
     signInWithPopup(auth, googleAuthProvider)

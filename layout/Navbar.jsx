@@ -1,26 +1,13 @@
 import Link from 'next/link';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import styles from './Navbar.module.css';
 import { UserContext } from '../context/User';
-import { getAuth, signOut } from 'firebase/auth';
-import app from '../lib/firebase';
-import { useUser } from '../hooks/useUser';
 import profileImagePlaceHolder from '../public/images/avatar.webp';
-import Image from 'next/image';
 import UserNavbar from './UserNavbar';
 import NonUserNavbar from './NonUserNavbar';
-const auth = getAuth(app);
 export default function Navbar() {
   const user = useContext(UserContext);
   const [isHamburgerActive, setActive] = useState(false);
-  const [userAuthData, setUserAuthData] = useState(null);
-  useEffect(() => {
-    if (user) {
-      const { currentUser } = user;
-      setUserAuthData(currentUser);
-    }
-    return () => {};
-  }, [user]);
   return (
     <nav
       className={`w-full px-6 py-3 lg:flex lg:justify-between lg:items-center bg-gradient-to-r to-indigo-300 via-indigo-200 from-indigo-50 ${styles.boxshadow}`}
@@ -55,7 +42,7 @@ export default function Navbar() {
       >
         {user ? (
           <>
-            <UserNavbar userData={userAuthData} />
+            <UserNavbar userData={user} />
           </>
         ) : (
           <NonUserNavbar />

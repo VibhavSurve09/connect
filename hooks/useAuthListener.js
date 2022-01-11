@@ -11,10 +11,9 @@ export default function useAuthListener() {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        setAuthUser(
-          localStorage.setItem('connect_authUser', JSON.stringify(auth))
-        );
-        setAuthUser(auth);
+        const { currentUser } = auth;
+        localStorage.setItem('connect_authUser', JSON.stringify(currentUser));
+        setAuthUser(currentUser);
       } else {
         // User is signed out
         localStorage.removeItem('connect_authUser');

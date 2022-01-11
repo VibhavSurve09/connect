@@ -1,9 +1,7 @@
-import Link from "next/link";
-import { getAuth, signOut } from "firebase/auth";
-import app from "../lib/firebase";
-import { getDisplayName } from "next/dist/shared/lib/utils";
+import Link from 'next/link';
+import { signOut } from 'firebase/auth';
+import { auth } from '../constants/firebase';
 export default function UserNavbar({ userData }) {
-  const auth = getAuth(app);
   const handleLogOut = () => {
     signOut(auth)
       .then(() => {
@@ -16,13 +14,13 @@ export default function UserNavbar({ userData }) {
   return (
     <>
       <div>
-        <div className="inline-block lg:mt-0 px-5 py-2 text-purple-800 text-xl hover:text-black font-bold mr-4">
-          <Link href="#">About</Link>
+        <div className='inline-block lg:mt-0 px-5 py-2 text-purple-800 text-xl hover:text-black font-bold mr-4'>
+          <Link href='#'>About</Link>
         </div>
 
         <button
           onClick={handleLogOut}
-          className="lg:mt-0 text-base px-5 py-2 leading-none border rounded bg-gray-200 text-black border-black hover:border-transparent font-semibold hover:font-bold hover:text-purple-800 hover:bg-white"
+          className='lg:mt-0 text-base px-5 py-2 leading-none border rounded bg-gray-200 text-black border-black hover:border-transparent font-semibold hover:font-bold hover:text-purple-800 hover:bg-white'
         >
           Sign Out
         </button>
