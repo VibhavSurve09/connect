@@ -1,4 +1,5 @@
 import styles from "./UserForm.module.css";
+
 export default function Personalinfo() {
   return (
     <div className="h-auto bg-gray-100">
@@ -30,10 +31,10 @@ export default function Personalinfo() {
           <div className="md:col-span-1">
             <div className="px-4 sm:px-0">
               <h3 className="text-lg font-medium leading-6 text-gray-900">
-                Personal Information
+                Educational Qualifications
               </h3>
               <p className="mt-1 text-sm text-gray-600">
-                Use a permanent address where you can receive mail.
+                Tell us about your education.
               </p>
             </div>
           </div>
@@ -42,135 +43,55 @@ export default function Personalinfo() {
               <div className="shadow overflow-hidden sm:rounded-md">
                 <div className="px-4 py-5 bg-white sm:p-6">
                   <div className="grid grid-cols-6 gap-6">
-                    <div className="col-span-6 sm:col-span-3">
-                      <label
-                        htmlFor="first-name"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        First name
-                      </label>
-                      <input
-                        type="text"
-                        name="first-name"
-                        id="first-name"
-                        autoComplete="given-name"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                    </div>
-
-                    <div className="col-span-6 sm:col-span-3">
-                      <label
-                        htmlFor="last-name"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        Last name
-                      </label>
-                      <input
-                        type="text"
-                        name="last-name"
-                        id="last-name"
-                        autoComplete="family-name"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                    </div>
-
                     <div className="col-span-6 sm:col-span-4">
-                      <label
-                        htmlFor="email-address"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        Email address
+                      <label className="block text-sm font-medium text-gray-700">
+                        College Name
                       </label>
                       <input
                         type="text"
-                        name="email-address"
-                        id="email-address"
-                        autoComplete="email"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        placeholder="St. Xavier's College, Mumbai"
+                        className="mt-1 py-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
                     </div>
 
                     <div className="col-span-6 sm:col-span-3">
-                      <label
-                        htmlFor="country"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        Country
+                      <label className="block text-sm font-medium text-gray-700">
+                        Degree Type
                       </label>
                       <select
-                        id="country"
-                        name="country"
                         autoComplete="country-name"
                         className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       >
-                        <option>United States</option>
-                        <option>Canada</option>
-                        <option>Mexico</option>
+                        <option value="Bachelors">Bachelor's</option>
+                        <option value="Masters">Master's</option>
+                        <option value="PHD">PhD</option>
+                        <option value="Others">Other</option>
                       </select>
                     </div>
-
                     <div className="col-span-6">
-                      <label
-                        htmlFor="street-address"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        Street address
+                      <label className="block text-sm font-medium text-gray-700">
+                        Specialization
                       </label>
                       <input
                         type="text"
-                        name="street-address"
-                        id="street-address"
-                        autoComplete="street-address"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        className="mt-1 py-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        placeholder="Information Technology"
                       />
                     </div>
-
-                    <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                      <label
-                        htmlFor="city"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        City
+                    <div className="col-span-6 sm:col-span-3">
+                      <label className="block text-sm font-medium text-gray-700">
+                        Year
                       </label>
-                      <input
-                        type="text"
-                        name="city"
-                        id="city"
-                        autoComplete="address-level2"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                    </div>
-
-                    <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                      <label
-                        htmlFor="region"
-                        className="block text-sm font-medium text-gray-700"
+                      <select
+                        autoComplete="country-name"
+                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       >
-                        State / Province
-                      </label>
-                      <input
-                        type="text"
-                        name="region"
-                        id="region"
-                        autoComplete="address-level1"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
-                    </div>
-
-                    <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                      <label
-                        htmlFor="postal-code"
-                        className="block text-sm font-medium text-gray-700"
-                      >
-                        ZIP / Postal code
-                      </label>
-                      <input
-                        type="text"
-                        name="postal-code"
-                        id="postal-code"
-                        autoComplete="postal-code"
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                      />
+                        <option value="1">First Year</option>
+                        <option value="2">Second Year</option>
+                        <option value="3">Third Year</option>
+                        <option value="4">Fourth Year</option>
+                        <option value="5">Fifth Year</option>
+                      </select>
                     </div>
                   </div>
                 </div>
