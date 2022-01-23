@@ -1,3 +1,5 @@
+import Testpage from "../components/Profile/Testpage";
+
 export default function test() {
-  return <div>in test hello</div>;
+  return <Testpage />;
 }

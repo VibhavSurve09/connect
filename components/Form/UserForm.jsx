@@ -2,6 +2,8 @@ import styles from "./UserForm.module.css";
 import { useState, useContext } from "react";
 import { UserContext } from "../../context/User";
 import { uploadPhoto } from "../../services/firebase";
+import { serverTimestamp } from "firebase/firestore";
+import { addUser } from "../../services/firebase";
 export default function UserForm() {
   const [userName, setUserName] = useState("");
   const [bio, setBio] = useState("");
@@ -13,17 +15,27 @@ export default function UserForm() {
   const activeUser = useContext(UserContext);
   const handleForm = (e) => {
     e.preventDefault();
+
     const userFormData = {
       userName,
       bio,
       gender,
       age,
       profilePicture,
+      uid: activeUser.uid,
+      emailAddress: activeUser.email,
+      accountCreatedOn: serverTimestamp(),
+      lastSeen: serverTimestamp(),
+      following: [""],
+      followers: [""],
+      role: "user",
+      status: "",
+      photoURL: "",
     };
     //Check username is unique
     activeUser.displayName = userName;
-
     uploadPhoto(activeUser?.displayName, profilePicture);
+    addUser(userFormData).then(() => console.log("User Data Added"));
   };
   const onImageChange = (e) => {
     if (e.target.files[0]) {
@@ -243,11 +255,7 @@ export default function UserForm() {
             <div className="border-t border-gray-200" />
           </div>
         </div>
-      </div>{" "}
-      <br />
-      <br />
-      <br />
-      <br />
+      </div>
     </div>
   );
 }

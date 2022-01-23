@@ -1,5 +1,5 @@
 import { uploadBytes, ref } from "firebase/storage";
-import { getDocs, doc, query, where } from "firebase/firestore";
+import { getDocs, doc, query, where, addDoc } from "firebase/firestore";
 import { storage } from "../constants/firebase";
 import { userCollectionRef } from "../constants/firebase";
 export const uploadPhoto = (displayName, profilePicture) => {
@@ -21,4 +21,8 @@ export const getUserDataById = async (uid) => {
     userData.push({ ...doc.data(), docId: doc.id });
   });
   return userData;
+};
+
+export const addUser = async (userData) => {
+  const userRef = await addDoc(userCollectionRef, userData);
 };

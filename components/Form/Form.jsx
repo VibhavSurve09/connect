@@ -1,8 +1,9 @@
-import { useState } from 'react';
-import Prefrences from './Prefrences';
-import UserForm from './UserForm';
-import Personalinfo from './Personalinfo';
-import Submitted from './Submitted';
+import { useState } from "react";
+import Prefrences from "./Prefrences";
+import UserForm from "./UserForm";
+import Personalinfo from "./Personalinfo";
+import Submitted from "./Submitted";
+import styles from "./Form.module.css";
 export default function Form() {
   const [page, setPage] = useState(0);
   const pageIncrementer = () => {
@@ -18,14 +19,38 @@ export default function Form() {
   // const userData = useUser();
   // console.log(userData);
   return (
-    <div>
+    <div className="bg-gray-100">
       {page === 0 && <UserForm />}
       {page === 1 && <Personalinfo />}
       {page === 2 && <Prefrences />}
-      {page < 2 && <button onClick={pageIncrementer}>Next</button>}
-      <br />
-      {page <= 2 && page > 0 && <button onClick={pageDecrementer}>Prev</button>}
-      {page === 2 && <button onClick={pageIncrementer}>Finish</button>}
+      <div className="gap-3">
+        {page <= 2 && page >= 0 && (
+          <button
+            onClick={pageDecrementer}
+            className="rounded-sm text-white bg-indigo-600 px-5 py-2"
+          >
+            Prev
+          </button>
+        )}
+        {page < 2 && (
+          <button
+            onClick={pageIncrementer}
+            className={`rounded-sm bg-indigo-600 text-white px-5 py-2 ${styles.buttonfix}`}
+          >
+            Next
+          </button>
+        )}
+        {page === 2 && (
+          <button
+            onClick={pageIncrementer}
+            className={`rounded-sm bg-indigo-600 text-white px-5 py-2 ${styles.buttonfix}`}
+          >
+            Finish
+          </button>
+        )}
+
+        <br />
+      </div>
       {page === 3 && <Submitted />}
     </div>
   );
