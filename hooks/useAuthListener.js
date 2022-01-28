@@ -20,7 +20,6 @@ export default function useAuthListener() {
         setAuthUser(null);
       }
     });
-    return () => {}; //clean up function
   }, [firebaseContext]);
   return user;
 }

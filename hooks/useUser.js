@@ -8,7 +8,6 @@ export const useUser = (userId) => {
       const data = getUserDataById(userId);
       setUserData(data);
     }
-    return () => {};
   }, [userId]);
   return userData;
 };

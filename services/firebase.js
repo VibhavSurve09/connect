@@ -1,20 +1,17 @@
-import { uploadBytes, ref } from "firebase/storage";
-import { getDocs, doc, query, where, addDoc } from "firebase/firestore";
-import { storage } from "../constants/firebase";
-import { userCollectionRef } from "../constants/firebase";
-export const uploadPhoto = (displayName, profilePicture) => {
+import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
+import { getDocs, doc, query, where, addDoc } from 'firebase/firestore';
+import { storage } from '../constants/firebase';
+import { userCollectionRef } from '../constants/firebase';
+import { async } from '@firebase/util';
+export const uploadPhoto = async (displayName, profilePicture) => {
   const imgRef = ref(storage, `${displayName}.png`);
-  uploadBytes(imgRef, displayName)
-    .then((res) => {
-      console.log("Image Uploading done ", res);
-    })
-    .catch((err) => {
-      console.log("Err..", err);
-    });
+  const snapshot = await uploadBytes(imgRef, displayName);
+  const uploadedUrl = await getDownloadURL(imgRef);
+  return uploadedUrl;
 };
 export const getUserDataById = async (uid) => {
   //*searches for the user having uid passed in "user" collection
-  const userQuery = query(userCollectionRef, where("uid", "==", uid));
+  const userQuery = query(userCollectionRef, where('uid', '==', uid));
   const userSnapShot = await getDocs(userQuery);
   const userData = [];
   userSnapShot.forEach((doc) => {
@@ -25,4 +22,10 @@ export const getUserDataById = async (uid) => {
 
 export const addUser = async (userData) => {
   const userRef = await addDoc(userCollectionRef, userData);
+};
+
+export const doesUserNameExist = async (userName) => {
+  const q = query(userCollectionRef, where('userName', '==', userName));
+  const userSS = await getDocs(q);
+  return userSS.empty ? true : false;
 };
