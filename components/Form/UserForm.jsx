@@ -4,6 +4,7 @@ import { UserContext } from '../../context/User';
 import { doesUserNameExist, uploadPhoto } from '../../services/firebase';
 import { serverTimestamp } from 'firebase/firestore';
 import { addUser } from '../../services/firebase';
+import axios from 'axios';
 export default function UserForm() {
   const [userName, setUserName] = useState('');
   const [bio, setBio] = useState('');
@@ -36,8 +37,13 @@ export default function UserForm() {
         status: '',
         photoURL: imgUrl,
       };
-
-      await addUser(userFormData);
+      const nodeData = {
+        userName,
+        uid: activeUser.uid,
+        emailAddress: activeUser.email,
+      };
+      await axios.post('http://localhost:3000/api/user', nodeData);
+      // await addUser(userFormData);
     } else {
       setError('Username already exists');
       setUserName('');

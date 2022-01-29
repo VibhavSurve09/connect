@@ -1,8 +1,10 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../../context/User';
 import styles from './UserForm.module.css';
 export default function Prefrences() {
   let cancelToken;
+  const activeUser = useContext(UserContext);
   const [searchSkillData, setSearchSkillData] = useState([]);
   const [searchSkill, setSearchSkill] = useState('');
   const [selectedSkills, setSelectedSkills] = useState([]);
@@ -24,7 +26,20 @@ export default function Prefrences() {
   const addSkill = (skill) => {
     setSelectedSkills((oldSkills) => [...oldSkills, skill]);
     setSearchSkill('');
-    console.log(selectedSkills);
+    setSearchSkillData([]);
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    selectedSkills.map(async (skill) => {
+      const skillWithUser = {
+        userId: activeUser.uid,
+        skillId: skill.id,
+      };
+      await axios.post(
+        'http://localhost:3000/api/skills/user-skill',
+        skillWithUser
+      );
+    });
   };
   return (
     <div className='h-auto bg-gray-100'>
@@ -64,7 +79,7 @@ export default function Prefrences() {
             </div>
           </div>
           <div className='mt-5 md:mt-0 md:col-span-2'>
-            <form action='#' method='POST'>
+            <form onSubmit={handleSubmit}>
               <div className='overflow-hidden shadow sm:rounded-md'>
                 <div className='px-4 py-5 bg-white sm:p-6'>
                   <div className='grid grid-cols-6 gap-6'>
@@ -114,6 +129,7 @@ export default function Prefrences() {
                 <div className='px-4 py-3 text-right bg-gray-50 sm:px-6'>
                   <button
                     type='submit'
+                    disabled={selectedSkills.length === 0}
                     className='inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
                   >
                     Save
