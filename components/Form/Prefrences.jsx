@@ -24,7 +24,16 @@ export default function Prefrences() {
     }
   };
   const addSkill = (skill) => {
-    setSelectedSkills((oldSkills) => [...oldSkills, skill]);
+    if (skill.name != "") {
+      let doesExist = true;
+      for (let i = 0; i < selectedSkills.length; i++) {
+        if (selectedSkills[i].name == skill.name) {
+          doesExist = false;
+          break;
+        }
+      }
+      if (doesExist) setSelectedSkills((oldArr) => [...oldArr, skill]);
+    }
     setSearchSkill("");
     setSearchSkillData([]);
   };
@@ -86,20 +95,25 @@ export default function Prefrences() {
                     <div className="col-span-6 sm:col-span-3">
                       <label
                         htmlFor="first-name"
-                        className="block text-sm font-medium text-gray-700"
+                        className="block text-sm font-semibold text-gray-700 py-1"
                       >
-                        Search
+                        Search A Skill
                       </label>
                       <input
                         type="text"
                         value={searchSkill}
                         onChange={onType}
-                        className="block w-full px-1 py-2 mt-1 rounded-md shadow-sm sm:text-sm"
+                        className="block w-full px-1 py-2  rounded-md shadow-sm sm:text-sm"
                       />
                     </div>
                   </div>
-                  <div className="block w-2/4 mt-1 border-black shadow-sm sm:text-sm">
-                    <select className="w-full py-2 bg-gray-200">
+                  <div className="block w-2/4 mt-1 border-black shadow-sm sm:text-sm py-2">
+                    <select
+                      className="w-full py-2 bg-gray-200"
+                      onClick={(e) => {
+                        addSkill({ name: e.target.value, id: e.target.id });
+                      }}
+                    >
                       {searchSkillData.length > 0 &&
                         searchSkillData.map((skill) => {
                           return (
@@ -107,9 +121,7 @@ export default function Prefrences() {
                               className="font-lg"
                               key={skill.id}
                               value={skill.name}
-                              onClick={() => {
-                                addSkill(skill);
-                              }}
+                              id={skill.id}
                             >
                               {skill.name}
                             </option>
@@ -117,17 +129,34 @@ export default function Prefrences() {
                         })}
                     </select>
                   </div>
-                  <div className="w-full bg-indigo-400">
-                    <p className="font-bold italic">
-                      Your selected Skills are:
-                    </p>
+                  <p className="font-mono underline py-4">
+                    Your Selected Skills Are:
+                  </p>
+                  <div className="flex flex-row flex-wrap">
                     {selectedSkills.length > 0 &&
                       selectedSkills.map((skill) => {
                         return (
-                          <p key={skill.id}>Your skills are {skill.name}</p>
+                          <div key={skill.id} className="group">
+                            <p
+                              key={skill.id}
+                              className="rounded-md bg-indigo-200 w-fit px-4 py-2 font-semibold ml-2 mt-2"
+                            >
+                              {skill.name}
+                              <button className="px-2 invisible group-hover:visible">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-6 w-6"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                              </button>
+                            </p>
+                          </div>
                         );
                       })}
-                    {console.log(selectedSkills)}
                   </div>
                 </div>
                 <div className="px-4 py-3 text-right bg-gray-50 sm:px-6">
