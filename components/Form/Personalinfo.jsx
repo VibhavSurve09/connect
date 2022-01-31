@@ -94,10 +94,10 @@ export default function Personalinfo() {
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="md:col-span-1">
             <div className="px-4 sm:px-0">
-              <h3 className="text-lg font-medium leading-6 text-gray-900">
+              <h3 className="text-lg font-medium leading-6 text-gray-900 px-2">
                 Educational Qualifications
               </h3>
-              <p className="mt-1 text-sm text-gray-600">
+              <p className="mt-1 text-sm text-gray-600 px-2">
                 Tell us about your education.
               </p>
             </div>
@@ -118,7 +118,8 @@ export default function Personalinfo() {
                         }}
                         type="text"
                         placeholder="St. Xavier's College, Mumbai"
-                        className="mt-1 py-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        className="mt-1 py-2 px-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        required
                       />
                     </div>
 
@@ -151,8 +152,9 @@ export default function Personalinfo() {
                           setSpecilization(e.target.value);
                         }}
                         type="text"
-                        className="mt-1 py-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        className="mt-1 py-2 px-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                         placeholder="Information Technology"
+                        required
                       />
                     </div>
                     <div className="col-span-6 sm:col-span-3">
