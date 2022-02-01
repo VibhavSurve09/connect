@@ -2,12 +2,14 @@ import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context/User';
 import styles from './UserForm.module.css';
-export default function Prefrences() {
+import React from 'react';
+function Prefrences() {
   let cancelToken;
   const activeUser = useContext(UserContext);
   const [searchSkillData, setSearchSkillData] = useState([]);
   const [searchSkill, setSearchSkill] = useState('');
   const [selectedSkills, setSelectedSkills] = useState([]);
+  const userToken = activeUser?.accessToken;
   const onType = async (e) => {
     setSearchSkill(e.target.value);
     let skillData;
@@ -18,6 +20,11 @@ export default function Prefrences() {
     if (searchSkill != '') {
       skillData = await axios.get(
         `http://localhost:3000/api/skills/${searchSkill}`,
+        {
+          headers: {
+            Authorization: userToken,
+          },
+        },
         { cancelToken: cancelToken.token }
       );
       setSearchSkillData(skillData.data);
@@ -124,9 +131,6 @@ export default function Prefrences() {
                       onChange={(e) => {
                         addSkill(e.target.value);
                       }}
-                      onClick={(e) => {
-                        addSkill(e.target.value);
-                      }}
                     >
                       {searchSkillData.length > 0 &&
                         searchSkillData.map((skill) => {
@@ -145,34 +149,37 @@ export default function Prefrences() {
                   <p className='py-4 font-mono underline'>
                     Your Selected Skills Are:
                   </p>
-                  <div className='flex flex-row flex-wrap'>
+                  <div className='flex flex-wrap'>
                     {/* TODO:Make this New component */}
                     {selectedSkills.length > 0 &&
                       selectedSkills.map((skill) => {
                         return (
-                          <div key={skill.id} className='group'>
-                            <p className='px-4 py-2 mt-2 ml-2 font-semibold bg-indigo-200 rounded-md w-fit'>
+                          <div
+                            key={skill.id}
+                            className='flex px-3 py-1 ml-1 bg-indigo-200 rounded-lg md:px-3 md:py-1 group'
+                          >
+                            <p className='items-center justify-center font-semibold text-'>
                               {skill.name}
-                              <button
-                                onClick={() => {
-                                  removeSkill({
-                                    id: skill.id,
-                                    name: skill.name,
-                                  });
-                                }}
-                                className='invisible px-2 group-hover:visible'
-                              >
-                                <svg
-                                  xmlns='http://www.w3.org/2000/svg'
-                                  className='w-6 h-6'
-                                  fill='none'
-                                  viewBox='0 0 24 24'
-                                  stroke='currentColor'
-                                >
-                                  <path d='M6 18L18 6M6 6l12 12' />
-                                </svg>
-                              </button>
                             </p>
+                            <button
+                              onClick={() => {
+                                removeSkill({
+                                  id: skill.id,
+                                  name: skill.name,
+                                });
+                              }}
+                              className='flex invisible justify-items-end group-hover:visible'
+                            >
+                              <svg
+                                xmlns='http://www.w3.org/2000/svg'
+                                className='w-4 h-4 md:w-6 md:h-6'
+                                fill='none'
+                                viewBox='0 0 24 24'
+                                stroke='currentColor'
+                              >
+                                <path d='M6 18L18 6M6 6l12 12' />
+                              </svg>
+                            </button>
                           </div>
                         );
                       })}
@@ -200,3 +207,5 @@ export default function Prefrences() {
     </div>
   );
 }
+
+export default React.memo(Prefrences);

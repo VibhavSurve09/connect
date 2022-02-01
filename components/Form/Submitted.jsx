@@ -1,6 +1,7 @@
 import styles from './UserForm.module.css';
 import Fireworks from '../Confetti/Confetti';
-export default function Submitted() {
+import React from 'react';
+function Submitted() {
   return (
     <div className='grid items-center h-screen justify-items-center'>
       <div>
@@ -27,3 +28,5 @@ export default function Submitted() {
     </div>
   );
 }
+
+export default React.memo(Submitted);
