@@ -17,7 +17,7 @@ const canvasStyles = {
 function getAnimationSettings(originXA, originXB) {
   return {
     startVelocity: 30,
-    spread: 360,
+    spread: 500,
     ticks: 60,
     zIndex: 0,
     particleCount: 150,
@@ -48,7 +48,7 @@ export default function Fireworks() {
     refAnimationInstance.current && refAnimationInstance.current.reset();
   }, [intervalId]);
   useEffect(() => {
-    setIntervalId(setInterval(nextTickAnimation, 400));
+    setIntervalId(setInterval(nextTickAnimation, 500));
 
     return () => {
       clearInterval(intervalId);

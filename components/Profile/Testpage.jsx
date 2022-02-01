@@ -1,6 +1,18 @@
-export default function Testpage() {
+import Head from "next/head";
+export default function Testpage({
+  userName,
+  bio,
+  gender,
+  email,
+  status,
+  followers,
+}) {
   return (
     <div className="bg-gray-100 h-auto">
+      <Head>
+        <title>{`${userName} - Connect`}</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <div className="w-full text-white bg-main-color">
         <div className="flex flex-row max-w-screen-xl px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
           <div className="container mx-auto my-5 p-5">
@@ -14,16 +26,16 @@ export default function Testpage() {
                       alt=""
                     />
                   </div>
-                  <div className="w-full">
+                  <div className="w-full px-2">
                     {" "}
-                    <span className="text-gray-900 font-semibold lg:text-5xl leading-8 my-1">
-                      NAME
+                    <span className="text-gray-900 font-semibold lg:text-5xl sm:text-2xl md:text-3xl leading-8 my-1">
+                      {userName}
                     </span>
-                    <h3 className="text-gray-600 font-lg text-semibold lg:text-2xl leading-6">
+                    <h3 className="text-gray-600 font-lg text-semibold lg:text-2xl leading-6 mt-1">
                       STUDENT AT ---
                     </h3>
                     <p className="text-sm text-gray-500 hover:text-gray-600 leading-6 bg-red-300">
-                      BIO
+                      {bio}
                     </p>
                     <ul className="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm">
                       <li className="flex items-center py-3">
@@ -31,7 +43,7 @@ export default function Testpage() {
                         <span className="ml-auto">DATE JOINED</span>
                       </li>
                       <li className="flex items-center py-3">
-                        <span>Number of Connections</span>
+                        <span>{followers}</span>
                         <span className="ml-auto">XXX</span>
                       </li>
                     </ul>
