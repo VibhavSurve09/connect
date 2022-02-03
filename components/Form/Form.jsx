@@ -15,9 +15,7 @@ export default function Form() {
     if (page < 0) return;
     setPage(page - 1);
   };
-  //!Dont uncomment it
-  // const userData = useUser();
-  // console.log(userData);
+
   return (
     <div className='bg-gray-100'>
       {page === 0 && <UserForm />}
