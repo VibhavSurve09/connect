@@ -2,12 +2,31 @@ import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context/User';
 import styles from './UserForm.module.css';
+const jwt = require('jsonwebtoken');
 export default function Prefrences() {
   let cancelToken;
   const activeUser = useContext(UserContext);
   const [searchSkillData, setSearchSkillData] = useState([]);
   const [searchSkill, setSearchSkill] = useState('');
   const [selectedSkills, setSelectedSkills] = useState([]);
+  let token;
+  try {
+    token = jwt.sign(
+      { uid: activeUser.uid, email: activeUser.email },
+      process.env.JWT_SECRET
+    );
+  } catch {
+    console.log('Err..');
+    token = jwt.sign(
+      { uid: activeUser?.uid, email: activeUser?.email },
+      process.env.JWT_SECRET
+    );
+  }
+
+  const reqBody = {
+    uid: activeUser?.uid,
+    email: activeUser?.email,
+  };
   const onType = async (e) => {
     setSearchSkill(e.target.value);
     let skillData;
@@ -49,7 +68,8 @@ export default function Prefrences() {
       };
       await axios.post(
         'http://localhost:3000/api/skills/user-skill',
-        skillWithUser
+        { skillWithUser, reqBody },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
     });
   };
