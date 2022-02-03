@@ -4,6 +4,7 @@ import {
   getAuth,
   GithubAuthProvider,
 } from 'firebase/auth';
+//TODO:This file can be deleted
 import { auth } from '../../constants/firebase';
 export default function ProviderForms() {
   const googleAuthProvider = new GoogleAuthProvider();

@@ -1,15 +1,8 @@
-// const jwt = require('jsonwebtoken');
-// export function middleware(req) {
-//   const basicAuth = req.headers.get('Authorization');
-//   console.log(req);
-//   if (basicAuth) {
-//     const auth = basicAuth.split(' ')[1];
-//   }
-
-//   //   return new Response('Auth required', {
-//   //     status: 401,
-//   //     headers: {
-//   //       'WWW-Authenticate': 'Basic realm="Secure Area"',
-//   //     },
-//   //   });
-// }
+import { NextResponse } from 'next/server';
+export async function middleware(req, ev) {
+  const { pathname } = req.nextUrl;
+  const { connect_auth_cookie } = req.cookies;
+  if (pathname === '/' && !connect_auth_cookie)
+    return NextResponse.redirect('/home');
+  return NextResponse.next();
+}

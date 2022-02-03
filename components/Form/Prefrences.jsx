@@ -2,30 +2,16 @@ import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context/User';
 import styles from './UserForm.module.css';
-const jwt = require('jsonwebtoken');
+
 export default function Prefrences() {
   let cancelToken;
   const activeUser = useContext(UserContext);
   const [searchSkillData, setSearchSkillData] = useState([]);
   const [searchSkill, setSearchSkill] = useState('');
   const [selectedSkills, setSelectedSkills] = useState([]);
-  let token;
-  try {
-    token = jwt.sign(
-      { uid: activeUser.uid, email: activeUser.email },
-      process.env.JWT_SECRET
-    );
-  } catch {
-    console.log('Err..');
-    token = jwt.sign(
-      { uid: activeUser?.uid, email: activeUser?.email },
-      process.env.JWT_SECRET
-    );
-  }
-
   const reqBody = {
-    uid: activeUser?.uid,
-    email: activeUser?.email,
+    id: activeUser?.uid,
+    emailAddress: activeUser?.email,
   };
   const onType = async (e) => {
     setSearchSkill(e.target.value);
@@ -37,6 +23,11 @@ export default function Prefrences() {
     if (searchSkill != '') {
       skillData = await axios.get(
         `http://localhost:3000/api/skills/${searchSkill}`,
+        {
+          headers: {
+            userObject: JSON.stringify(reqBody),
+          },
+        },
         { cancelToken: cancelToken.token }
       );
       setSearchSkillData(skillData.data);
@@ -68,8 +59,14 @@ export default function Prefrences() {
       };
       await axios.post(
         'http://localhost:3000/api/skills/user-skill',
-        { skillWithUser, reqBody },
-        { headers: { Authorization: `Bearer ${token}` } }
+        {
+          skillWithUser,
+        },
+        {
+          headers: {
+            userObject: JSON.stringify(reqBody),
+          },
+        }
       );
     });
   };
@@ -80,6 +77,7 @@ export default function Prefrences() {
     );
     setSelectedSkills([...selectedSkills]);
   };
+
   return (
     <div className='h-auto bg-gray-100'>
       <br />
