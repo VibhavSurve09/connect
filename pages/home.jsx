@@ -7,7 +7,7 @@ import { useUser } from '../hooks/useUser';
 
 function Home() {
   const activeUser = useContext(UserContext);
-  const user = useUser(activeUser?.uid);
+  const { data, loading } = useUser(activeUser?.uid);
   return (
     <>
       <Head>
@@ -22,7 +22,7 @@ function Home() {
         <>
           <Body />
         </>
-      ) : user.length > 0 ? (
+      ) : data?.length > 0 && !loading ? (
         <>THere is user</>
       ) : (
         <Form />

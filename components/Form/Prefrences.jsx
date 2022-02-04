@@ -1,8 +1,9 @@
 import axios from 'axios';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { UserContext } from '../../context/User';
 import styles from './UserForm.module.css';
 import React from 'react';
+
 function Prefrences() {
   let cancelToken;
   const activeUser = useContext(UserContext);
@@ -25,7 +26,7 @@ function Prefrences() {
         `http://localhost:3000/api/skills/${searchSkill}`,
         {
           headers: {
-            userObject: JSON.stringify(reqBody),
+            userObject: JSON.stringify(reqBody), //Passing the headears with every api call to authenticate every request from the users browser
           },
         },
         { cancelToken: cancelToken.token }

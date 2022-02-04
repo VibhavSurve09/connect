@@ -16,6 +16,7 @@ export default function useAuthListener() {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
+        //We have auth user so we store it in localstorage,setCookie with jwt token
         const { currentUser } = auth;
         localStorage.setItem('connect_authUser', JSON.stringify(currentUser));
         let token = jwt.sign(
@@ -36,6 +37,6 @@ export default function useAuthListener() {
         router.push('/home');
       }
     });
-  }, [firebaseContext]);
+  }, []);
   return user;
 }
