@@ -1,4 +1,3 @@
 import { io } from 'socket.io-client';
-const URL = 'http://localhost:8001';
-const socket = io(URL, { autoConnect: false });
-export default socket;
+const URL = 'http://localhost:8000/chats';
+export const socketForChats = io(URL, { autoConnect: false });
