@@ -13,7 +13,6 @@ export default function Sidebar({ allActiveUsers }) {
       <div className='absolute h-full px-1 bg-white shadow-md w-60'>
         <ul className='relative'>
           {allActiveUsers.map((activeUser) => {
-            console.log(activeUser.connected);
             return (
               <li
                 key={activeUser.uid}

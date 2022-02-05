@@ -4,7 +4,7 @@ import { socketForChats } from '../../server';
 export default function ChatPanel({ userChat }) {
   console.log(userChat.uid, socketForChats.id === userChat.uid);
   const [message, setMessage] = useState('');
-  const { users } = useAllActiveUsers();
+  const users = useAllActiveUsers();
   const sendMessage = (e) => {
     e.preventDefault();
     socketForChats.emit('private_message', {
@@ -15,7 +15,6 @@ export default function ChatPanel({ userChat }) {
   };
   useEffect(() => {
     socketForChats.on('private_message', ({ from, message }) => {
-      console.log(message);
       for (let i = 0; i < users.length; i++) {
         let user = users[i];
         if (user.uid === from) {

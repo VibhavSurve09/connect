@@ -28,9 +28,12 @@ chatsNamespace.use((socket, next) => {
   socket.userData = { userName, auid };
   next();
 });
+
 chatsNamespace.on('connection', (socket) => {
+  let allActiveUsersCount = 0;
   const socketActiveUsers = [];
   for (let [id, socket] of chatsNamespace.sockets) {
+    allActiveUsersCount++;
     socketActiveUsers.push({
       uid: id,
       userData: socket.userData,
@@ -41,7 +44,13 @@ chatsNamespace.on('connection', (socket) => {
   socket.on('private_message', ({ to, message }) => {
     socket.to(to).emit('private_message', { from: socket.id, message });
   });
+  socket.on('disconnect', () => {
+    allActiveUsersCount--;
+    socket.broadcast.emit('user disconnected', socket.id);
+    chatsNamespace.emit('active_users_count', { count: allActiveUsersCount });
+  });
   // ...
+  chatsNamespace.emit('active_users_count', { count: allActiveUsersCount });
 });
 
 httpServer.listen(PORT, () => {

@@ -2,10 +2,7 @@ import { useEffect, useState } from 'react';
 import { socketForChats } from '../server';
 
 export const useAllActiveUsers = () => {
-  const [allActiveUsers, setAllActiveUsers] = useState({
-    users: [],
-    count: 0,
-  });
+  const [allActiveUsers, setAllActiveUsers] = useState([]);
   useEffect(() => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
 
@@ -16,17 +13,29 @@ export const useAllActiveUsers = () => {
       user.hasNewMessages = false;
     };
     socketForChats.on('users', (payload) => {
-      setAllActiveUsers({ users: payload, count: payload.length });
+      setAllActiveUsers(payload);
       payload.forEach((user) => {
         initUserProperties(user);
       });
     });
-    allActiveUsers.users.sort((a, b) => {
+    // put the current user first, and sort by username
+    allActiveUsers.sort((a, b) => {
       if (a.self) return -1;
       if (b.self) return 1;
       if (a.userData.userName < b.userData.userName) return -1;
       return a.userData.userName > b.userData.userName ? 1 : 0;
     });
-  });
+    socketForChats.on('user disconnected', (id) => {
+      var updatedUsers = allActiveUsers.map((user) =>
+        user.uid === id
+          ? {
+              ...user,
+              connected: false,
+            }
+          : user
+      );
+      setAllActiveUsers(updatedUsers);
+    });
+  }, [allActiveUsers]);
   return allActiveUsers;
 };
