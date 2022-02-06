@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useAllActiveUsers } from '../../hooks/useAllActiveUsers';
+import { socketForChats } from '../../server';
 import ChatPanel from './ChatPanel';
 
 export default function Sidebar({ allActiveUsers }) {
@@ -7,6 +9,21 @@ export default function Sidebar({ allActiveUsers }) {
   const showChat = (user) => {
     setShowChats(true);
     setShowChatUser(user);
+  };
+  const { allActiveUsers: allUsers, setAllActiveUsers } = useAllActiveUsers();
+
+  const updateHasNewMessage = (user) => {
+    var updateHasMessage = allUsers.map((u) =>
+      user.uid === u.uid
+        ? {
+            ...u,
+            hasNewMessages: false,
+          }
+        : u
+    );
+    //TODO: New Message Not Working
+    console.log();
+    setAllActiveUsers(updateHasMessage);
   };
   return (
     <div>
@@ -18,11 +35,13 @@ export default function Sidebar({ allActiveUsers }) {
                 key={activeUser.uid}
                 onClick={() => {
                   showChat(activeUser);
+                  updateHasNewMessage(activeUser);
                 }}
                 className='relative mt-2 cursor-pointer'
               >
                 <p>{activeUser.userData.userName}</p>
                 <p>{activeUser.connected ? 'Online' : 'Offline'}</p>
+                <p>{activeUser.hasNewMessages ? 'Yes' : 'No'}</p>
               </li>
             );
           })}

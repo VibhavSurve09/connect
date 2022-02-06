@@ -36,6 +36,26 @@ export const useAllActiveUsers = () => {
       );
       setAllActiveUsers(updatedUsers);
     });
+    socketForChats.on('private_message', ({ from, message }) => {
+      var updateForMessage = allActiveUsers.map((user) =>
+        user.uid === from
+          ? {
+              ...user,
+              messages: user.messages.push({ message, fromSelf: false }),
+            }
+          : user
+      );
+      var updateForNewMessage = updateForMessage.map((user) =>
+        user.uid === from
+          ? {
+              ...user,
+              hasNewMessages: true,
+            }
+          : user
+      );
+
+      setAllActiveUsers(updateForNewMessage);
+    });
   }, [allActiveUsers]);
-  return allActiveUsers;
+  return { allActiveUsers, setAllActiveUsers };
 };
