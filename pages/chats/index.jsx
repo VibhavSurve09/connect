@@ -12,24 +12,18 @@ export default function Chat() {
   const { data, loading } = useUser(activeUser?.uid);
   const { allActiveUsers } = useAllActiveUsers();
   let count = useShowCount();
-  if (!loading && data) {
-    //AUID-Active user id
-    socketForChats.auth = { userName: data.userName, auid: data.uid };
-    //socketForChats.connect();
-  }
   useEffect(() => {
     const sessionID = localStorage.getItem('fetchChat');
-    if (sessionID) {
-      socketForChats.auth = { sessionID };
-      // socketForChats.connect();
-    } else {
-      if (!loading && data) {
-        //AUID-Active user id
-        socketForChats.auth = { userName: data.userName, auid: data.uid };
-      }
+    if (data) {
+      //AUID-Active user id
+      socketForChats.auth = {
+        userName: data.userName,
+        auid: data.uid,
+        sessionID,
+      };
       socketForChats.connect();
     }
-  }, []);
+  }, [data]);
   socketForChats.on('session', ({ sessionID, uid }) => {
     socketForChats.auth = { sessionID };
     localStorage.setItem('fetchChat', sessionID);

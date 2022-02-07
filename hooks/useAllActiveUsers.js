@@ -12,6 +12,11 @@ export const useAllActiveUsers = () => {
       user.messages = [];
       user.hasNewMessages = false;
     };
+    socketForChats.on('user connected', (user) => {
+      console.log('Updating user');
+      initUserProperties(user);
+      setAllActiveUsers([...allActiveUsers, user]);
+    });
     socketForChats.on('users', (payload) => {
       setAllActiveUsers(payload);
       payload.forEach((user) => {
