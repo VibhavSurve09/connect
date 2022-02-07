@@ -7,12 +7,12 @@ export const useAllActiveUsers = () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
 
     const initUserProperties = (user) => {
-      user.self = socketForChats.id === user.uid;
+      user.self = socketForChats.uid === user.uid;
       user.connected = true;
       user.messages = [];
       user.hasNewMessages = false;
     };
-    socketForChats.on('user connected', (user) => {
+    socketForChats.on('user_connected', (user) => {
       console.log('Updating user');
       initUserProperties(user);
       setAllActiveUsers([...allActiveUsers, user]);

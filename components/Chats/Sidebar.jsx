@@ -7,11 +7,11 @@ export default function Sidebar({ allActiveUsers }) {
   const [showChats, setShowChats] = useState(false);
   const [showChatUser, setShowChatUser] = useState({});
   const showChat = (user) => {
+    console.log('Clicked User', user);
     setShowChats(true);
     setShowChatUser(user);
   };
   const { allActiveUsers: allUsers, setAllActiveUsers } = useAllActiveUsers();
-
   const updateHasNewMessage = (user) => {
     var updateHasMessage = allUsers.map((u) =>
       user.uid === u.uid
@@ -24,26 +24,6 @@ export default function Sidebar({ allActiveUsers }) {
     //TODO: New Message Not Working
     setAllActiveUsers(updateHasMessage);
   };
-  socketForChats.on('private_message', ({ from, message }) => {
-    console.log(message);
-    var updateForMessage = allUsers.map((user) =>
-      user.uid === from
-        ? {
-            ...user,
-            messages: user.messages.push({ message, fromSelf: false }),
-          }
-        : user
-    );
-    var updateForNewMessage = updateForMessage.map((user) =>
-      user.uid === from
-        ? {
-            ...user,
-            hasNewMessages: true,
-          }
-        : user
-    );
-    setAllActiveUsers(updateForNewMessage);
-  });
   return (
     <div>
       <div className='absolute h-full px-1 bg-white shadow-md w-60'>
