@@ -28,13 +28,9 @@ io.engine.on('headers', (headers, req) => {
 //Chats Namespace
 const chatsNamespace = io.of('chats');
 chatsNamespace.use((socket, next) => {
-  console.log('New Req');
   const sessionID = socket.handshake.auth.sessionID;
-  console.log('Sesison ID', sessionID);
   if (sessionID != '') {
-    console.log('No session Id');
     const session = sessionStore.findSession(sessionID);
-    console.log('Session', session);
     if (session) {
       socket.sessionID = sessionID;
       socket.uid = session.uid;
@@ -49,13 +45,11 @@ chatsNamespace.use((socket, next) => {
   socket.userData = { userName, auid };
   socket.sessionID = randomId();
   socket.uid = randomId();
-  console.log('Going to socket');
   next();
 });
 
 chatsNamespace.on('connection', (socket) => {
   // persist session
-  console.log('ID', socket.id);
   sessionStore.saveSession(socket.sessionID, {
     uid: socket.uid,
     userData: socket.userData,
@@ -63,13 +57,13 @@ chatsNamespace.on('connection', (socket) => {
   });
   socket.emit('session', { sessionID: socket.sessionID, uid: socket.uid });
   // join the "userID" room
-  socket.join(socket.userID);
+  socket.join(socket.uid);
 
   const users = [];
   const messagesPerUser = new Map();
   messageStore.findMessagesForUser(socket.uid).forEach((message) => {
     const { from, to } = message;
-    const otherUser = socket.userID === from ? to : from;
+    const otherUser = socket.uid === from ? to : from;
     if (messagesPerUser.has(otherUser)) {
       messagesPerUser.get(otherUser).push(message);
     } else {
@@ -85,9 +79,10 @@ chatsNamespace.on('connection', (socket) => {
       messages: messagesPerUser.get(session.uid) || [],
     });
   });
+  console.log(messagesPerUser);
   socket.emit('users', users);
   // notify existing users
-  socket.broadcast.emit('user connected', {
+  socket.broadcast.emit('user_connected', {
     uid: socket.uid,
     userData: socket.userData,
     connected: true,
@@ -95,8 +90,9 @@ chatsNamespace.on('connection', (socket) => {
   });
   console.log('Users', users);
   // forward the private message to the right recipient (and to other tabs of the sender)
-  socket.on('private message', ({ message, to }) => {
-    socket.to(to).to(socket.uid).emit('private message', {
+  socket.on('private_message', ({ message, to }) => {
+    console.log('message', message, to);
+    socket.to(to).to(socket.uid).emit('private_message', {
       message,
       from: socket.uid,
       to,
