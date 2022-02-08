@@ -25,9 +25,7 @@ function Prefrences() {
       skillData = await axios.get(
         `http://localhost:3000/api/skills/${searchSkill}`,
         {
-          headers: {
-            userObject: JSON.stringify(reqBody), //Passing the headears with every api call to authenticate every request from the users browser
-          },
+          headers: reqBody, //Passing the headears with every api call to authenticate every request from the users browser
         },
         { cancelToken: cancelToken.token }
       );

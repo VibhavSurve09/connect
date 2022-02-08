@@ -16,9 +16,15 @@ function UserForm({ pageIncrementer }) {
   const [error, setError] = useState('');
   const [isButtonDisabled, setIsButtonDisbaled] = useState(false);
   const activeUser = useContext(UserContext);
+  const nodeData = {
+    id: activeUser.uid,
+    emailAddress: activeUser.email,
+    userName,
+  };
   const handleForm = async (e) => {
     //Check username is unique
-    await e.preventDefault();
+    e.preventDefault();
+
     const oldUserName = await doesUserNameExist(userName);
     if (oldUserName) {
       activeUser.displayName = userName;
@@ -36,29 +42,27 @@ function UserForm({ pageIncrementer }) {
         followers: [''],
         role: 'user',
         status: '',
-        photoURL: imgUrl ? imgUrl : activeUser?.photoURL,
+        photoURL: imgUrl ? imgUrl : activeUser.photoURL,
       };
 
-      //  await addUser(userFormData);
-      const nodeData = {
-        id: activeUser.uid,
-        emailAddress: activeUser.email,
-        userName,
-      };
-      await axios.post('http://localhost:3000/api/user', nodeData, {
+      await addUser(userFormData);
+
+      const res = await axios.post('http://localhost:3000/api/user', nodeData, {
         headers: nodeData,
       });
-      // await fetch('http://localhost:3000/api/user', {
+      // console.log(res.status);
+      // const res = await fetch('http://localhost:3000/api/user', {
       //   method: 'POST',
-      //   body: { id: activeUser.uid, emailAddress: activeUser.email },
+      //   body: nodeData,
       // });
-      // setUserName('');
-      // setBio('');
-      // setAge('');
-      // setGender('');
-      // setProfilePicture(null);
-      // setError('');
-      // setIsButtonDisbaled(true);
+      console.log(res.data);
+      setUserName('');
+      setBio('');
+      setAge('');
+      setGender('');
+      setProfilePicture(null);
+      setError('');
+      setIsButtonDisbaled(true);
     } else {
       setError('Username already exists');
       setUserName('');
@@ -129,155 +133,153 @@ function UserForm({ pageIncrementer }) {
               </div>
             </div>
             <div className='mt-5 md:mt-0 md:col-span-2'>
-              <form>
-                <div className='shadow sm:rounded-md sm:overflow-hidden'>
-                  <div className='px-4 py-5 space-y-6 bg-white sm:p-6'>
-                    <div className='grid grid-cols-3 gap-6'>
-                      <div className='col-span-3 sm:col-span-2'>
-                        <label
-                          htmlFor='company-website'
-                          className='block text-sm font-medium text-gray-700'
-                        >
-                          Username
-                        </label>
-                        <div className='flex mt-1 rounded-md shadow-sm'>
-                          <input
-                            type='text'
-                            className='flex-1 block w-full px-1 py-2 border-gray-300 rounded-none focus:ring-indigo-500 focus:border-indigo-500 rounded-r-md sm:text-sm'
-                            placeholder='johndoe128'
-                            required
-                            value={userName}
-                            onChange={(e) => {
-                              setUserName(e.target.value);
-                            }}
-                          />{' '}
-                          <span className='inline-flex items-center px-3 text-sm text-gray-500 border border-gray-300 rounded-md bg-gray-50'>
-                            {error}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className='block text-sm font-medium text-gray-700'>
-                        Bio
-                      </label>
-                      <div className='mt-1'>
-                        <textarea
-                          rows={3}
-                          className='block w-full px-1 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-                          placeholder='Tell us about yourself'
-                          required
-                          value={bio}
-                          onChange={(e) => {
-                            setBio(e.target.value);
-                          }}
-                        />
-                      </div>
-                    </div>
-
-                    <div className='col-span-6 sm:col-span-3'>
-                      <label className='block text-sm font-medium text-gray-700'>
-                        Gender
-                      </label>
-                      <select
-                        onChange={(e) => {
-                          setGender(e.target.value);
-                        }}
-                        className='block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-                      >
-                        {options.map((option) => {
-                          return (
-                            <option key={option.label} value={option.value}>
-                              {option.label}
-                            </option>
-                          );
-                        })}
-                      </select>
-                    </div>
-
-                    <div className='col-span-6 sm:col-span-3'>
+              <div className='shadow sm:rounded-md sm:overflow-hidden'>
+                <div className='px-4 py-5 space-y-6 bg-white sm:p-6'>
+                  <div className='grid grid-cols-3 gap-6'>
+                    <div className='col-span-3 sm:col-span-2'>
                       <label
-                        htmlFor='first-name'
+                        htmlFor='company-website'
                         className='block text-sm font-medium text-gray-700'
                       >
-                        Age
+                        Username
                       </label>
-                      <input
-                        type='number'
-                        min={16}
-                        value={age}
-                        required
-                        onChange={(e) => {
-                          setAge(e.target.value);
-                        }}
-                        className='block w-full px-1 py-2 mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-                      />
-                    </div>
-
-                    <div>
-                      <label className='block text-sm font-medium text-gray-700'>
-                        Cover photo{'  '}
-                        {imageName ? (
-                          <div className='text-indigo-500'>
-                            {imageName}
-                            {` uploaded ✔️`}
-                          </div>
-                        ) : null}
-                      </label>
-                      <div className='flex justify-center px-6 pt-5 pb-6 mt-1 border-2 border-gray-300 border-dashed rounded-md'>
-                        <div className='space-y-1 text-center'>
-                          <svg
-                            className='w-12 h-12 mx-auto text-gray-400'
-                            stroke='currentColor'
-                            fill='none'
-                            viewBox='0 0 48 48'
-                            aria-hidden='true'
-                          >
-                            <path
-                              d='M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02'
-                              strokeWidth={2}
-                              strokeLinecap='round'
-                              strokeLinejoin='round'
-                            />
-                          </svg>
-                          <div className='flex text-sm text-gray-600'>
-                            <label
-                              htmlFor='file-upload'
-                              className='relative font-medium text-indigo-600 bg-white rounded-md cursor-pointer hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500'
-                            >
-                              <span>Upload a file</span>
-                              <input
-                                id='file-upload'
-                                name='file-upload'
-                                type='file'
-                                className='sr-only'
-                                onChange={onImageChange}
-                              />
-                            </label>
-                            <p className='pl-1'>or drag and drop</p>
-                          </div>
-                          <p className='text-xs text-gray-500'>
-                            PNG, JPG, GIF up to 10MB
-                          </p>
-                        </div>
+                      <div className='flex mt-1 rounded-md shadow-sm'>
+                        <input
+                          type='text'
+                          className='flex-1 block w-full px-1 py-2 border-gray-300 rounded-none focus:ring-indigo-500 focus:border-indigo-500 rounded-r-md sm:text-sm'
+                          placeholder='johndoe128'
+                          required
+                          value={userName}
+                          onChange={(e) => {
+                            setUserName(e.target.value);
+                          }}
+                        />{' '}
+                        <span className='inline-flex items-center px-3 text-sm text-gray-500 border border-gray-300 rounded-md bg-gray-50'>
+                          {error}
+                        </span>
                       </div>
                     </div>
                   </div>
-                  <div className='px-4 py-3 text-right bg-gray-50 sm:px-6'>
-                    <button
-                      type='button'
-                      onClick={handleForm}
-                      disabled={isButtonDisabled}
-                      className={`inline-flex justify-center px-4 py-2 text-sm font-medium text-white ${
-                        isButtonDisabled && `bg-indigo-300`
-                      } bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+
+                  <div>
+                    <label className='block text-sm font-medium text-gray-700'>
+                      Bio
+                    </label>
+                    <div className='mt-1'>
+                      <textarea
+                        rows={3}
+                        className='block w-full px-1 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                        placeholder='Tell us about yourself'
+                        required
+                        value={bio}
+                        onChange={(e) => {
+                          setBio(e.target.value);
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className='col-span-6 sm:col-span-3'>
+                    <label className='block text-sm font-medium text-gray-700'>
+                      Gender
+                    </label>
+                    <select
+                      onChange={(e) => {
+                        setGender(e.target.value);
+                      }}
+                      className='block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
                     >
-                      Save
-                    </button>
+                      {options.map((option) => {
+                        return (
+                          <option key={option.label} value={option.value}>
+                            {option.label}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+
+                  <div className='col-span-6 sm:col-span-3'>
+                    <label
+                      htmlFor='first-name'
+                      className='block text-sm font-medium text-gray-700'
+                    >
+                      Age
+                    </label>
+                    <input
+                      type='number'
+                      min={16}
+                      value={age}
+                      required
+                      onChange={(e) => {
+                        setAge(e.target.value);
+                      }}
+                      className='block w-full px-1 py-2 mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                    />
+                  </div>
+
+                  <div>
+                    <label className='block text-sm font-medium text-gray-700'>
+                      Cover photo{'  '}
+                      {imageName ? (
+                        <div className='text-indigo-500'>
+                          {imageName}
+                          {` uploaded ✔️`}
+                        </div>
+                      ) : null}
+                    </label>
+                    <div className='flex justify-center px-6 pt-5 pb-6 mt-1 border-2 border-gray-300 border-dashed rounded-md'>
+                      <div className='space-y-1 text-center'>
+                        <svg
+                          className='w-12 h-12 mx-auto text-gray-400'
+                          stroke='currentColor'
+                          fill='none'
+                          viewBox='0 0 48 48'
+                          aria-hidden='true'
+                        >
+                          <path
+                            d='M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02'
+                            strokeWidth={2}
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                          />
+                        </svg>
+                        <div className='flex text-sm text-gray-600'>
+                          <label
+                            htmlFor='file-upload'
+                            className='relative font-medium text-indigo-600 bg-white rounded-md cursor-pointer hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500'
+                          >
+                            <span>Upload a file</span>
+                            <input
+                              id='file-upload'
+                              name='file-upload'
+                              type='file'
+                              className='sr-only'
+                              onChange={onImageChange}
+                            />
+                          </label>
+                          <p className='pl-1'>or drag and drop</p>
+                        </div>
+                        <p className='text-xs text-gray-500'>
+                          PNG, JPG, GIF up to 10MB
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </form>
+                <div className='px-4 py-3 text-right bg-gray-50 sm:px-6'>
+                  <button
+                    type='button'
+                    onClick={handleForm}
+                    disabled={isButtonDisabled}
+                    className={`inline-flex justify-center px-4 py-2 text-sm font-medium text-white ${
+                      isButtonDisabled && `bg-indigo-300`
+                    } bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

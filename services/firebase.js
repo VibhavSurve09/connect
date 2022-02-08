@@ -1,5 +1,5 @@
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
-import { getDocs, doc, query, where, addDoc } from 'firebase/firestore';
+import { getDocs, doc, query, where, addDoc, setDoc } from 'firebase/firestore';
 import { db, storage } from '../constants/firebase';
 import { userCollectionRef } from '../constants/firebase';
 // eslint-disable-next-line react-hooks/rules-of-hooks
