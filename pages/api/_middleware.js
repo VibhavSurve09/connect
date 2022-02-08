@@ -11,8 +11,9 @@ export function middleware(req) {
       },
     });
   }
-  const senderData = req.headers.get('userobject');
-  let { id, emailAddress } = JSON.parse(senderData);
+  const id = req.headers.get('id');
+  const emailAddress = req.headers.get('emailAddress');
+  console.log(emailAddress, id);
   let { uid, email } = jwt.decode(connect_auth_cookie, process.env.JWT_SECRET);
   if (uid === id && email === emailAddress) {
     return NextResponse.next();

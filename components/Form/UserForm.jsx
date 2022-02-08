@@ -17,15 +17,12 @@ function UserForm({ pageIncrementer, page }) {
   const [isButtonDisabled, setIsButtonDisbaled] = useState(false);
   const activeUser = useContext(UserContext);
   const handleForm = async (e) => {
-    await e.preventDefault();
     //Check username is unique
-
+    await e.preventDefault();
     const oldUserName = await doesUserNameExist(userName);
     if (oldUserName) {
       activeUser.displayName = userName;
-
       const imgUrl = await uploadPhoto(activeUser?.displayName, profilePicture);
-      setTimeout(() => {}, 500);
       const userFormData = {
         userName,
         bio,
@@ -48,7 +45,9 @@ function UserForm({ pageIncrementer, page }) {
         emailAddress: activeUser.email,
         userName,
       };
-      await axios.post('http://localhost:3000/api/user', nodeData);
+      await axios.post('http://localhost:3000/api/user', nodeData, {
+        headers: nodeData,
+      });
       // await fetch('http://localhost:3000/api/user', {
       //   method: 'POST',
       //   body: { id: activeUser.uid, emailAddress: activeUser.email },
@@ -59,7 +58,7 @@ function UserForm({ pageIncrementer, page }) {
       // setGender('');
       // setProfilePicture(null);
       // setError('');
-      setIsButtonDisbaled(true);
+      // setIsButtonDisbaled(true);
     } else {
       setError('Username already exists');
       setUserName('');
@@ -130,7 +129,7 @@ function UserForm({ pageIncrementer, page }) {
               </div>
             </div>
             <div className='mt-5 md:mt-0 md:col-span-2'>
-              <form onSubmit={handleForm}>
+              <form>
                 <div className='shadow sm:rounded-md sm:overflow-hidden'>
                   <div className='px-4 py-5 space-y-6 bg-white sm:p-6'>
                     <div className='grid grid-cols-3 gap-6'>
@@ -267,7 +266,8 @@ function UserForm({ pageIncrementer, page }) {
                   </div>
                   <div className='px-4 py-3 text-right bg-gray-50 sm:px-6'>
                     <button
-                      type='submit'
+                      type='button'
+                      onClick={handleForm}
                       disabled={isButtonDisabled}
                       className={`inline-flex justify-center px-4 py-2 text-sm font-medium text-white ${
                         isButtonDisabled && `bg-indigo-300`
