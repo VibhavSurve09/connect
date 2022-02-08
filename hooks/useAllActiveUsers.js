@@ -5,18 +5,22 @@ export const useAllActiveUsers = () => {
   const [allActiveUsers, setAllActiveUsers] = useState([]);
 
   const initUserProperties = (user) => {
-    user.self = socketForChats.uid === user.uid;
-    user.connected = true;
-    user.messages = [];
     user.hasNewMessages = false;
   };
   useEffect(() => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
 
     socketForChats.on('user_connected', (user) => {
-      console.log('Updating user');
+      for (let i = 0; i < allActiveUsers.length; i++) {
+        const exstingUser = allActiveUsers[i];
+
+        if (exstingUser.uid === user.uid) {
+          exstingUser.connected = true;
+          return;
+        }
+      }
       initUserProperties(user);
-      //!This may cause a bug
+      //!This may causing a bug
       setAllActiveUsers([...allActiveUsers, user]);
     });
     socketForChats.on('users', (payload) => {
@@ -43,20 +47,6 @@ export const useAllActiveUsers = () => {
       );
       setAllActiveUsers(updatedUsers);
     });
-    socketForChats.on('private_message', ({ from, message }) => {
-      console.log('message', message);
-      var updateForMessage = allActiveUsers.map((user) =>
-        user.uid === from
-          ? {
-              ...user,
-              messages: user.messages.push({ message, fromSelf: false }),
-              hasNewMessages: true,
-            }
-          : user
-      );
-
-      setAllActiveUsers(updateForMessage);
-    });
-  }, [allActiveUsers, setAllActiveUsers]);
+  }, [allActiveUsers]);
   return { allActiveUsers, setAllActiveUsers };
 };

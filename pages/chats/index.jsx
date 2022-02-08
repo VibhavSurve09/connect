@@ -9,7 +9,6 @@ import { useUser } from '../../hooks/useUser';
 import { socketForChats } from '../../server';
 export default function Chat() {
   const activeUser = useContext(UserContext);
-  console.log('In Chat');
   const { data, loading } = useUser(activeUser?.uid);
   const { allActiveUsers, setAllActiveUsers } = useAllActiveUsers();
   let count = useShowCount();
@@ -30,7 +29,6 @@ export default function Chat() {
     localStorage.setItem('fetchChat', sessionID);
     socketForChats.uid = uid;
   });
-
   return (
     <div className='flex flex-col'>
       <ActiveUserCount count={count} />

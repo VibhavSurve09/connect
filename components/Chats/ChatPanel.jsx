@@ -9,7 +9,17 @@ export default function ChatPanel({ userChat }) {
     socketForChats.emit('private_message', {
       to: userChat.uid,
       message,
+      from: socketForChats.uid,
     });
+    var arr = allActiveUsers.map((user) =>
+      user.uid === userChat.uid
+        ? {
+            ...user,
+            messages: [...user.messages, { message, from, to }],
+          }
+        : user
+    );
+    setAllActiveUsers(allActiveUsers);
     setMessage('');
   };
   return (
