@@ -18,7 +18,9 @@ export default function Form() {
 
   return (
     <div className='bg-gray-100'>
-      {page === 0 && <UserForm />}
+      {page === 0 && (
+        <UserForm pageIncrementer={pageIncrementer} page={setPage} />
+      )}
       {page === 1 && <Personalinfo />}
       {page === 2 && <Prefrences />}
       <div className='grid grid-cols-1 my-1 md:flex md:justify-center md:space-x-28 md:items-center'>
