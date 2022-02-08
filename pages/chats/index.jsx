@@ -30,26 +30,6 @@ export default function Chat() {
     localStorage.setItem('fetchChat', sessionID);
     socketForChats.uid = uid;
   });
-  socketForChats.on('private_message', ({ from, message }) => {
-    console.log('message', message);
-    var updateForMessage = allActiveUsers.map((user) =>
-      user.uid === from
-        ? {
-            ...user,
-            messages: user.messages.push({ message, fromSelf: false }),
-          }
-        : user
-    );
-    var updateForNewMessage = updateForMessage.map((user) =>
-      user.uid === from
-        ? {
-            ...user,
-            hasNewMessages: true,
-          }
-        : user
-    );
-    setAllActiveUsers(updateForNewMessage);
-  });
 
   return (
     <div className='flex flex-col'>

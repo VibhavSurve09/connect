@@ -104,7 +104,7 @@ chatsNamespace.on('connection', (socket) => {
     const isDisconnected = matchingSockets.size === 0;
     if (isDisconnected) {
       // notify other users
-      socket.broadcast.emit('user disconnected', socket.uid);
+      socket.broadcast.emit('user_disconnected', socket.uid);
       // update the connection status of the session
       sessionStore.saveSession(socket.sessionID, {
         uid: socket.uid,
