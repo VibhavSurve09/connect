@@ -6,7 +6,7 @@ import { serverTimestamp } from 'firebase/firestore';
 import { addUser } from '../../services/firebase';
 import React from 'react';
 import axios from 'axios';
-function UserForm({ pageIncrementer, page }) {
+function UserForm({ pageIncrementer }) {
   const [userName, setUserName] = useState('');
   const [bio, setBio] = useState('');
   const [gender, setGender] = useState('Male');
