@@ -63,17 +63,15 @@ chatsNamespace.on('connection', (socket) => {
   const messagesPerUser = new Map();
   messageStore.findMessagesForUser(socket.uid).forEach((message) => {
     const { from, to } = message;
-    console.log('From to', from, to);
     const otherUser = socket.uid === from ? to : from;
     if (messagesPerUser.has(otherUser)) {
-      console.log('has other user');
       messagesPerUser.get(otherUser).push(message);
     } else {
       messagesPerUser.set(otherUser, [message]);
     }
   });
-
   sessionStore.findAllSessions().forEach((session) => {
+    console.log(messagesPerUser.get(session.uid));
     users.push({
       uid: session.uid,
       userData: session.userData,
@@ -81,6 +79,7 @@ chatsNamespace.on('connection', (socket) => {
       messages: messagesPerUser.get(session.uid) || [],
     });
   });
+
   socket.emit('users', users);
   // notify existing users
   socket.broadcast.emit('user_connected', {
@@ -91,15 +90,15 @@ chatsNamespace.on('connection', (socket) => {
   });
 
   // forward the private message to the right recipient (and to other tabs of the sender)
-  socket.on('private_message', ({ message, to, from }) => {
+  socket.on('private_message', ({ message, to }) => {
     console.log('message', message, to);
-    socket.to(to).to(socket.uid).emit('private_message', {
+    const _message = {
       message,
       from: socket.uid,
       to,
-    });
-    messageStore.saveMessage(message);
-    console.log(messageStore);
+    };
+    socket.to(to).to(socket.uid).emit('private_message', _message);
+    messageStore.saveMessage(_message);
   });
   socket.on('disconnect', async () => {
     const matchingSockets = await io.in(socket.uid).allSockets();

@@ -23,10 +23,23 @@ export const useAllActiveUsers = () => {
       //!This may causing a bug
       setAllActiveUsers([...allActiveUsers, user]);
     });
-    socketForChats.on('users', (payload) => {
-      setAllActiveUsers(payload);
-      payload.forEach((user) => {
+
+    socketForChats.on('users', (users) => {
+      users.forEach((user) => {
+        user.messages.forEach((message) => {
+          message.fromSelf = message.from === socketForChats.uid;
+        });
+        for (let i = 0; i < allActiveUsers.length; i++) {
+          const existingUser = allActiveUsers[i];
+          if (existingUser.userID === user.userID) {
+            existingUser.connected = user.connected;
+            existingUser.messages = user.messages;
+            return;
+          }
+        }
+        user.self = user.userID === socketForChats.userID;
         initUserProperties(user);
+        setAllActiveUsers([...allActiveUsers, user]);
       });
     });
     // put the current user first, and sort by username

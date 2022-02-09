@@ -9,13 +9,12 @@ export default function ChatPanel({ userChat }) {
     socketForChats.emit('private_message', {
       to: userChat.uid,
       message,
-      from: socketForChats.uid,
     });
     var arr = allActiveUsers.map((user) =>
       user.uid === userChat.uid
         ? {
             ...user,
-            messages: [...user.messages, { message, from, to }],
+            messages: [...user.messages, { message, to: userChat.uid }],
           }
         : user
     );
@@ -23,12 +22,21 @@ export default function ChatPanel({ userChat }) {
     setMessage('');
   };
   return (
-    <div className='items-center ml-56 bg-red-500'>
+    <div className='items-center bg-red-500 ml-72'>
       {/* Header */}
       In Chat pannel
       <div className=''></div>
       {/* messages */}
-      <ul></ul>
+      <ul>
+        {userChat.messages.map((message, index) => {
+          return (
+            <li key={index}>
+              <div>{message.fromSelf ? 'You' : null}</div>
+              {message.message}
+            </li>
+          );
+        })}
+      </ul>
       {/* InputForm */}
       <form onSubmit={sendMessage}>
         <input
