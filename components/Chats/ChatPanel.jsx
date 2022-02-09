@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useAllActiveUsers } from '../../hooks/useAllActiveUsers';
 import { socketForChats } from '../../server';
 export default function ChatPanel({ userChat }) {

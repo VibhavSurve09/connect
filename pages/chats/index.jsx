@@ -33,7 +33,7 @@ export default function Chat() {
     <div className='flex flex-col'>
       <ActiveUserCount count={count} />
       {/* Sidebar div */}
-      <Sidebar allActiveUsers={allActiveUsers} />
+      <Sidebar allActiveUsers_={allActiveUsers} />
     </div>
   );
 }

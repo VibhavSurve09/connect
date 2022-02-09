@@ -31,13 +31,13 @@ export const useAllActiveUsers = () => {
         });
         for (let i = 0; i < allActiveUsers.length; i++) {
           const existingUser = allActiveUsers[i];
-          if (existingUser.userID === user.userID) {
+          if (existingUser.uid === user.uid) {
             existingUser.connected = user.connected;
             existingUser.messages = user.messages;
             return;
           }
         }
-        user.self = user.userID === socketForChats.userID;
+        user.self = user.uid === socketForChats.uid;
         initUserProperties(user);
         setAllActiveUsers([...allActiveUsers, user]);
       });
