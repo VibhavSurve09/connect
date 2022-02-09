@@ -28,7 +28,7 @@ export default function Sidebar({ allActiveUsers_ }) {
                   user.userData?.userName !== showChatUser.userData?.userName
                     ? true
                     : false,
-                messages: user.messages.push({ from, message }),
+                messages: [...user.messages, { from, message, to }],
               }
             : user
         );
@@ -91,7 +91,7 @@ export default function Sidebar({ allActiveUsers_ }) {
       </div>
       {showChats ? (
         <>
-          <ChatPanel userChat={showChatUser} />
+          <ChatPanel userChat={showChatUser} allUsers={allActiveUsers_} />
         </>
       ) : null}
     </div>

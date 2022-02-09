@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAllActiveUsers } from '../../hooks/useAllActiveUsers';
 import { socketForChats } from '../../server';
-export default function ChatPanel({ userChat }) {
+export default function ChatPanel({ userChat, allUsers }) {
   const [message, setMessage] = useState('');
   const { allActiveUsers, setAllActiveUsers } = useAllActiveUsers();
   const sendMessage = (e) => {
@@ -10,15 +10,22 @@ export default function ChatPanel({ userChat }) {
       to: userChat.uid,
       message,
     });
-    var arr = allActiveUsers.map((user) =>
+
+    var arr = allUsers.map((user) =>
       user.uid === userChat.uid
         ? {
             ...user,
-            messages: [...user.messages, { message, to: userChat.uid }],
+            messages: user.messages.push({
+              to: userChat.uid,
+              message,
+              from: socketForChats.uid,
+              fromSelf: true,
+            }),
           }
         : user
     );
-    setAllActiveUsers(allActiveUsers);
+    console.log(arr);
+    setAllActiveUsers(arr);
     setMessage('');
   };
   return (
