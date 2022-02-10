@@ -8,7 +8,7 @@ export const useUser = (userId) => {
     if (userId) {
       setUserData({ data: null, loading: true });
       const data = getUserDataById(userId).then((d) => {
-        setUserData({ data: d, loading: false });
+        setUserData({ data: d[0], loading: false });
       });
     }
   }, [userId]);

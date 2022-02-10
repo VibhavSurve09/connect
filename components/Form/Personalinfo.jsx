@@ -2,7 +2,7 @@ import styles from './UserForm.module.css';
 import { useState } from 'react';
 import React from 'react';
 import { mergeData } from '../../services/firebase';
-function Personalinfo() {
+function Personalinfo({ pageIncrementer }) {
   const [collegeName, setCollegeName] = useState('');
   const [degree, setDegree] = useState('Bachelors');
   const [collegeYear, setCollegeYear] = useState('1');
@@ -66,6 +66,7 @@ function Personalinfo() {
       degree,
     };
     mergeData(infoData);
+    pageIncrementer();
   };
   return (
     <div className='h-auto bg-gray-100'>

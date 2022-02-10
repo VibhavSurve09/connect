@@ -47,5 +47,5 @@ export const getUserDataByUserName = async (userName) => {
 export const mergeData = (data) => {
   const ref = doc(db, 'users', path);
   setDoc(ref, data, { merge: true });
-  path = '';
+  path = null;
 };

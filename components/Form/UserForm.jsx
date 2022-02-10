@@ -5,7 +5,7 @@ import { doesUserNameExist, uploadPhoto } from '../../services/firebase';
 import { serverTimestamp } from 'firebase/firestore';
 import { addUser } from '../../services/firebase';
 import React from 'react';
-import axios from 'axios';
+import { postUser } from '../../services/neo4j';
 function UserForm({ pageIncrementer }) {
   const [userName, setUserName] = useState('');
   const [bio, setBio] = useState('');
@@ -17,7 +17,7 @@ function UserForm({ pageIncrementer }) {
   const [isButtonDisabled, setIsButtonDisbaled] = useState(false);
   const activeUser = useContext(UserContext);
   const nodeData = {
-    id: activeUser.uid,
+    uid: activeUser.uid,
     emailAddress: activeUser.email,
     userName,
   };
@@ -25,10 +25,14 @@ function UserForm({ pageIncrementer }) {
     //Check username is unique
     e.preventDefault();
 
-    const oldUserName = await doesUserNameExist(userName);
-    if (oldUserName) {
+    const newUsername = await doesUserNameExist(userName);
+    if (newUsername) {
       activeUser.displayName = userName;
-      const imgUrl = await uploadPhoto(activeUser?.displayName, profilePicture);
+      let imgUrl;
+      if (profilePicture) {
+        imgUrl = await uploadPhoto(activeUser?.displayName, profilePicture);
+      }
+
       const userFormData = {
         userName,
         bio,
@@ -42,20 +46,12 @@ function UserForm({ pageIncrementer }) {
         followers: [''],
         role: 'user',
         status: '',
-        photoURL: imgUrl ? imgUrl : activeUser.photoURL,
+        photoURL: profilePicture ? imgUrl : activeUser.photoURL,
       };
 
       await addUser(userFormData);
-
-      const res = await axios.post('http://localhost:3000/api/user', nodeData, {
-        headers: nodeData,
-      });
-      // console.log(res.status);
-      // const res = await fetch('http://localhost:3000/api/user', {
-      //   method: 'POST',
-      //   body: nodeData,
-      // });
-      console.log(res.data);
+      //*This is a function and not an API
+      await postUser(nodeData);
       setUserName('');
       setBio('');
       setAge('');
@@ -63,6 +59,7 @@ function UserForm({ pageIncrementer }) {
       setProfilePicture(null);
       setError('');
       setIsButtonDisbaled(true);
+      pageIncrementer();
     } else {
       setError('Username already exists');
       setUserName('');
@@ -261,7 +258,7 @@ function UserForm({ pageIncrementer }) {
                           <p className='pl-1'>or drag and drop</p>
                         </div>
                         <p className='text-xs text-gray-500'>
-                          PNG, JPG, GIF up to 10MB
+                          PNG, JPG, GIF up to 5MB
                         </p>
                       </div>
                     </div>
@@ -269,7 +266,6 @@ function UserForm({ pageIncrementer }) {
                 </div>
                 <div className='px-4 py-3 text-right bg-gray-50 sm:px-6'>
                   <button
-                    type='button'
                     onClick={handleForm}
                     disabled={isButtonDisabled}
                     className={`inline-flex justify-center px-4 py-2 text-sm font-medium text-white ${

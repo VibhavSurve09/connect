@@ -1,12 +1,10 @@
-import Link from "next/link";
-
 export default function NonUserNavbar() {
   return (
-    <div className="flex flex-row">
-      <div className=" lg:mt-0 px-5 py-2 text-purple-800 text-xl hover:text-black font-bold mr-4">
+    <div className='flex flex-row'>
+      <div className='px-5 py-2 mr-4 text-xl font-bold text-purple-800  lg:mt-0 hover:text-black'>
         About
       </div>
-      <button className="rounded-sm lg:mt-0 px-4 py-0 text-purple-800 text-xl bg-white hover:text-black font-bold hover:bg-gray-100">
+      <button className='px-4 py-0 text-xl font-bold text-purple-800 bg-white rounded-sm lg:mt-0 hover:text-black hover:bg-gray-100'>
         Login
       </button>
     </div>
