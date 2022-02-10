@@ -46,6 +46,7 @@ function UserForm() {
       };
       await axios.post("http://localhost:3000/api/user", nodeData);
       await addUser(userFormData);
+      setIsButtonDisbaled(true);
     } else {
       setError("Username already exists");
       setUserName("");
