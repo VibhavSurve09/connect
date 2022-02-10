@@ -3,7 +3,7 @@ import { useAllActiveUsers } from '../../hooks/useAllActiveUsers';
 import { socketForChats } from '../../server';
 export default function ChatPanel({ userChat, allUsers }) {
   const [message, setMessage] = useState('');
-  const { allActiveUsers, setAllActiveUsers } = useAllActiveUsers();
+  const { setAllActiveUsers } = useAllActiveUsers();
   const sendMessage = (e) => {
     e.preventDefault();
     socketForChats.emit('private_message', {
@@ -24,7 +24,6 @@ export default function ChatPanel({ userChat, allUsers }) {
           }
         : user
     );
-    console.log(arr);
     setAllActiveUsers(arr);
     setMessage('');
   };
