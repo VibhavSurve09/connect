@@ -1,65 +1,72 @@
-import { useEffect, useState } from 'react';
+/* eslint-disable react-hooks/rules-of-hooks */
+import { useCallback, useEffect, useState } from 'react';
 import { socketForChats } from '../server';
+import produce from 'immer';
 
 export const useAllActiveUsers = () => {
   const [allActiveUsers, setAllActiveUsers] = useState([]);
-
-  const initUserProperties = (user) => {
-    user.hasNewMessages = false;
-  };
   useEffect(() => {
+    console.log('Rendering');
     // eslint-disable-next-line react-hooks/rules-of-hooks
-
     socketForChats.on('user_connected', (user) => {
-      for (let i = 0; i < allActiveUsers.length; i++) {
-        const exstingUser = allActiveUsers[i];
-
-        if (exstingUser.uid === user.uid) {
-          exstingUser.connected = true;
-          return;
+      console.log('New User Connected', user);
+      const newUser = produce(allActiveUsers, (draft) => {
+        for (let i = 0; i < allActiveUsers.length; i++) {
+          if (draft[i].uid === user.uid) {
+            console.log('True');
+            draft[i].connected = true;
+          }
+          draft[i].hasNewMessages = false;
         }
-      }
-      initUserProperties(user);
-      //!This may causing a bug
-      setAllActiveUsers([...allActiveUsers, user]);
+      });
+      console.log('NU', newUser);
+      setAllActiveUsers(newUser);
     });
 
     socketForChats.on('users', (users) => {
-      users.forEach((user) => {
-        user.messages.forEach((message) => {
-          message.fromSelf = message.from === socketForChats.uid;
-        });
-        for (let i = 0; i < allActiveUsers.length; i++) {
-          const existingUser = allActiveUsers[i];
-          if (existingUser.uid === user.uid) {
-            existingUser.connected = user.connected;
-            existingUser.messages = user.messages;
-            return;
+      console.log('Old Users', users);
+      const oldUser = produce(users, (draft) => {
+        draft.forEach((u) => {
+          u.messages.forEach((message) => {
+            message.fromSelf = message.from === socketForChats.uid;
+          });
+          for (let i = 0; i < draft.length; i++) {
+            if (draft[i].uid === u.uid) {
+              {
+                draft[i].connected = u.connected;
+                draft[i].messages = u.messages;
+              }
+            }
           }
-        }
-        user.self = user.uid === socketForChats.uid;
-        initUserProperties(user);
-        setAllActiveUsers([...allActiveUsers, user]);
+          u.self = u.uid === socketForChats.uid;
+          u.hasNewMessages = false;
+        });
+      });
+      console.log('OP', oldUser);
+      setAllActiveUsers(oldUser);
+      allActiveUsers.sort((a, b) => {
+        if (a.self) return -1;
+        if (b.self) return 1;
+        if (a.userData.userName < b.userData.userName) return -1;
+        return a.userData.userName > b.userData.userName ? 1 : 0;
       });
     });
-    // put the current user first, and sort by username
-    allActiveUsers.sort((a, b) => {
-      if (a.self) return -1;
-      if (b.self) return 1;
-      if (a.userData.userName < b.userData.userName) return -1;
-      return a.userData.userName > b.userData.userName ? 1 : 0;
-    });
     socketForChats.on('user_disconnected', (id) => {
-      var updatedUsers = allActiveUsers.map((user) =>
-        user.uid === id
-          ? {
-              ...user,
-              connected: false,
-            }
-          : user
-      );
-      setAllActiveUsers(updatedUsers);
+      const user = produce(allActiveUsers, (draft) => {
+        draft.forEach((u) => {
+          if (u.uid === id) {
+            u.connected = false;
+          }
+        });
+      });
+      setAllActiveUsers(user);
     });
+    return () => {
+      socketForChats.off('user_connected');
+      socketForChats.off('users');
+      socketForChats.off('user_disconnected');
+      socketForChats.off('private_message');
+    };
   }, [allActiveUsers]);
   return { allActiveUsers, setAllActiveUsers };
 };

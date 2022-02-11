@@ -1,7 +1,7 @@
+import produce from 'immer';
 import React, { useContext, useEffect, useState } from 'react';
 import ActiveUserCount from '../../components/Chats/ActiveUserCount';
 import Sidebar from '../../components/Chats/Sidebar';
-
 import { UserContext } from '../../context/User';
 import { useAllActiveUsers } from '../../hooks/useAllActiveUsers';
 import { useShowCount } from '../../hooks/useShowCount';
@@ -12,6 +12,7 @@ export default function Chat() {
   const { data, loading } = useUser(activeUser?.uid);
   const { allActiveUsers, setAllActiveUsers } = useAllActiveUsers();
   let count = useShowCount();
+  console.log(allActiveUsers);
   useEffect(() => {
     const sessionID = localStorage.getItem('fetchChat');
     if (data) {
@@ -28,6 +29,17 @@ export default function Chat() {
     socketForChats.auth = { sessionID };
     localStorage.setItem('fetchChat', sessionID);
     socketForChats.uid = uid;
+  });
+  socketForChats.on('connect', () => {
+    const user = produce(allActiveUsers, (draft) => {
+      draft.forEach((user) => {
+        console.log(user);
+        if (user.self) {
+          user.connected = true;
+        }
+      });
+    });
+    setAllActiveUsers(user);
   });
   return (
     <div className='flex flex-col'>
