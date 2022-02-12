@@ -1,30 +1,41 @@
+import produce from 'immer';
 import React, { useEffect, useState } from 'react';
 import { useAllActiveUsers } from '../../hooks/useAllActiveUsers';
 import { socketForChats } from '../../server';
 export default function ChatPanel({ userChat, allUsers }) {
   const [message, setMessage] = useState('');
-  const { setAllActiveUsers } = useAllActiveUsers();
+  const { allActiveUsers, setAllActiveUsers } = useAllActiveUsers();
+  const [newMessages, setNewMessages] = useState(userChat.messages);
   const sendMessage = (e) => {
     e.preventDefault();
     socketForChats.emit('private_message', {
       to: userChat.uid,
       message,
     });
-
-    var arr = allUsers.map((user) =>
-      user.uid === userChat.uid
-        ? {
-            ...user,
-            messages: user.messages.push({
-              to: userChat.uid,
-              message,
-              from: socketForChats.uid,
-              fromSelf: true,
-            }),
-          }
-        : user
-    );
-    setAllActiveUsers(arr);
+    console.log(allActiveUsers);
+    const newM = produce(newMessages, (draft) => {
+      draft.push({
+        message,
+        fromSelf: true,
+        to: userChat.uid,
+        from: socketForChats.uid,
+      });
+    });
+    setNewMessages(newM);
+    const newMess = produce(allUsers, (draft) => {
+      draft.forEach((u) => {
+        if (u.uid === userChat.uid) {
+          u.messages.push({
+            message,
+            fromSelf: true,
+            to: userChat.uid,
+            from: socketForChats.uid,
+          });
+        }
+      });
+    });
+    console.log(newMess);
+    setAllActiveUsers(newMess);
     setMessage('');
   };
   return (
@@ -34,7 +45,7 @@ export default function ChatPanel({ userChat, allUsers }) {
       <div className=''></div>
       {/* messages */}
       <ul>
-        {userChat.messages.map((message, index) => {
+        {newMessages.map((message, index) => {
           return (
             <li key={index}>
               <div>{message.fromSelf ? 'You' : null}</div>

@@ -12,7 +12,7 @@ export default function Chat() {
   const { data, loading } = useUser(activeUser?.uid);
   const { allActiveUsers, setAllActiveUsers } = useAllActiveUsers();
   let count = useShowCount();
-  console.log(allActiveUsers);
+
   useEffect(() => {
     const sessionID = localStorage.getItem('fetchChat');
     if (data) {

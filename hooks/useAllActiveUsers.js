@@ -13,13 +13,11 @@ export const useAllActiveUsers = () => {
       const newUser = produce(allActiveUsers, (draft) => {
         for (let i = 0; i < allActiveUsers.length; i++) {
           if (draft[i].uid === user.uid) {
-            console.log('True');
             draft[i].connected = true;
           }
           draft[i].hasNewMessages = false;
         }
       });
-      console.log('NU', newUser);
       setAllActiveUsers(newUser);
     });
 
@@ -42,7 +40,6 @@ export const useAllActiveUsers = () => {
           u.hasNewMessages = false;
         });
       });
-      console.log('OP', oldUser);
       setAllActiveUsers(oldUser);
       allActiveUsers.sort((a, b) => {
         if (a.self) return -1;
@@ -62,10 +59,10 @@ export const useAllActiveUsers = () => {
       setAllActiveUsers(user);
     });
     return () => {
-      socketForChats.off('user_connected');
-      socketForChats.off('users');
-      socketForChats.off('user_disconnected');
-      socketForChats.off('private_message');
+      // socketForChats.off('user_connected');
+      // socketForChats.off('users');
+      // socketForChats.off('user_disconnected');
+      // socketForChats.off('private_message');
     };
   }, [allActiveUsers]);
   return { allActiveUsers, setAllActiveUsers };
