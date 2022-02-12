@@ -6,10 +6,8 @@ import produce from 'immer';
 export const useAllActiveUsers = () => {
   const [allActiveUsers, setAllActiveUsers] = useState([]);
   useEffect(() => {
-    console.log('Rerendring hook', allActiveUsers);
     // eslint-disable-next-line react-hooks/rules-of-hooks
     socketForChats.on('user_connected', (user) => {
-      console.log('New User Connected', user);
       const newUser = produce(allActiveUsers, (draft) => {
         for (let i = 0; i < allActiveUsers.length; i++) {
           if (draft[i].uid === user.uid) {
@@ -22,7 +20,6 @@ export const useAllActiveUsers = () => {
     });
 
     socketForChats.on('users', (users) => {
-      console.log('Old Users', users);
       const oldUser = produce(users, (draft) => {
         draft.forEach((u) => {
           u.messages.forEach((message) => {
@@ -59,10 +56,10 @@ export const useAllActiveUsers = () => {
       setAllActiveUsers(user);
     });
     return () => {
-      // socketForChats.off('user_connected');
-      // socketForChats.off('users');
-      // socketForChats.off('user_disconnected');
-      // socketForChats.off('private_message');
+      socketForChats.off('user_connected');
+      socketForChats.off('users');
+      socketForChats.off('user_disconnected');
+      socketForChats.off('private_message');
     };
   }, [allActiveUsers]);
   return { allActiveUsers, setAllActiveUsers };

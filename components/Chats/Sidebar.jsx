@@ -16,7 +16,6 @@ export default function Sidebar({ allActiveUsers, setAllActiveUsers }) {
       const newMessage = produce(allActiveUsers, (draft) => {
         draft.forEach((u) => {
           const fromSelf = socketForChats.uid === from;
-          console.log('Check', u.uid === (from ? to : from));
           if (u.uid === (fromSelf ? to : from)) {
             u.messages.push({
               message,

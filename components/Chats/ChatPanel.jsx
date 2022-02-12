@@ -3,8 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { socketForChats } from '../../server';
 export default function ChatPanel({ userChat, allUsers, setAllActiveUsers }) {
   const [message, setMessage] = useState('');
-  console.log('Rendering chatp', allUsers);
-  console.log('User chat', userChat);
+  let chatUser = null;
+  allUsers.forEach((u) => {
+    if (u.uid === userChat.uid) {
+      chatUser = u;
+    }
+  });
   const sendMessage = (e) => {
     e.preventDefault();
     socketForChats.emit('private_message', {
@@ -21,7 +25,6 @@ export default function ChatPanel({ userChat, allUsers, setAllActiveUsers }) {
         }
       });
     });
-    console.log('Types message is', newMess);
     setAllActiveUsers(newMess);
     setMessage('');
   };
@@ -32,14 +35,31 @@ export default function ChatPanel({ userChat, allUsers, setAllActiveUsers }) {
       <div className=''></div>
       {/* messages */}
       <ul>
-        {userChat.messages.map((message, index) => {
-          return (
-            <li key={index}>
-              <div>{message.fromSelf ? 'You' : null}</div>
-              {message.message}
-            </li>
-          );
-        })}
+        {chatUser ? (
+          <>
+            {' '}
+            {chatUser.messages.map((message, index) => {
+              return (
+                <li key={index}>
+                  <div>{message.fromSelf ? 'You' : null}</div>
+                  {message.message}
+                </li>
+              );
+            })}
+          </>
+        ) : (
+          <>
+            {' '}
+            {userChat.messages.map((message, index) => {
+              return (
+                <li key={index}>
+                  <div>{message.fromSelf ? 'You' : null}</div>
+                  {message.message}
+                </li>
+              );
+            })}
+          </>
+        )}
       </ul>
       {/* InputForm */}
       <form onSubmit={sendMessage}>
