@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { socketForChats } from '../server';
 import produce from 'immer';
 
 export const useAllActiveUsers = () => {
   const [allActiveUsers, setAllActiveUsers] = useState([]);
   useEffect(() => {
-    console.log('Rendering');
+    console.log('Rerendring hook', allActiveUsers);
     // eslint-disable-next-line react-hooks/rules-of-hooks
     socketForChats.on('user_connected', (user) => {
       console.log('New User Connected', user);

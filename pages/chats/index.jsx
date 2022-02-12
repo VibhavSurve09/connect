@@ -12,7 +12,6 @@ export default function Chat() {
   const { data, loading } = useUser(activeUser?.uid);
   const { allActiveUsers, setAllActiveUsers } = useAllActiveUsers();
   let count = useShowCount();
-
   useEffect(() => {
     const sessionID = localStorage.getItem('fetchChat');
     if (data) {
@@ -45,7 +44,10 @@ export default function Chat() {
     <div className='flex flex-col'>
       <ActiveUserCount count={count} />
       {/* Sidebar div */}
-      <Sidebar allActiveUsers_={allActiveUsers} />
+      <Sidebar
+        allActiveUsers={allActiveUsers}
+        setAllActiveUsers={setAllActiveUsers}
+      />
     </div>
   );
 }
