@@ -12,8 +12,11 @@ export const useAllActiveUsers = () => {
         for (let i = 0; i < allActiveUsers.length; i++) {
           if (draft[i].uid === user.uid) {
             draft[i].connected = true;
+            return;
+          } else {
+            draft[i].hasNewMessages = false;
+            draft.push(user);
           }
-          draft[i].hasNewMessages = false;
         }
       });
       setAllActiveUsers(newUser);
@@ -38,12 +41,6 @@ export const useAllActiveUsers = () => {
         });
       });
       setAllActiveUsers(oldUser);
-      allActiveUsers.sort((a, b) => {
-        if (a.self) return -1;
-        if (b.self) return 1;
-        if (a.userData.userName < b.userData.userName) return -1;
-        return a.userData.userName > b.userData.userName ? 1 : 0;
-      });
     });
     socketForChats.on('user_disconnected', (id) => {
       const user = produce(allActiveUsers, (draft) => {
