@@ -10,7 +10,6 @@ export const useAllActiveUsers = () => {
   useEffect(() => {
     let cookie = getCookie('connect_auth_cookie');
     let { uid } = jwt.decode(cookie, process.env.JWT_SECRET);
-    console.log('My uid', uid);
     // eslint-disable-next-line react-hooks/rules-of-hooks
     socketForChats.on('user_connected', async (user) => {
       //This is causing a bug
