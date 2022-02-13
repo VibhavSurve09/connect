@@ -1,15 +1,16 @@
-import axios from 'axios';
 import { useContext, useState } from 'react';
 import { UserContext } from '../../context/User';
 import styles from './UserForm.module.css';
 import React from 'react';
-
-function Prefrences() {
-  let cancelToken;
+import { userSkillRelationShip } from '../../services/neo4j';
+import axios from 'axios';
+function Prefrences({ pageIncrementer }) {
   const activeUser = useContext(UserContext);
+  let cancelToken;
   const [searchSkillData, setSearchSkillData] = useState([]);
   const [searchSkill, setSearchSkill] = useState('');
   const [selectedSkills, setSelectedSkills] = useState([]);
+  const [allSKills, setAllSkills] = useState([]);
   const reqBody = {
     id: activeUser?.uid,
     emailAddress: activeUser?.email,
@@ -18,21 +19,22 @@ function Prefrences() {
     setSearchSkill(e.target.value);
     let skillData;
     if (typeof cancelToken != typeof undefined) {
-      cancelToken.cancel('Canceling');
+      cancelToken.cancel();
     }
     cancelToken = axios.CancelToken.source();
     if (searchSkill != '') {
       skillData = await axios.get(
         `http://localhost:3000/api/skills/${searchSkill}`,
         {
-          headers: {
-            userObject: JSON.stringify(reqBody), //Passing the headears with every api call to authenticate every request from the users browser
-          },
+          headers: reqBody, //Passing the headears with every api call to authenticate every request from the users browser
         },
         { cancelToken: cancelToken.token }
       );
       setSearchSkillData(skillData.data);
     }
+
+    // // var searchedSkills=allSkills.map((skill)=>skill.)
+    // console.log(allSkills);
   };
   const addSkill = (skill) => {
     const id = skill.split(',')[0];
@@ -58,18 +60,9 @@ function Prefrences() {
         userId: activeUser.uid,
         skillId: skill.id,
       };
-      await axios.post(
-        'http://localhost:3000/api/skills/user-skill',
-        {
-          skillWithUser,
-        },
-        {
-          headers: {
-            userObject: JSON.stringify(reqBody),
-          },
-        }
-      );
+      await userSkillRelationShip(skillWithUser);
     });
+    pageIncrementer();
   };
   const removeSkill = (skill) => {
     selectedSkills.splice(
