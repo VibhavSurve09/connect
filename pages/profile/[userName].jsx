@@ -1,6 +1,9 @@
 import { getUserDataByUserName } from "../../services/firebase";
 import Test from "../../components/Profile/Testpage";
-const UserProfile = ({ data }) => {
+import { getCookie } from "cookies-next";
+import { userWithIdSkills } from "../../services/neo4j";
+const jwt = require("jsonwebtoken");
+const UserProfile = ({ data, self, skills }) => {
   const userData = JSON.parse(data);
 
   return (
@@ -9,10 +12,14 @@ const UserProfile = ({ data }) => {
         userName={userData.userName}
         gender={userData.gender}
         email={userData.emailAddress}
-        bio={userData.biography}
+        bio={userData.bio}
         status={userData.status}
         followers={userData.followers.length}
         following={userData.following.length}
+        college={userData.collegeName}
+        skills={skills}
+        self={self}
+        imgUrl={userData.photoURL}
       />
     </>
   );
@@ -21,7 +28,15 @@ const UserProfile = ({ data }) => {
 export default UserProfile;
 export async function getServerSideProps(context) {
   const { userName } = context.params;
+  let self = false;
+  const { req, res } = context;
   const userData = await getUserDataByUserName(userName);
+  const cookie = getCookie("connect_auth_cookie", { req, res });
+  let { email, uid } = jwt.decode(cookie, process.env.JWT_SECRET);
+  if (email === userData[0]?.emailAddress && uid === userData[0]?.uid) {
+    self = true;
+  }
+  const skills = await userWithIdSkills(userData[0].uid);
   if (userData.length == 0) {
     return {
       notFound: true,
@@ -30,6 +45,8 @@ export async function getServerSideProps(context) {
   return {
     props: {
       data: JSON.stringify(userData[0]),
+      self,
+      skills,
     }, // will be passed to the page component as props
   };
 }

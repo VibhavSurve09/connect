@@ -42,8 +42,8 @@ function UserForm({ pageIncrementer }) {
         emailAddress: activeUser.email,
         accountCreatedOn: serverTimestamp(),
         lastSeen: serverTimestamp(),
-        following: [""],
-        followers: [""],
+        following: [],
+        followers: [],
         role: "user",
         status: "",
         photoURL: profilePicture ? imgUrl : activeUser.photoURL,
@@ -124,8 +124,7 @@ function UserForm({ pageIncrementer }) {
                   Profile
                 </h3>
                 <p className="px-2 mt-1 text-sm text-gray-600">
-                  This information will be displayed publicly so be careful what
-                  you share.
+                  This information will be displayed on your profile.
                 </p>
               </div>
             </div>
