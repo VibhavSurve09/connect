@@ -13,7 +13,6 @@ export function middleware(req) {
   }
   const id = req.headers.get('id');
   const emailAddress = req.headers.get('emailAddress');
-  console.log(req.headers);
   let { uid, email } = jwt.decode(connect_auth_cookie, process.env.JWT_SECRET);
   if (uid === id && email === emailAddress) {
     return NextResponse.next();
