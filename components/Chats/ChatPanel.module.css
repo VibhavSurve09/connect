@@ -1,0 +1,10 @@
+.marginchat {
+  margin-left: 20%;
+  width: 79%;
+  background-image: url("../../public/images/chatbg.jpg");
+}
+
+.marginbubble {
+  margin-left: auto;
+  margin-right: 2%;
+}

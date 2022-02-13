@@ -1,0 +1,16 @@
+{
+  "name": "connect-socket",
+  "version": "1.0.0",
+  "description": "Socket server for our project",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "dev": "nodemon --exec node index"
+  },
+  "author": "Vibhav Surve",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^2.0.15",
+    "socket.io": "^4.4.1"
+  }
+}

@@ -34,7 +34,7 @@ export default function useAuthListener() {
         removeCookies('connect_auth_cookie');
         localStorage.removeItem('connect_authUser');
         setAuthUser(null);
-        router.push('/home');
+        //router.push('/home');
       }
     });
   }, []);
