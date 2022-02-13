@@ -26,6 +26,7 @@ io.engine.on('headers', (headers, req) => {
   headers['Access-Control-Allow-Credentials'] = true;
 });
 //Chats Namespace
+let activeUsersCount = 0;
 const chatsNamespace = io.of('chats');
 chatsNamespace.use((socket, next) => {
   const sessionID = socket.handshake.auth.sessionID;
@@ -49,6 +50,7 @@ chatsNamespace.use((socket, next) => {
 });
 
 chatsNamespace.on('connection', (socket) => {
+  activeUsersCount++;
   // persist session
   sessionStore.saveSession(socket.sessionID, {
     uid: socket.uid,
@@ -101,6 +103,7 @@ chatsNamespace.on('connection', (socket) => {
     messageStore.saveMessage(_message);
   });
   socket.on('disconnect', async () => {
+    activeUsersCount--;
     const matchingSockets = await io.in(socket.uid).allSockets();
     const isDisconnected = matchingSockets.size === 0;
     if (isDisconnected) {
@@ -113,9 +116,10 @@ chatsNamespace.on('connection', (socket) => {
         connected: false,
       });
     }
+    chatsNamespace.emit('active_users_count', { count: activeUsersCount });
   });
   // ...
-  // chatsNamespace.emit('active_users_count', { count: allActiveUsersCount });
+  chatsNamespace.emit('active_users_count', { count: activeUsersCount });
 });
 
 httpServer.listen(PORT, () => {

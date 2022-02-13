@@ -8,15 +8,14 @@ export const useAllActiveUsers = () => {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     socketForChats.on('user_connected', (user) => {
+      //This is causing a bug
       const newUser = produce(allActiveUsers, (draft) => {
         for (let i = 0; i < allActiveUsers.length; i++) {
           if (draft[i].uid === user.uid) {
             draft[i].connected = true;
             return;
-          } else {
-            draft[i].hasNewMessages = false;
-            draft.push(user);
           }
+          draft[i].hasNewMessages = false;
         }
       });
       setAllActiveUsers(newUser);
