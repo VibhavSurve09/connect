@@ -39,11 +39,11 @@ chatsNamespace.use((socket, next) => {
       return next();
     }
   }
-  const { userName, auid } = socket.handshake.auth;
+  const { userName, auid, photoURL } = socket.handshake.auth;
   if (!(userName && auid)) {
     return next(new Error('Auth Required'));
   }
-  socket.userData = { userName, auid };
+  socket.userData = { userName, auid, photoURL };
   socket.sessionID = randomId();
   socket.uid = randomId();
   next();

@@ -49,3 +49,22 @@ export const mergeData = (data) => {
   setDoc(ref, data, { merge: true });
   path = null;
 };
+
+//Check if user is in my following and followers used in useALlactiveUser hook
+export const isUserMyFriend = async (selfUid, friendUid) => {
+  let isFollowing;
+  let isFollower;
+  const q = query(userCollectionRef, where('uid', '==', selfUid));
+  const userSnapShot = await getDocs(q);
+  const user = [];
+  userSnapShot.forEach((doc) => {
+    user.push({ ...doc.data(), id: doc.id });
+  });
+  if (user[0].following?.length > 0 && user[0].followers?.length > 0) {
+    isFollowing = user[0].following.includes(friendUid);
+    isFollower = user[0].followers.includes(friendUid);
+    return isFollower && isFollowing ? true : false;
+  } else {
+    return false;
+  }
+};
