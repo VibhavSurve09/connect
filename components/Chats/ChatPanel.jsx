@@ -8,7 +8,7 @@ import { UserContext } from '../../context/User';
 import { updateLastSeen } from '../../services/firebase';
 import { serverTimestamp } from '@firebase/firestore';
 import HeaderInformation from './HeaderInformation';
-
+import moment from 'moment';
 export default function ChatPanel({ userChat, allUsers, setAllActiveUsers }) {
   const [message, setMessage] = useState('');
   let chatUser = null;
@@ -33,6 +33,7 @@ export default function ChatPanel({ userChat, allUsers, setAllActiveUsers }) {
       socketForChats.emit('private_message', {
         to: userChat.uid,
         message,
+        time: Date.now(),
       });
       const newMess = produce(allUsers, (draft) => {
         draft.forEach((u) => {
@@ -40,6 +41,7 @@ export default function ChatPanel({ userChat, allUsers, setAllActiveUsers }) {
             u.messages.push({
               message,
               fromSelf: true,
+              time: Date.now(),
             });
           }
         });
@@ -83,6 +85,7 @@ export default function ChatPanel({ userChat, allUsers, setAllActiveUsers }) {
                             {message.message}
                           </ReactReadMoreReadLess>
                         </p>
+                        <p>{moment(message.time).format('LT')}</p>
                         <div className='mb-5' ref={endOfMessagesRef}>
                           {' '}
                           {scrollToBottom()}
@@ -100,6 +103,7 @@ export default function ChatPanel({ userChat, allUsers, setAllActiveUsers }) {
                             {message.message}
                           </ReactReadMoreReadLess>
                         </p>
+                        <p>{moment(message.time).format('LT')}</p>
                       </div>
                     )}
                   </div>
@@ -126,6 +130,7 @@ export default function ChatPanel({ userChat, allUsers, setAllActiveUsers }) {
                             {message.message}
                           </ReactReadMoreReadLess>
                         </p>
+                        <p>{moment(message.time).format('LT')}</p>
                       </div>
                     ) : (
                       <div className='text-left'>
@@ -139,6 +144,7 @@ export default function ChatPanel({ userChat, allUsers, setAllActiveUsers }) {
                             {message.message}
                           </ReactReadMoreReadLess>
                         </p>
+                        <p>{moment(message.time).format('LT')}</p>
                       </div>
                     )}
                   </div>
