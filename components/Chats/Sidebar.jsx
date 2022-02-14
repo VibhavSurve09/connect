@@ -32,14 +32,14 @@ export default function Sidebar({ allActiveUsers, setAllActiveUsers }) {
   }, [allActiveUsers]);
   return (
     <div className="flex flex-col h-screen">
-      <div className="absolute h-full px-5 py-3 bg-purple-200 shadow-md w-1/5 rounded-xl overflow-auto">
+      <div className="absolute h-full px-5 py-3 bg-slate-300 shadow-xl w-1/5 overflow-auto border-r-8 border-gray-100">
         <ul className="relative">
           {allActiveUsers.map((activeUser) => {
             return (
               <li
                 key={activeUser.uid}
                 onClick={() => showChat(activeUser)}
-                className="relative mt-2 cursor-pointer bg-white px-3 py-3 rounded-md"
+                className="relative mt-2 cursor-pointer bg-white px-3 py-3 rounded-md border-2 border-purple-600"
               >
                 <p>{activeUser.userData.userName}</p>
                 <p>{activeUser.connected ? "Online" : "Offline"}</p>

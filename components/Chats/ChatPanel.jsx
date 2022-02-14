@@ -43,7 +43,7 @@ export default function ChatPanel({ userChat, allUsers, setAllActiveUsers }) {
   };
   return (
     <div
-      className={`items-center py-4 bg-gray-200 mb-14 overflow-auto  max-h-screen rounded-md  ${styles.marginchat}`}
+      className={`items-center py-4 mb-14 overflow-auto  max-h-screen rounded-md  ${styles.marginchat}`}
     >
       {/* Header */}
       In Chat pannel
@@ -78,7 +78,7 @@ export default function ChatPanel({ userChat, allUsers, setAllActiveUsers }) {
                     ) : (
                       <div className="text-left max-w-md">
                         {" "}
-                        <p className="rounded-lg bg-indigo-200 py-2 px-4 w-fit mt-2 ml-5 border-2 border-indigo-400">
+                        <p className="rounded-lg bg-indigo-100 py-2 px-4 w-fit mt-2 ml-5 border-2 border-purple-400">
                           <ReactReadMoreReadLess
                             charLimit={200}
                             readMoreText={`Read more ▼`}
