@@ -1,4 +1,6 @@
+import { serverTimestamp } from '@firebase/firestore';
 import produce from 'immer';
+import Head from 'next/head';
 import React, { useContext, useEffect, useState } from 'react';
 import ActiveUserCount from '../../components/Chats/ActiveUserCount';
 import Sidebar from '../../components/Chats/Sidebar';
@@ -7,6 +9,7 @@ import { useAllActiveUsers } from '../../hooks/useAllActiveUsers';
 import { useShowCount } from '../../hooks/useShowCount';
 import { useUser } from '../../hooks/useUser';
 import { socketForChats } from '../../server';
+import { updateLastSeen } from '../../services/firebase';
 export default function Chat() {
   const activeUser = useContext(UserContext);
   const { data, loading } = useUser(activeUser?.uid);
@@ -14,13 +17,14 @@ export default function Chat() {
   let count = useShowCount();
   useEffect(() => {
     const sessionID = localStorage.getItem('fetchChat');
-
     if (data) {
       //AUID-Active user id
+      updateLastSeen(data.docId, serverTimestamp());
       socketForChats.auth = {
         userName: data.userName,
         auid: data.uid,
         photoURL: data.photoURL,
+        lastSeen: data.lastSeen,
         sessionID,
       };
       socketForChats.connect();
@@ -44,6 +48,9 @@ export default function Chat() {
   });
   return (
     <div>
+      <Head>
+        <title>Chat - Connect</title>
+      </Head>
       <ActiveUserCount count={count} />
       {/* Sidebar div */}
       <Sidebar

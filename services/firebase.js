@@ -1,5 +1,13 @@
 import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
-import { getDocs, doc, query, where, addDoc, setDoc } from 'firebase/firestore';
+import {
+  getDocs,
+  doc,
+  query,
+  where,
+  addDoc,
+  setDoc,
+  updateDoc,
+} from 'firebase/firestore';
 import { db, storage } from '../constants/firebase';
 import { userCollectionRef } from '../constants/firebase';
 // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -67,4 +75,12 @@ export const isUserMyFriend = async (selfUid, friendUid) => {
   } else {
     return false;
   }
+};
+
+//Update lastseen
+export const updateLastSeen = async (ref, timestamp) => {
+  const userRef = doc(db, 'users', ref);
+  await updateDoc(userRef, {
+    lastSeen: timestamp,
+  });
 };
