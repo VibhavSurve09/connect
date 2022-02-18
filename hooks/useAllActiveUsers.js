@@ -23,6 +23,7 @@ export const useAllActiveUsers = () => {
               return;
             }
             draft[i].hasNewMessages = false;
+            draft.push(draft[i]);
           }
         });
         setAllActiveUsers(newUser);
@@ -53,13 +54,17 @@ export const useAllActiveUsers = () => {
           let isFriend = await isUserMyFriend(uid, oldUser[i].userData.auid);
           if (!isFriend) {
             draft.splice(
-              draft.findIndex((a) => a.uid === draft[i].uid),
+              draft.findIndex((a) => a.uid === draft[i]?.uid),
               1
             );
           }
         }
       });
-      setAllActiveUsers(onlyFriends);
+      if (onlyFriends.length > 0) {
+        setAllActiveUsers(onlyFriends);
+      } else {
+        setAllActiveUsers([]);
+      }
     });
     socketForChats.on('user_disconnected', (id) => {
       const user = produce(allActiveUsers, (draft) => {
