@@ -14,7 +14,6 @@ export const useAllActiveUsers = () => {
     socketForChats.on('user_connected', async (user) => {
       //This is causing a bug
       let isFriend = await isUserMyFriend(uid, user.userData.auid);
-      console.log('new', isFriend);
       if (isFriend) {
         const newUser = produce(allActiveUsers, (draft) => {
           for (let i = 0; i < allActiveUsers.length; i++) {
@@ -23,8 +22,9 @@ export const useAllActiveUsers = () => {
               return;
             }
             draft[i].hasNewMessages = false;
-            draft.push(draft[i]);
+            //draft.push(draft[i]);
           }
+          draft.push(user);
         });
         setAllActiveUsers(newUser);
       }

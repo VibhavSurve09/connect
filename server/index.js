@@ -1,13 +1,21 @@
 const { createServer } = require('http');
 const { Server } = require('socket.io');
 const httpServer = createServer();
-const PORT = 8000;
+require('dotenv').config();
+const PORT = process.env.PORT;
 const io = new Server(httpServer, {
   cros: {
     origin: '*',
   },
   /* options */
 });
+//Domain Hass to be changed in Production
+io.engine.on('headers', (headers, req) => {
+  headers['Access-Control-Allow-Origin'] = 'http://localhost:3000';
+  headers['Access-Control-Allow-Headers'] =
+    'origin, x-requested-with, content-type';
+});
+
 const crypto = require('crypto');
 const randomId = () => crypto.randomBytes(8).toString('hex');
 
@@ -15,16 +23,7 @@ const { InMemorySessionStore } = require('./sessionStore');
 const sessionStore = new InMemorySessionStore();
 const { InMemoryMessageStore } = require('./messageStore');
 const messageStore = new InMemoryMessageStore();
-//For developement only
-io.engine.on('initial_headers', (headers, req) => {
-  headers['Access-Control-Allow-Origin'] = 'http://localhost:3000';
-  headers['Access-Control-Allow-Credentials'] = true;
-});
 
-io.engine.on('headers', (headers, req) => {
-  headers['Access-Control-Allow-Origin'] = 'http://localhost:3000';
-  headers['Access-Control-Allow-Credentials'] = true;
-});
 //Chats Namespace
 let activeUsersCount = 0;
 const chatsNamespace = io.of('chats');
@@ -73,7 +72,6 @@ chatsNamespace.on('connection', (socket) => {
     }
   });
   sessionStore.findAllSessions().forEach((session) => {
-    console.log(messagesPerUser.get(session.uid));
     users.push({
       uid: session.uid,
       userData: session.userData,

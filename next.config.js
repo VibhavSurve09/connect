@@ -5,5 +5,6 @@ module.exports = {
   },
   env: {
     JWT_SECRET: process.env.JWT_SECRET,
+    SOCKET_URI: process.env.SOCKET_URI,
   },
 };

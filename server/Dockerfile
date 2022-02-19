@@ -1,4 +1,8 @@
 From node:17-alpine
-RUN mkdir -p /home/socket_server_connect 
-COPY . /home/socket_connect
-CMD ["node","/home/socket_connect/index.js"]
+ENV PORT:3001
+WORKDIR /usr/src/connect_socket
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 3001
+CMD ["node","index.js"]
