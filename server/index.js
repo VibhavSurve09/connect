@@ -39,11 +39,11 @@ chatsNamespace.use((socket, next) => {
       return next();
     }
   }
-  const { userName, auid } = socket.handshake.auth;
+  const { userName, auid, photoURL, lastSeen } = socket.handshake.auth;
   if (!(userName && auid)) {
     return next(new Error('Auth Required'));
   }
-  socket.userData = { userName, auid };
+  socket.userData = { userName, auid, photoURL, lastSeen };
   socket.sessionID = randomId();
   socket.uid = randomId();
   next();
@@ -92,12 +92,13 @@ chatsNamespace.on('connection', (socket) => {
   });
 
   // forward the private message to the right recipient (and to other tabs of the sender)
-  socket.on('private_message', ({ message, to }) => {
-    console.log('message', message, to);
+  socket.on('private_message', ({ message, to, time }) => {
+    console.log('message', message, to, time);
     const _message = {
       message,
       from: socket.uid,
       to,
+      time,
     };
     socket.to(to).to(socket.uid).emit('private_message', _message);
     messageStore.saveMessage(_message);

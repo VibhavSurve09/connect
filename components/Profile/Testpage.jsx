@@ -1,5 +1,5 @@
-import Head from "next/head";
-import Image from "next/image";
+import Head from 'next/head';
+import Image from 'next/image';
 export default function Testpage({
   userName,
   bio,
@@ -11,150 +11,151 @@ export default function Testpage({
   self,
   imgUrl,
   college,
+  date,
 }) {
   return (
-    <div className="bg-gray-100 h-auto">
+    <div className='h-auto bg-gray-100'>
       <Head>
         <title>{`${userName} - Connect`}</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta name='viewport' content='initial-scale=1.0, width=device-width' />
       </Head>
-      <div className="w-full text-white bg-main-color">
-        <div className="flex flex-row max-w-screen-xl px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
-          <div className="container mx-auto my-5 p-5">
+      <div className='w-full text-white bg-main-color'>
+        <div className='flex flex-row max-w-screen-xl px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8'>
+          <div className='container p-5 mx-auto my-5'>
             <div>
-              <div className="w-full shadow-lg">
-                <div className="bg-white p-5 border-t-4 border-indigo-400 flex lg:flex-row sm:flex-row flex-col rounded-lg">
-                  {/* <div className="image overflow-hidden md:w-6/12 sm:w-7/12 lg:w-2/6 md:mx-2 rounded-full round border-4 border-indigo-400"> */}
+              <div className='w-full shadow-lg'>
+                <div className='flex flex-col p-5 bg-white border-t-4 border-indigo-400 rounded-lg lg:flex-row sm:flex-row'>
+                  {/* <div className="overflow-hidden border-4 border-indigo-400 rounded-full image md:w-6/12 sm:w-7/12 lg:w-2/6 md:mx-2 round"> */}
                   {/* <img
-                      className="h-auto w-full mx-auto"
+                      className="w-full h-auto mx-auto"
                       src="https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
                       alt=""
                     /> */}
                   <Image
-                    className="bg-white p-5 border-t-4 border-indigo-400 flex lg:flex-row sm:flex-row flex-col rounded-full"
+                    className='flex flex-col p-5 bg-white border-t-4 border-indigo-400 rounded-full lg:flex-row sm:flex-row'
                     src={imgUrl}
                     alt={`${userName} display picture`}
-                    height={"20%"}
-                    width={"100%"}
+                    height={'20%'}
+                    width={'100%'}
                   />
                   {/* </div> */}
-                  <div className="w-full px-7 py-5">
-                    {" "}
-                    <span className="text-gray-900 font-semibold lg:text-5xl sm:text-2xl md:text-3xl leading-8 my-1">
+                  <div className='w-full py-5 px-7'>
+                    {' '}
+                    <span className='my-1 font-semibold leading-8 text-gray-900 lg:text-5xl sm:text-2xl md:text-3xl'>
                       {userName}
                     </span>
-                    <h3 className="text-gray-600 font-lg text-semibold lg:text-2xl leading-6 mt-1">
+                    <h3 className='mt-1 leading-6 text-gray-600 font-lg text-semibold lg:text-2xl'>
                       STUDENT AT {college}
                     </h3>
-                    <ul className="bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-5 mt-3 divide-y rounded shadow-sm">
-                      <li className="flex items-center py-3">
+                    <ul className='px-5 py-2 mt-3 text-gray-600 bg-gray-100 divide-y rounded shadow-sm hover:text-gray-700 hover:shadow'>
+                      <li className='flex items-center py-3'>
                         <span>Member since</span>
-                        <span className="ml-auto">DATE JOINED</span>
+                        <span className='ml-auto'>{date}</span>
                       </li>
-                      <li className="flex items-center py-3">
+                      <li className='flex items-center py-3'>
                         <span>{followers}</span>
-                        <span className="ml-auto">XXX</span>
+                        <span className='ml-auto'>XXX</span>
                       </li>
                     </ul>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="my-6"></div>
-            <div className="bg-white p-5 border-t-4 border-indigo-400 mx-auto shadow-lg rounded-lg ">
-              <div className="flex flex-row">
-                <div className="text-black">
+            <div className='my-6'></div>
+            <div className='p-5 mx-auto bg-white border-t-4 border-indigo-400 rounded-lg shadow-lg '>
+              <div className='flex flex-row'>
+                <div className='text-black'>
                   <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 lg:mt-2 md:mt-1 sm:mt-0"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
+                    xmlns='http://www.w3.org/2000/svg'
+                    className='w-6 h-6 lg:mt-2 md:mt-1 sm:mt-0'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    stroke='currentColor'
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
                       strokeWidth={2}
-                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
                     />
                   </svg>
                 </div>
-                <div className="text-black font-semibold md:text-2xl lg:text-3xl text-lg px-2">
-                  About{" "}
+                <div className='px-2 text-lg font-semibold text-black md:text-2xl lg:text-3xl'>
+                  About{' '}
                 </div>
               </div>
-              <div className="w-full px-2">
-                {" "}
-                <p className="text-lg lg:text-xl text-gray-500 hover:text-gray-600 py-3">
+              <div className='w-full px-2'>
+                {' '}
+                <p className='py-3 text-lg text-gray-500 lg:text-xl hover:text-gray-600'>
                   {bio}
                 </p>
               </div>
             </div>
 
-            <div className="my-6"></div>
+            <div className='my-6'></div>
 
-            <div className="bg-white p-5 border-t-4 border-indigo-400 mx-auto shadow-lg rounded-lg ">
-              <div className="flex flex-row">
-                <div className="text-black">
+            <div className='p-5 mx-auto bg-white border-t-4 border-indigo-400 rounded-lg shadow-lg '>
+              <div className='flex flex-row'>
+                <div className='text-black'>
                   <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 lg:mt-2 md:mt-1 sm:mt-0"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
+                    xmlns='http://www.w3.org/2000/svg'
+                    className='w-6 h-6 lg:mt-2 md:mt-1 sm:mt-0'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    stroke='currentColor'
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
                       strokeWidth={2}
-                      d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
+                      d='M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z'
                     />
                   </svg>
                 </div>
-                <div className="text-black font-semibold md:text-2xl lg:text-3xl text-lg px-2">
-                  Skills{" "}
+                <div className='px-2 text-lg font-semibold text-black md:text-2xl lg:text-3xl'>
+                  Skills{' '}
                 </div>
               </div>
-              <div className="w-full px-2">
-                <p className="text-lg lg:text-xl text-gray-500 hover:text-gray-600 py-3"></p>
+              <div className='w-full px-2'>
+                <p className='py-3 text-lg text-gray-500 lg:text-xl hover:text-gray-600'></p>
                 {skills.map((skill) => {
                   return (
                     <div key={skill.id}>
-                      <p className="text-black">{skill.name}</p>
+                      <p className='text-black'>{skill.name}</p>
                     </div>
                   );
                 })}
               </div>
             </div>
 
-            <div className="my-6"></div>
-            <div className="bg-white p-5 border-t-4 border-indigo-400 mx-auto shadow-lg rounded-lg ">
-              <div className="flex flex-row">
-                <div className="text-black">
+            <div className='my-6'></div>
+            <div className='p-5 mx-auto bg-white border-t-4 border-indigo-400 rounded-lg shadow-lg '>
+              <div className='flex flex-row'>
+                <div className='text-black'>
                   <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 lg:mt-2 md:mt-1 sm:mt-0"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
+                    xmlns='http://www.w3.org/2000/svg'
+                    className='w-6 h-6 lg:mt-2 md:mt-1 sm:mt-0'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    stroke='currentColor'
                   >
-                    <path d="M12 14l9-5-9-5-9 5 9 5z" />
-                    <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                    <path d='M12 14l9-5-9-5-9 5 9 5z' />
+                    <path d='M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z' />
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
                       strokeWidth={2}
-                      d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"
+                      d='M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222'
                     />
                   </svg>
                 </div>
-                <div className="text-black font-semibold md:text-2xl lg:text-3xl text-lg px-2">
-                  Projects{" "}
+                <div className='px-2 text-lg font-semibold text-black md:text-2xl lg:text-3xl'>
+                  Projects{' '}
                 </div>
               </div>
-              <div className="w-full px-2">
-                {" "}
-                <p className="text-lg lg:text-xl text-gray-500 hover:text-gray-600 py-3">
+              <div className='w-full px-2'>
+                {' '}
+                <p className='py-3 text-lg text-gray-500 lg:text-xl hover:text-gray-600'>
                   {bio} hello and ya ya ye
                 </p>
               </div>

@@ -1,11 +1,12 @@
-import { getUserDataByUserName } from "../../services/firebase";
-import Test from "../../components/Profile/Testpage";
-import { getCookie } from "cookies-next";
-import { userWithIdSkills } from "../../services/neo4j";
-const jwt = require("jsonwebtoken");
+import { getUserDataByUserName } from '../../services/firebase';
+import Test from '../../components/Profile/Testpage';
+import { getCookie } from 'cookies-next';
+import { userWithIdSkills } from '../../services/neo4j';
+const jwt = require('jsonwebtoken');
 const UserProfile = ({ data, self, skills }) => {
   const userData = JSON.parse(data);
-
+  let { seconds, nanoseconds } = userData.accountCreatedOn;
+  const date = new Date(seconds * 1000 + nanoseconds / 1000000);
   return (
     <>
       <Test
@@ -20,6 +21,7 @@ const UserProfile = ({ data, self, skills }) => {
         skills={skills}
         self={self}
         imgUrl={userData.photoURL}
+        date={date.toDateString()}
       />
     </>
   );
@@ -31,7 +33,7 @@ export async function getServerSideProps(context) {
   let self = false;
   const { req, res } = context;
   const userData = await getUserDataByUserName(userName);
-  const cookie = getCookie("connect_auth_cookie", { req, res });
+  const cookie = getCookie('connect_auth_cookie', { req, res });
   let { email, uid } = jwt.decode(cookie, process.env.JWT_SECRET);
   if (email === userData[0]?.emailAddress && uid === userData[0]?.uid) {
     self = true;

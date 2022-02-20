@@ -1,14 +1,20 @@
 import produce from "immer";
 import styles from "./ChatPanel.module.css";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { socketForChats } from "../../server";
 import ReactReadMoreReadLess from "react-read-more-read-less";
-
+import { useUser } from "../../hooks/useUser";
+import { UserContext } from "../../context/User";
+import { updateLastSeen } from "../../services/firebase";
+import { serverTimestamp } from "@firebase/firestore";
+import HeaderInformation from "./HeaderInformation";
+import moment from "moment";
 export default function ChatPanel({ userChat, allUsers, setAllActiveUsers }) {
   const [message, setMessage] = useState("");
   let chatUser = null;
+  const activeUser = useContext(UserContext);
+  const { data } = useUser(activeUser?.uid);
   const endOfMessagesRef = useRef(null);
-  const readMore = `<i>Hey still more to read</i>`;
   allUsers.forEach((u) => {
     if (u.uid === userChat.uid) {
       chatUser = u;
@@ -22,10 +28,12 @@ export default function ChatPanel({ userChat, allUsers, setAllActiveUsers }) {
   };
   const sendMessage = (e) => {
     e.preventDefault();
+    updateLastSeen(data.docId, serverTimestamp());
     if (message != "") {
       socketForChats.emit("private_message", {
         to: userChat.uid,
         message,
+        time: Date.now(),
       });
       const newMess = produce(allUsers, (draft) => {
         draft.forEach((u) => {
@@ -33,6 +41,7 @@ export default function ChatPanel({ userChat, allUsers, setAllActiveUsers }) {
             u.messages.push({
               message,
               fromSelf: true,
+              time: Date.now(),
             });
           }
         });
@@ -46,7 +55,12 @@ export default function ChatPanel({ userChat, allUsers, setAllActiveUsers }) {
       className={`items-center py-4 mb-14 overflow-auto  max-h-screen rounded-md  ${styles.marginchat}`}
     >
       {/* Header */}
-      In Chat pannel
+
+      <HeaderInformation
+        name={userChat.userData.userName}
+        status={userChat.connected}
+        profilePicture={userChat.userData.photoURL}
+      />
       {/* messages */}
       <ul>
         {chatUser ? (
@@ -58,10 +72,32 @@ export default function ChatPanel({ userChat, allUsers, setAllActiveUsers }) {
                   <div>
                     {message.fromSelf ? (
                       <div
-                        className={`max-w-md flex justify-end ${styles.marginbubble}`}
+                        className={`max-w-md flex justify-end  ${styles.marginbubble}`}
                       >
                         {" "}
-                        <p className="rounded-lg bg-white py-2 px-4 w-fit mt-2 ml-5 border-2 border-indigo-400 ">
+                        <div className="flex flex-col">
+                          <p className="px-4 py-2 mt-2 ml-5 bg-white border-2 border-indigo-400 rounded-lg w-fit ">
+                            <ReactReadMoreReadLess
+                              charLimit={200}
+                              readMoreText={`Read more ▼`}
+                              readLessText={"Read less ▲"}
+                            >
+                              {message.message}
+                            </ReactReadMoreReadLess>
+                          </p>
+                          <p className="text-xs ml-6">
+                            {moment(message.time).format("LT")}
+                          </p>
+                        </div>
+                        <div className="mb-5" ref={endOfMessagesRef}>
+                          {" "}
+                          {scrollToBottom()}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-left max-w-md flex flex-col">
+                        {" "}
+                        <p className="rounded-lg bg-indigo-100 py-2 px-4 w-fit mt-2 ml-3 border-2 border-purple-400">
                           <ReactReadMoreReadLess
                             charLimit={200}
                             readMoreText={`Read more ▼`}
@@ -70,22 +106,8 @@ export default function ChatPanel({ userChat, allUsers, setAllActiveUsers }) {
                             {message.message}
                           </ReactReadMoreReadLess>
                         </p>
-                        <div className="mb-5" ref={endOfMessagesRef}>
-                          {" "}
-                          {scrollToBottom()}
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="text-left max-w-md">
-                        {" "}
-                        <p className="rounded-lg bg-indigo-100 py-2 px-4 w-fit mt-2 ml-5 border-2 border-purple-400">
-                          <ReactReadMoreReadLess
-                            charLimit={200}
-                            readMoreText={`Read more ▼`}
-                            readLessText={"Read less ▲"}
-                          >
-                            {message.message}
-                          </ReactReadMoreReadLess>
+                        <p className=" text-xs ml-4">
+                          {moment(message.time).format("LT")}
                         </p>
                       </div>
                     )}
@@ -102,9 +124,27 @@ export default function ChatPanel({ userChat, allUsers, setAllActiveUsers }) {
                 <div key={index}>
                   <div>
                     {message.fromSelf ? (
-                      <div>
+                      <div className="flex justify-end">
                         {" "}
-                        <p className="rounded-lg bg-white py-2 px-4 w-fit mt-2 ml-5 border-2 border-indigo-400">
+                        <div className="flex flex-col">
+                          <p className="px-4 py-2 mt-2 ml-5 bg-white border-2 border-indigo-400 rounded-lg w-fit">
+                            <ReactReadMoreReadLess
+                              charLimit={200}
+                              readMoreText={`<i>Read More</i>`}
+                              readLessText={"Read less ▲"}
+                            >
+                              {message.message}
+                            </ReactReadMoreReadLess>
+                          </p>
+                          <p className="text-xs ml-6">
+                            {moment(message.time).format("LT")}
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-left flex flex-col">
+                        {" "}
+                        <p className="max-w-xs px-4 py-2 mt-2 ml-3 bg-indigo-100 rounded-lg w-fit">
                           <ReactReadMoreReadLess
                             charLimit={200}
                             readMoreText={`<i>Read More</i>`}
@@ -113,18 +153,8 @@ export default function ChatPanel({ userChat, allUsers, setAllActiveUsers }) {
                             {message.message}
                           </ReactReadMoreReadLess>
                         </p>
-                      </div>
-                    ) : (
-                      <div className="text-left">
-                        {" "}
-                        <p className="rounded-lg bg-red-300 py-2 px-4 w-fit mt-2 ml-5 max-w-xs">
-                          <ReactReadMoreReadLess
-                            charLimit={200}
-                            readMoreText={`<i>Read More</i>`}
-                            readLessText={"Read less ▲"}
-                          >
-                            {message.message}
-                          </ReactReadMoreReadLess>
+                        <p className="text-xs ml-4">
+                          {moment(message.time).format("LT")}
                         </p>
                       </div>
                     )}
@@ -137,23 +167,22 @@ export default function ChatPanel({ userChat, allUsers, setAllActiveUsers }) {
       </ul>
       {/* InputForm */}
       <form onSubmit={sendMessage}>
-        <div className="absolute -bottom-24 flex flex-row w-4/5">
+        <div className="absolute flex flex-row w-4/5 -bottom-24 bg-indigo-200 border-t-2 border-purple-500">
           <input
             type="text"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className="bg-white border-2 border-black px-4 py-2 rounded-md w-3/4 ml-5 "
+            className="w-3/4 px-4 py-2 ml-10 bg-white border-2 border-black rounded-md mt-3 mb-3"
           />
 
           <button
             type="submit"
-            className="px-6 font-semibold rounded-md bg-indigo-200 ml-2 hover:text-lg"
+            className="px-6 ml-3 font-semibold bg-white rounded-md hover:text-lg h-fit border-2 border-purple-600 py-2 mt-3"
           >
             Send
           </button>
         </div>
       </form>
-      <div className="my-4"></div>
     </div>
   );
 }
