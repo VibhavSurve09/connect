@@ -32,6 +32,7 @@ export const getUserDataById = async (uid) => {
 export const addUser = async (userData) => {
   const userRef = await addDoc(userCollectionRef, userData);
   path = userRef.id;
+  return path;
 };
 
 export const doesUserNameExist = async (userName) => {
