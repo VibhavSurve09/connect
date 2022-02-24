@@ -25,12 +25,6 @@ export default function Testpage({
             <div>
               <div className='w-full shadow-lg'>
                 <div className='flex flex-col p-5 bg-white border-t-4 border-indigo-400 rounded-lg lg:flex-row sm:flex-row'>
-                  {/* <div className="overflow-hidden border-4 border-indigo-400 rounded-full image md:w-6/12 sm:w-7/12 lg:w-2/6 md:mx-2 round"> */}
-                  {/* <img
-                      className="w-full h-auto mx-auto"
-                      src="https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
-                      alt=""
-                    /> */}
                   <Image
                     className='flex flex-col p-5 bg-white border-t-4 border-indigo-400 rounded-full lg:flex-row sm:flex-row'
                     src={imgUrl}
