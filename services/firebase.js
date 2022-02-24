@@ -7,6 +7,7 @@ import {
   addDoc,
   setDoc,
   updateDoc,
+  getDoc,
 } from 'firebase/firestore';
 import { db, storage } from '../constants/firebase';
 import { userCollectionRef } from '../constants/firebase';
@@ -84,4 +85,39 @@ export const updateLastSeen = async (ref, timestamp) => {
   await updateDoc(userRef, {
     lastSeen: timestamp,
   });
+};
+
+export const handleFollowUser = async (myDocId, suggestedDocId) => {
+  let userRef, myData, myFollowing, myId;
+  let suggestedUserRef, suggUserData, suggUserFollowers, userId;
+  if (myDocId) {
+    userRef = doc(db, 'users', myDocId);
+    myData = await getDoc(userRef);
+    myFollowing = myData?.data().following;
+    myId = myData?.data().uid;
+  }
+  if (suggestedDocId) {
+    suggestedUserRef = doc(db, 'users', suggestedDocId);
+    suggUserData = await getDoc(suggestedUserRef);
+    suggUserFollowers = suggUserData?.data().followers;
+    userId = suggUserData?.data().uid;
+  }
+  if (myId && userId) {
+    let oldFollower, oldFollowing;
+    oldFollowing = myFollowing.includes(userId);
+    if (!oldFollowing) {
+      myFollowing.push(userId);
+      await updateDoc(userRef, {
+        following: myFollowing,
+      });
+    }
+    oldFollower = suggUserFollowers.includes(myId);
+    if (!oldFollower) {
+      suggUserFollowers.push(myId);
+
+      await updateDoc(suggestedUserRef, {
+        followers: suggUserFollowers,
+      });
+    }
+  }
 };

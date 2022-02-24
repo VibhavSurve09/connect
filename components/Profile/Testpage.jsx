@@ -1,5 +1,9 @@
 import Head from 'next/head';
 import Image from 'next/image';
+import { useContext, useState } from 'react';
+import { UserContext } from '../../context/User';
+import { handleFollowUser } from '../../services/firebase';
+import { useUser } from '../../hooks/useUser';
 export default function Testpage({
   userName,
   bio,
@@ -13,6 +17,12 @@ export default function Testpage({
   college,
   date,
 }) {
+  const activeUser = useContext(UserContext);
+  const { data, loading } = useUser(activeUser?.uid);
+  if (!loading) {
+    handleFollowUser(data?.docId, '626Xidd8gBPIoEkUf5y4');
+  }
+
   return (
     <div className='h-auto bg-gray-100'>
       <Head>
