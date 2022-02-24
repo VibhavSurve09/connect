@@ -13,8 +13,8 @@ import { userCollectionRef } from '../constants/firebase';
 // eslint-disable-next-line react-hooks/rules-of-hooks
 let path;
 export const uploadPhoto = async (displayName, profilePicture) => {
-  const imgRef = ref(storage, `${displayName}.png`);
-  const snapshot = await uploadBytes(imgRef, displayName);
+  const imgRef = ref(storage, `profilePictures/${displayName}.png`);
+  const snapshot = await uploadBytes(imgRef, profilePicture);
   const uploadedUrl = await getDownloadURL(imgRef);
   return uploadedUrl;
 };

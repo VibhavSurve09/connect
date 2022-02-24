@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import Image from 'next/image';
-//! ImageURL is an bug
 export default function Testpage({
   userName,
   bio,
@@ -32,13 +31,12 @@ export default function Testpage({
                       src="https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg"
                       alt=""
                     /> */}
-                  {console.log(imgUrl)}
                   <Image
                     className='flex flex-col p-5 bg-white border-t-4 border-indigo-400 rounded-full lg:flex-row sm:flex-row'
                     src={imgUrl}
                     alt={`${userName} display picture`}
-                    height={'20%'}
-                    width={'100%'}
+                    height={500}
+                    width={600}
                   />
                   {/* </div> */}
                   <div className='w-full py-5 px-7'>
