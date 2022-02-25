@@ -4,6 +4,7 @@ import { useContext, useState } from 'react';
 import { UserContext } from '../../context/User';
 import { handleFollowUser } from '../../services/firebase';
 import { useUser } from '../../hooks/useUser';
+import axios from 'axios';
 export default function Testpage({
   userName,
   bio,
@@ -16,12 +17,28 @@ export default function Testpage({
   imgUrl,
   college,
   date,
+  docId,
 }) {
   const activeUser = useContext(UserContext);
   const { data, loading } = useUser(activeUser?.uid);
-  if (!loading) {
-    handleFollowUser(data?.docId, '626Xidd8gBPIoEkUf5y4');
-  }
+
+  const addFriend = async () => {
+    if (!loading) {
+      const headers = {
+        id: activeUser.uid,
+        emailAddress: activeUser.email,
+      };
+      console.log('Sending Req');
+      await handleFollowUser(data?.docId, docId);
+      await axios.post(
+        'http://localhost:3000/api/users/sendFriendReq',
+        { senderDocId: data.docId, receiverDocId: docId },
+        {
+          headers,
+        }
+      );
+    }
+  };
 
   return (
     <div className='h-auto bg-gray-100'>
@@ -65,6 +82,9 @@ export default function Testpage({
                 </div>
               </div>
             </div>
+            <button className='bg-red-400' onClick={addFriend}>
+              Add Friend
+            </button>
             <div className='my-6'></div>
             <div className='p-5 mx-auto bg-white border-t-4 border-indigo-400 rounded-lg shadow-lg '>
               <div className='flex flex-row'>

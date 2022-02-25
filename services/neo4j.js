@@ -1,4 +1,4 @@
-import dbConnect from "../db/dbConnect";
+import dbConnect from '../db/dbConnect';
 
 export const postUser = async (userData) => {
   const db = await dbConnect();
@@ -9,7 +9,7 @@ export const postUser = async (userData) => {
       tx.run(postQuery, { userData })
     );
   } catch {
-    console.log("Something went wrong");
+    console.log('Something went wrong');
   } finally {
     await session.close();
     await db.close();
@@ -25,7 +25,7 @@ export const userSkillRelationShip = async ({ userId, skillId }) => {
       tx.run(query, { userId, skillId })
     );
   } catch (error) {
-    console.log("Something went wrong");
+    console.log('Something went wrong');
   } finally {
     await session.close();
     await db.close();
@@ -36,12 +36,12 @@ export const userSkillRelationShip = async ({ userId, skillId }) => {
 export const getAllSkills = async () => {
   const db = await dbConnect();
   const session = db.session();
-  const query = "MATCH (skills:SKILL) return (skills)";
+  const query = 'MATCH (skills:SKILL) return (skills)';
   const tempData = [];
   try {
     const readResult = await session.readTransaction((tx) => tx.run(query));
     readResult.records.forEach((record) => {
-      const skills = record.get("skills");
+      const skills = record.get('skills');
       tempData.push({ ...skills.properties, id: skills.identity.low });
     });
   } catch {
@@ -57,17 +57,20 @@ export const userWithIdSkills = async (uid) => {
   const session = db.session();
   let userSkills = [];
   const query =
-    "MATCH (user:USER {uid:$uid})-[:HAS_A]->(skills:SKILL) RETURN skills";
+    'MATCH (user:USER {uid:$uid})-[:HAS_A]->(skills:SKILL) RETURN skills';
   try {
     const readResult = await session.readTransaction((tx) =>
       tx.run(query, { uid })
     );
     readResult.records.forEach((record) => {
-      const sk = record.get("skills");
+      const sk = record.get('skills');
       userSkills.push({ ...sk.properties, id: sk.identity.low });
     });
   } catch {
-    console.log("Something went wrong!!");
+    console.log('Something went wrong!!');
+  } finally {
+    await session.close();
+    await db.close();
   }
   return userSkills;
 };
