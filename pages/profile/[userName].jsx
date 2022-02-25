@@ -23,6 +23,7 @@ const UserProfile = ({ data, self, skills }) => {
         imgUrl={userData.photoURL}
         date={date.toDateString()}
         docId={userData.docId}
+        uid={userData.uid}
       />
     </>
   );

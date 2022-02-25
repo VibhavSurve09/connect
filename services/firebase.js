@@ -110,6 +110,8 @@ export const handleFollowUser = async (myDocId, suggestedDocId) => {
       await updateDoc(userRef, {
         following: myFollowing,
       });
+    } else {
+      return true;
     }
     oldFollower = suggUserFollowers.includes(myId);
     if (!oldFollower) {
@@ -118,6 +120,17 @@ export const handleFollowUser = async (myDocId, suggestedDocId) => {
       await updateDoc(suggestedUserRef, {
         followers: suggUserFollowers,
       });
+    } else {
+      return;
     }
+  }
+};
+
+export const isUserInMyFollowingList = async (senderId, recUid) => {
+  if ((senderId, recUid)) {
+    const ref = doc(db, 'users', senderId);
+    const data = await getDoc(ref);
+    const { following } = data.data();
+    return following.includes(recUid);
   }
 };
