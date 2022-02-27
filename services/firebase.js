@@ -1,4 +1,4 @@
-import { uploadBytes, ref, getDownloadURL } from 'firebase/storage';
+import { uploadBytes, ref, getDownloadURL } from "firebase/storage";
 import {
   getDocs,
   doc,
@@ -8,9 +8,9 @@ import {
   setDoc,
   updateDoc,
   getDoc,
-} from 'firebase/firestore';
-import { db, storage } from '../constants/firebase';
-import { userCollectionRef } from '../constants/firebase';
+} from "firebase/firestore";
+import { db, storage } from "../constants/firebase";
+import { userCollectionRef } from "../constants/firebase";
 // eslint-disable-next-line react-hooks/rules-of-hooks
 let path;
 export const uploadPhoto = async (displayName, profilePicture) => {
@@ -21,7 +21,7 @@ export const uploadPhoto = async (displayName, profilePicture) => {
 };
 export const getUserDataById = async (uid) => {
   //*searches for the user having uid passed in "user" collection
-  const userQuery = query(userCollectionRef, where('uid', '==', uid));
+  const userQuery = query(userCollectionRef, where("uid", "==", uid));
   const userSnapShot = await getDocs(userQuery);
   const userData = [];
   userSnapShot.forEach((doc) => {
@@ -37,14 +37,14 @@ export const addUser = async (userData) => {
 };
 
 export const doesUserNameExist = async (userName) => {
-  const q = query(userCollectionRef, where('userName', '==', userName));
+  const q = query(userCollectionRef, where("userName", "==", userName));
   const userSS = await getDocs(q);
   return userSS.empty ? true : false;
 };
 
 export const getUserDataByUserName = async (userName) => {
   //*searches for the user having uid passed in "user" collection
-  const userQuery = query(userCollectionRef, where('userName', '==', userName));
+  const userQuery = query(userCollectionRef, where("userName", "==", userName));
   const userSnapShot = await getDocs(userQuery);
   const userData = [];
   userSnapShot.forEach((doc) => {
@@ -55,7 +55,7 @@ export const getUserDataByUserName = async (userName) => {
 
 //Merge College Data
 export const mergeData = (data) => {
-  const ref = doc(db, 'users', path);
+  const ref = doc(db, "users", path);
   setDoc(ref, data, { merge: true });
   path = null;
 };
@@ -64,7 +64,7 @@ export const mergeData = (data) => {
 export const isUserMyFriend = async (selfUid, friendUid) => {
   let isFollowing;
   let isFollower;
-  const q = query(userCollectionRef, where('uid', '==', selfUid));
+  const q = query(userCollectionRef, where("uid", "==", selfUid));
   const userSnapShot = await getDocs(q);
   const user = [];
   userSnapShot.forEach((doc) => {
@@ -81,7 +81,7 @@ export const isUserMyFriend = async (selfUid, friendUid) => {
 
 //Update lastseen
 export const updateLastSeen = async (ref, timestamp) => {
-  const userRef = doc(db, 'users', ref);
+  const userRef = doc(db, "users", ref);
   await updateDoc(userRef, {
     lastSeen: timestamp,
   });
@@ -91,13 +91,13 @@ export const handleFollowUser = async (myDocId, suggestedDocId) => {
   let userRef, myData, myFollowing, myId;
   let suggestedUserRef, suggUserData, suggUserFollowers, userId;
   if (myDocId) {
-    userRef = doc(db, 'users', myDocId);
+    userRef = doc(db, "users", myDocId);
     myData = await getDoc(userRef);
     myFollowing = myData?.data().following;
     myId = myData?.data().uid;
   }
   if (suggestedDocId) {
-    suggestedUserRef = doc(db, 'users', suggestedDocId);
+    suggestedUserRef = doc(db, "users", suggestedDocId);
     suggUserData = await getDoc(suggestedUserRef);
     suggUserFollowers = suggUserData?.data().followers;
     userId = suggUserData?.data().uid;
@@ -128,9 +128,28 @@ export const handleFollowUser = async (myDocId, suggestedDocId) => {
 
 export const isUserInMyFollowingList = async (senderId, recUid) => {
   if ((senderId, recUid)) {
-    const ref = doc(db, 'users', senderId);
+    const ref = doc(db, "users", senderId);
     const data = await getDoc(ref);
     const { following } = data.data();
     return following.includes(recUid);
   }
+};
+
+export const removeFriend = async (senderDocId, removeUserUID) => {
+  const userData = await getUserDataById(removeUserUID);
+  const { docId } = userData[0];
+  const ref = doc(db, "users", senderDocId);
+  const removeUserRef = doc(db, "users", docId);
+  const removeUserData = await getDoc(removeUserRef);
+  const { followers } = removeUserData.data();
+  const data = await getDoc(ref);
+  const { following, uid } = data.data();
+  let newFollowingList = following.filter((id) => id !== removeUserUID);
+  let newFollowersList = followers.filter((id) => uid !== id);
+  await updateDoc(ref, {
+    following: newFollowingList,
+  });
+  await updateDoc(removeUserRef, {
+    followers: newFollowersList,
+  });
 };
