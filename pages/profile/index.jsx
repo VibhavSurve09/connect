@@ -33,7 +33,6 @@ export async function getServerSideProps(context) {
   const cookie = getCookie("connect_auth_cookie", { req, res });
   let { email, uid } = jwt.decode(cookie, process.env.JWT_SECRET);
   const userData = await getUserDataById(uid);
-  console.log("Data", userData[0]);
   const skills = await userWithIdSkills(userData[0]?.uid);
 
   return {
