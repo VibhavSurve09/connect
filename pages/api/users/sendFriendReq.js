@@ -11,7 +11,7 @@ export default async function handler(req, res) {
       try {
         if (senderDocId && receiverDocId && senderDocId !== receiverDocId) {
           const writeResult = await session.writeTransaction((tx) =>
-            tx.run(query, { senderDocId, senderDocId })
+            tx.run(query, { senderDocId, receiverDocId })
           );
           res.json({ success: true });
         } else {

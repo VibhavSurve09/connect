@@ -74,3 +74,19 @@ export const userWithIdSkills = async (uid) => {
   }
   return userSkills;
 };
+
+export const removeFriendNeo4j = async (docId, uid) => {
+  const db = await dbConnect();
+  const session = db.session();
+  const query = `MATCH (user1:USER {docId:$docId})-[friend:IS_FRIEND]->(user2:USER {uid:$uid}) DELETE friend`;
+  try {
+    const readResult = await session.writeTransaction((tx) =>
+      tx.run(query, { docId, uid })
+    );
+  } catch {
+    console.log('Err..');
+  } finally {
+    await session.close();
+    await db.close();
+  }
+};
