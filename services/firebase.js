@@ -1,4 +1,10 @@
-import { uploadBytes, ref, getDownloadURL } from "firebase/storage";
+import {
+  uploadBytes,
+  ref,
+  getDownloadURL,
+  getStorage,
+  listAll,
+} from "firebase/storage";
 import {
   getDocs,
   doc,
@@ -152,4 +158,34 @@ export const removeFriend = async (senderDocId, removeUserUID) => {
   await updateDoc(removeUserRef, {
     followers: newFollowersList,
   });
+};
+
+export const editUserAbout = async (docId, newBio) => {
+  if (newBio.trim() != "") {
+    const ref = doc(db, "users", docId);
+    await updateDoc(ref, {
+      bio: newBio,
+    });
+  }
+};
+
+export const getAllProfilePics = () => {
+  const storage = getStorage();
+  const listRef = ref(storage, "profilePictures");
+  listAll(listRef)
+    .then((res) => {
+      res.prefixes.forEach((folderRef) => {
+        // All the prefixes under listRef.
+        // You may call listAll() recursively on them.
+        console.log("Fo ", folderRef);
+      });
+      res.items.forEach((itemRef) => {
+        // All the items under listRef.
+        console.log("I", itemRef);
+      });
+    })
+    .catch((error) => {
+      // Uh-oh, an error occurred!
+      console.log(error);
+    });
 };

@@ -1,9 +1,10 @@
 import Head from "next/head";
 import Image from "next/image";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../context/User";
 import { useUser } from "../../hooks/useUser";
-
+import { editUserAbout } from "../../services/firebase";
+import { useRouter } from "next/router";
 export default function Profile({
   userName,
   bio,
@@ -22,6 +23,16 @@ export default function Profile({
 }) {
   const activeUser = useContext(UserContext);
   const { data, loading } = useUser(activeUser?.uid);
+  const router = useRouter();
+  //*About
+  const [aboutEdit, setAboutEdit] = useState(false);
+  const [changeAbout, setChangeAbout] = useState(bio);
+  const editAbout = (e) => {
+    setAboutEdit(false);
+    editUserAbout(docId, changeAbout);
+    router.push(`/profile`);
+  };
+  // useEffect(() => {}, [bio]);
   return (
     <div className="flex flex-col h-auto bg-gray-100 lg:flex-row">
       <Head>
@@ -117,38 +128,71 @@ export default function Profile({
               </div>
               <div className="w-full px-2">
                 {" "}
-                <p className="py-3 text-lg text-gray-500 lg:text-xl hover:text-gray-600">
-                  {bio}
-                </p>
+                {!aboutEdit ? (
+                  changeAbout.trim().length > 0 ? (
+                    <p className="py-3 text-lg text-gray-500 lg:text-xl hover:text-gray-600">
+                      {changeAbout}
+                    </p>
+                  ) : (
+                    <>
+                      {" "}
+                      <p className="py-3 text-lg text-gray-500 lg:text-xl hover:text-gray-600">
+                        {bio}
+                      </p>
+                    </>
+                  )
+                ) : (
+                  <input
+                    className="w-full px-2 py-3 text-lg text-black border-b-2 border-gray-500 lg:text-xl hover:text-gray-600"
+                    value={changeAbout}
+                    type="text"
+                    onChange={(e) => setChangeAbout(e.target.value)}
+                    pattern=".{3,}"
+                    required
+                    title="3 characters minimum"
+                  />
+                )}
               </div>
               <div className="absolute top-0 right-0 left-auto z-auto flex justify-end invisible px-2 py-2 text-black hover:text-gray-600 group-hover:visible">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 h-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                  />
-                </svg>
-              </div>
-              <div className="flex flex-row justify-end">
-                <button className="px-5 py-2 ml-2 font-medium text-white bg-indigo-400 rounded-lg hover:bg-indigo-600 w-fit">
-                  Save
-                </button>
-                <button className="px-3 py-2 ml-2 font-medium text-white bg-red-400 rounded-lg w-fit hover:bg-red-500">
-                  Cancel
+                <button onClick={(e) => setAboutEdit(true)}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                    />
+                  </svg>
                 </button>
               </div>
+              {aboutEdit ? (
+                <>
+                  <div className="flex flex-row justify-end">
+                    <button
+                      className="px-5 py-2 ml-2 font-medium text-white bg-indigo-400 rounded-lg hover:bg-indigo-600 w-fit"
+                      onClick={editAbout}
+                    >
+                      Save
+                    </button>
+                    <button
+                      className="px-3 py-2 ml-2 font-medium text-white bg-red-400 rounded-lg w-fit hover:bg-red-500"
+                      onClick={(e) => setAboutEdit(false)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </>
+              ) : null}
             </div>
             <div className="my-6"></div>
 
-            <div className="relative flex flex-col p-5 mx-auto overflow-auto bg-white border-t-4 border-indigo-400 rounded-lg shadow-lg group max-h-80 ">
+            <div className="relative flex flex-col p-5 mx-auto bg-white border-t-4 border-indigo-400 rounded-lg shadow-lg group ">
               <div className="flex flex-row">
                 <div className="text-black">
                   <svg
@@ -173,7 +217,7 @@ export default function Profile({
               <div className="w-full px-2">
                 <div className="py-3 text-lg text-gray-500 lg:text-xl hover:text-gray-600">
                   <div className="w-full px-2">
-                    <div className="py-3 text-lg text-gray-500 lg:text-xl hover:text-gray-600">
+                    <div className="py-3 overflow-auto text-lg text-gray-500 lg:text-xl hover:text-gray-600 max-h-72">
                       {skills.map((skill) => {
                         return (
                           <div
