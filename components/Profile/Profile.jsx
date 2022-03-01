@@ -1,13 +1,8 @@
 import Head from "next/head";
 import Image from "next/image";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { UserContext } from "../../context/User";
-import {
-  handleFollowUser,
-  isUserInMyFollowingList,
-} from "../../services/firebase";
 import { useUser } from "../../hooks/useUser";
-import axios from "axios";
 
 export default function Profile({
   userName,
@@ -27,33 +22,6 @@ export default function Profile({
 }) {
   const activeUser = useContext(UserContext);
   const { data, loading } = useUser(activeUser?.uid);
-  const [isFriend, setIsFriend] = useState(false);
-  useEffect(() => {
-    if (data?.docId) {
-      isUserInMyFollowingList(data?.docId, uid).then((res) => {
-        if (res) {
-          setIsFriend(true);
-        }
-      });
-    }
-  }, [uid, data?.docId]);
-  const addFriend = async () => {
-    if (!loading) {
-      const headers = {
-        id: activeUser.uid,
-        emailAddress: activeUser.email,
-      };
-      await handleFollowUser(data?.docId, docId);
-      await axios.post(
-        "http://localhost:3000/api/users/sendFriendReq",
-        { senderDocId: data.docId, receiverDocId: docId },
-        {
-          headers,
-        }
-      );
-    }
-  };
-
   return (
     <div className="flex flex-col h-auto bg-gray-100 lg:flex-row">
       <Head>
@@ -83,18 +51,7 @@ export default function Profile({
                     <h3 className="mt-1 leading-6 text-gray-600 font-lg text-semibold lg:text-2xl">
                       STUDENT AT {college}
                     </h3>{" "}
-                    <span className="sm:w-full md:w-full">
-                      {" "}
-                      {/* {isFriend ? (
-                        <p className="px-4 py-3 mt-2 font-medium bg-indigo-500 rounded-2xl lg:max-w-fit">
-                          Following
-                        </p>
-                      ) : (
-                        <button className="bg-red-400" onClick={addFriend}>
-                          Add Friend
-                        </button>
-                      )} */}
-                    </span>
+                    <span className="sm:w-full md:w-full"></span>
                     <ul className="px-3 py-2 mt-3 text-gray-600 bg-gray-100 divide-y rounded shadow-sm hover:text-gray-700 hover:shadow">
                       <li className="flex items-center py-3">
                         <span>Member since</span>
