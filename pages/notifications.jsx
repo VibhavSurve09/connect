@@ -1,7 +1,7 @@
-import Notification from '../components/Notifications/Notification';
+import Notification from "../components/Notifications/Notification";
 function Notifications() {
   return (
-    <div>
+    <div className="flex justify-center overflow-auto bg-gray-100">
       <Notification />
     </div>
   );

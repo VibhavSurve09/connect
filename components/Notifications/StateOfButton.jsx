@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { doIFollowTheUser, handleFollowUser } from '../../services/firebase';
+import React, { useState } from "react";
+import { doIFollowTheUser, handleFollowUser } from "../../services/firebase";
 export default function StateOfButton({ docId, uid, receiverDocId }) {
   const [following, setFollowing] = useState(false);
   const followUser = async () => {
@@ -15,11 +15,19 @@ export default function StateOfButton({ docId, uid, receiverDocId }) {
   });
 
   return (
-    <div>
+    <div className="ml-3 font-serif text-base font-medium lg:text-xl">
       {following ? (
-        <p>Following..</p>
+        <p className="px-1 py-1 bg-indigo-300 rounded-lg w-fit">
+          {" "}
+          Following ✔️
+        </p>
       ) : (
-        <button onClick={followUser}>Follow back</button>
+        <button
+          className="px-1 py-1 bg-red-300 rounded-lg"
+          onClick={followUser}
+        >
+          Follow back
+        </button>
       )}
     </div>
   );
