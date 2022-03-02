@@ -17,13 +17,10 @@ export default function StateOfButton({ docId, uid, receiverDocId }) {
   return (
     <div className="ml-3 font-serif text-base font-medium lg:text-xl">
       {following ? (
-        <p className="px-1 py-1 bg-indigo-300 rounded-lg w-fit">
-          {" "}
-          Following ✔️
-        </p>
+        <p className="px-2 py-1 bg-indigo-300 rounded-lg w-fit"> Following</p>
       ) : (
         <button
-          className="px-1 py-1 bg-red-300 rounded-lg"
+          className="px-2 py-1 bg-red-300 rounded-lg"
           onClick={followUser}
         >
           Follow back

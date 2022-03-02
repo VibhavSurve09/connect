@@ -42,7 +42,7 @@ function NotificationList({ notifications }) {
                 uid={data?.uid}
                 receiverDocId={notification.receiverDocId}
               />{" "}
-              <p className="ml-3 font-serif text-base font-medium lg:text-xl">
+              <p className="ml-3 font-serif text-base font-medium lg:text-lg">
                 {moment(notification.createdAt).format("LT")}
               </p>
             </div>
