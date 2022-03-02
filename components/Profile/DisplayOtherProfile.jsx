@@ -59,17 +59,19 @@ export default function DisplayOtherProfile({
           headers,
         }
       );
+      const notificationData = {
+        senderDocId: data.docId,
+        receiverDocId: docId,
+        senderUserName: data.userName,
+        senderPhotoURL: data.photoURL,
+      };
+      await axios.post(
+        `${process.env.API_URI}/api/notifications/following`,
+        notificationData,
+        { headers }
+      );
+      router.push(`/profile/${userName}`);
     }
-    const notificationData = {
-      senderId: data.docId,
-      receiverId: docId,
-    };
-    console.log(process.env.NOTIFICATIONS_ENDPOINT);
-    await axios.post(
-      `${process.env.NOTIFICATIONS_ENDPOINT}/following`,
-      notificationData
-    );
-    router.push(`/profile/${userName}`);
   };
   const removeUserFromFollowing = async (e) => {
     setIsFriend(false);
