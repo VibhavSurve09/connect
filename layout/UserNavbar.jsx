@@ -71,11 +71,8 @@ export default function UserNavbar({ userData }) {
         </Link>
       </div>
 
-      <div className="px-2 py-1 ">
-        <div
-          className="flex flex-col"
-          onClick={(e) => setImageClick(!imageClick)}
-        >
+      <div className="inline-block px-2 py-1">
+        <div onClick={(e) => setImageClick(!imageClick)}>
           <div className="cursor-pointer">
             <Image
               src={userData?.photoURL}
@@ -87,16 +84,16 @@ export default function UserNavbar({ userData }) {
           </div>
           {imageClick ? (
             <>
-              <div className="z-10 flex justify-center px-2 py-1 bg-white">
+              <div className="z-10 px-2 py-1 bg-white">
                 <ul>
-                  <li>
+                  {/* <li>
                     {" "}
                     Welcome <i>{<b>{userData?.displayName}</b>}</i> !
-                  </li>
+                  </li> */}
                   <li className="px-2 py-2 mr-4 text-xl font-bold ">
                     <button
                       onClick={handleLogOut}
-                      className="px-5 py-2 text-base font-semibold leading-none text-black bg-gray-200 border border-black rounded lg:mt-0 hover:border-transparent hover:font-bold hover:text-purple-800 hover:bg-white"
+                      className="flex justify-center px-5 py-2 text-base font-semibold leading-none text-black bg-gray-200 border border-black rounded lg:mt-0 hover:font-bold hover:text-purple-800 hover:bg-gray-50"
                     >
                       Sign Out
                     </button>

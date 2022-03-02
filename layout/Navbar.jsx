@@ -34,7 +34,7 @@ export default function Navbar() {
       <div
         className={`${
           isHamburgerActive ? "max-h-44" : "max-h-0 lg:max-h-32"
-        }  transition-all overflow-hidden duration-500 menu w-full flex-grow lg:flex lg:justify-end lg:w-auto lg:px-3`}
+        }  transition-all overflow-auto duration-500 menu w-full flex-grow lg:flex lg:justify-end lg:w-auto lg:px-3`}
       >
         {user ? (
           <>
