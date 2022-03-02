@@ -9,7 +9,7 @@ export default async function handler(req, res) {
       try {
         const _notifications = await Notifications.find({
           receiverDocId: docId,
-        });
+        }).sort({ createdAt: -1 });
         res
           .status(200)
           .json({ success: true, notifications_data: _notifications });

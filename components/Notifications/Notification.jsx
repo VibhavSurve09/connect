@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context/User';
 import { useUser } from '../../hooks/useUser';
+import NotificationList from './NotificationList';
 
 export default function Notifications() {
   const activeUser = useContext(UserContext);
@@ -26,6 +27,14 @@ export default function Notifications() {
       fetchNotifications();
     }
   }, [data]);
-  console.log(notifications);
-  return <div>Notification</div>;
+  return (
+    <div>
+      {notifications.length > 0 ? (
+        <>
+          {' '}
+          <NotificationList notifications={notifications[0]} />
+        </>
+      ) : null}
+    </div>
+  );
 }
