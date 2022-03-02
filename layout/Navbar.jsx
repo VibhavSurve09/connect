@@ -8,15 +8,15 @@ export default function Navbar() {
   const [isHamburgerActive, setActive] = useState(false);
   return (
     <nav
-      className={`w-full px-6 py-3 lg:flex lg:items-center bg-gradient-to-r to-indigo-300 via-indigo-200 from-indigo-50 ${styles.boxshadow}`}
+      className={`w-full px-6 py-3 lg:flex bg-gradient-to-r to-indigo-300 via-indigo-200 from-indigo-50 ${styles.boxshadow}`}
     >
-      <div className="flex items-center justify-between">
-        <div className="items-center flex-shrink-0 inline-block px-5 text-xl font-bold text-black py-2m">
+      <div className="flex justify-between py-3">
+        <div className="items-center flex-shrink-0 inline-block px-5 py-2 text-xl font-bold text-black">
           <h1>📱 ConnectU</h1>
         </div>
       </div>
 
-      <div className="flex float-right lg:hidden -mt-7">
+      <div className="flex items-center float-right lg:hidden -mt-11">
         <button
           type="button"
           className="text-gray-500 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400 focus:outline-none focus:text-gray-600 dark:focus:text-gray-400"
@@ -33,8 +33,8 @@ export default function Navbar() {
       </div>
       <div
         className={`${
-          isHamburgerActive ? "max-h-44" : "max-h-0 lg:max-h-32"
-        }  transition-all overflow-auto duration-500 menu w-full flex-grow lg:flex lg:justify-end lg:w-auto lg:px-3`}
+          isHamburgerActive ? "max-h-48" : "max-h-0 lg:max-h-32"
+        }  overflow-auto w-full flex-grow lg:flex lg:justify-end  lg:px-3`}
       >
         {user ? (
           <>
