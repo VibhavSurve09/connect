@@ -45,9 +45,9 @@ export default function Profile({
             <div className="relative flex flex-col group">
               <div className="w-full shadow-lg">
                 <div className="flex flex-col p-5 bg-white border-t-4 border-indigo-400 rounded-lg lg:flex-row sm:flex-row">
-                  <div className="overflow-auto border-4 border-indigo-400 rounded-full md:max-w-fit sm:w-7/12 lg:max-w-fit md:mx-2">
+                  <div className="overflow-auto md:max-w-fit sm:w-7/12 lg:max-w-fit md:mx-2">
                     <Image
-                      className="flex flex-col p-5 bg-white border-t-4 border-indigo-400 rounded-lg lg:flex-row sm:flex-row"
+                      className="flex flex-col p-5 bg-white border-t-4 border-indigo-400 rounded-full lg:flex-row sm:flex-row"
                       src={imgUrl}
                       alt={`${userName} display picture`}
                       height={300}

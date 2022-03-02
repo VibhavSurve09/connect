@@ -199,25 +199,49 @@ function Prefrences({ pageIncrementer }) {
                   <div>
                     <label
                       htmlFor="first-name"
-                      className="block py-1 text-sm font-semibold text-gray-700"
+                      className="block py-1 text-lg font-semibold text-gray-700"
                     >
                       Tell Us About Your Past projects
                     </label>
-                    <div className="w-full px-3 py-3 bg-gray-100 rounded-md shadow-lg">
-                      <div className="flex flex-row">
-                        <label>Title</label>
-                        <input className="w-2/4 px-2 py-1 ml-3 text-black border-b-2 border-black rounded-sm required:" />
-                      </div>
-                      <div className="mt-3">
-                        <span>Link </span>
+                    <div className="w-full px-3 py-3 bg-gray-100 border-2 rounded-md shadow-lg">
+                      <div className="flex flex-col">
+                        <label className="block text-sm font-semibold text-gray-700">
+                          Project Title
+                        </label>
                         <input
-                          className="w-2/4 px-2 py-1 ml-3 text-black border-b-2 border-black rounded-sm"
-                          type={"url"}
+                          type="text"
+                          placeholder="My Project"
+                          className="block w-full px-1 py-2 mt-1 border-2 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                          required
                         />
                       </div>
                       <div className="mt-3">
-                        <span>About</span>
-                        <textarea className="w-2/3 px-2 py-1 ml-3 text-black border-b-2 border-black rounded-sm required:" />
+                        <label
+                          htmlFor="company-website"
+                          className="block text-sm font-semibold text-gray-700"
+                        >
+                          Link
+                        </label>
+                        <div className="flex mt-1 rounded-md shadow-sm">
+                          <input
+                            type="url"
+                            className="flex-1 block w-full px-1 py-2 border-2 border-gray-300 rounded-none focus:ring-indigo-500 focus:border-indigo-500 rounded-r-md sm:text-sm"
+                            placeholder="www.myproject.in"
+                          />
+                        </div>
+                      </div>
+                      <div className="mt-3">
+                        <label className="block text-sm font-semibold text-gray-700">
+                          Project Description
+                        </label>
+                        <div className="mt-1">
+                          <textarea
+                            rows={2}
+                            className="block w-full px-1 py-2 mt-1 border-2 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            placeholder="Tell us about your project- the idea, technology used, solo/group project, duration etc."
+                            required
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
