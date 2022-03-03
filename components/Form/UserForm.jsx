@@ -46,12 +46,17 @@ function UserForm({ pageIncrementer }) {
         followers: [],
         role: 'user',
         status: '',
+        projectsRef: [],
         photoURL: profilePicture ? imgUrl : activeUser.photoURL,
       };
 
       const docId = await addUser(userFormData);
       //*This is a function and not an API
-      await postUser({ ...nodeData, docId });
+      await postUser({
+        ...nodeData,
+        docId,
+        photoURL: profilePicture ? imgUrl : activeUser.photoURL,
+      });
       setUserName('');
       setBio('');
       setAge('');
