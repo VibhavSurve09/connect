@@ -14,6 +14,7 @@ module.exports = {
     NOTIFICATIONS_ENDPOINT: process.env.NOTIFICATIONS_ENDPOINT,
     MONGO_URI:
       'mongodb+srv://dev:utkvib01@connect-notifications.kay2p.mongodb.net/Connect?retryWrites=true&w=majority',
+    DOMAIN: process.env.DOMAIN,
   },
   eslint: {
     // Warning: This allows production builds to successfully complete even if
