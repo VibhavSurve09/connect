@@ -30,7 +30,7 @@ export default function UserNavbar({ userData }) {
           />
         </div>
       </div>
-      <div className="inline-block px-5 py-2 mr-4 text-xl font-bold text-purple-800 lg:mt-0 hover:text-black">
+      <div className="inline-block px-5 py-2 mr-4 text-xl font-bold text-indigo-600 lg:mt-0 hover:text-black">
         <Link href="/">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -42,7 +42,7 @@ export default function UserNavbar({ userData }) {
           </svg>
         </Link>
       </div>
-      <div className="inline-block px-5 py-2 mr-4 text-xl font-bold text-purple-800 lg:mt-0 hover:text-black">
+      <div className="inline-block px-5 py-2 mr-4 text-xl font-bold text-indigo-600 lg:mt-0 hover:text-black">
         <Link href="/notifications">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -54,7 +54,7 @@ export default function UserNavbar({ userData }) {
           </svg>
         </Link>
       </div>
-      <div className="inline-block px-5 py-2 mr-4 text-xl font-bold text-purple-800 lg:mt-0 hover:text-black">
+      <div className="inline-block px-5 py-2 mr-4 text-xl font-bold text-indigo-600 lg:mt-0 hover:text-black">
         <Link href="/chats">
           <svg
             xmlns="http://www.w3.org/2000/svg"

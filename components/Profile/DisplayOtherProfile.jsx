@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { UserContext } from "../../context/User";
+import Projects from "./Projects";
 import {
   handleFollowUser,
   isUserInMyFollowingList,
@@ -25,6 +26,7 @@ export default function DisplayOtherProfile({
   date,
   docId,
   uid,
+  projects,
   following,
 }) {
   const activeUser = useContext(UserContext);
@@ -232,7 +234,7 @@ export default function DisplayOtherProfile({
                         return (
                           <div
                             key={skill.id}
-                            className="w-full px-4 py-2 mt-2 bg-gray-100 shadow-sm rounded-xl"
+                            className="w-full px-4 py-2 mt-2 font-medium bg-gray-100 shadow-sm rounded-xl"
                           >
                             <p className="text-black">{skill.name}</p>
                           </div>
@@ -271,9 +273,12 @@ export default function DisplayOtherProfile({
               </div>
               <div className="w-full px-2">
                 {" "}
-                <p className="py-3 text-lg text-gray-500 lg:text-xl hover:text-gray-600">
-                  {bio} hello and ya ya ye
-                </p>
+                <div className="py-3 mt-2 mb-4 overflow-auto text-lg text-gray-500 lg:text-xl hover:text-gray-600 max-h-80">
+                  {projects.length > 0 &&
+                    projects.map((id, index) => {
+                      return <Projects key={index} docId={id} />;
+                    })}
+                </div>
               </div>
             </div>
           </div>

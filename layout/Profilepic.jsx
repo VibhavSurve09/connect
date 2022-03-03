@@ -35,20 +35,34 @@ export default function Profilepic({ userData }) {
       <div>
         {imageClick ? (
           <>
-            <div className="absolute px-2 py-1 bg-white border-2 border-slate-600 lg:right-11">
+            <div className="absolute px-2 py-1 -mt-5 bg-white border-2 border-slate-600 lg:right-11 lg:mt-0">
               <ul>
                 <li className="py-1">
                   {" "}
                   <i>
-                    {
-                      <Link href="/profile">
-                        <b className="px-2 py-3 cursor-pointer">
+                    <b className="flex flex-row px-2 py-3">
+                      <p className="flex items-center">
+                        <Image
+                          src={userData?.photoURL}
+                          height={40}
+                          width={40}
+                          alt="display picture"
+                          className="rounded-full "
+                        />
+                      </p>
+                      <p className="flex flex-col px-2">
+                        <span className="flex items-center px-2">
                           {userData?.displayName}
-                        </b>
-                      </Link>
-                    }
+                        </span>
+                        <span className="flex justify-center mt-1 bg-indigo-300 rounded-md hover:bg-indigo-400">
+                          {" "}
+                          <Link href="/profile">View Profile</Link>{" "}
+                        </span>
+                      </p>
+                    </b>
                   </i>
                 </li>
+
                 <li>
                   <hr />
                 </li>

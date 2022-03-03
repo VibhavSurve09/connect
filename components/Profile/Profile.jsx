@@ -225,7 +225,7 @@ export default function Profile({
                         return (
                           <div
                             key={skill.id}
-                            className="w-full px-4 py-2 mt-2 bg-gray-100 shadow-md rounded-xl"
+                            className="w-full px-4 py-2 mt-2 font-medium bg-gray-100 shadow-md rounded-xl"
                           >
                             <p className="text-black">{skill.name}</p>
                           </div>
