@@ -23,11 +23,7 @@ export default function useAuthListener() {
           { uid: currentUser?.uid, email: currentUser?.email },
           process.env.JWT_SECRET
         );
-        setCookies('connect_auth_cookie', token, {
-          domain: `${process.env.DOMAIN}`,
-          sameSite: 'none',
-          httpOnly: true,
-        });
+        setCookies('connect_auth_cookie', token);
         setAuthUser(currentUser);
       } else {
         // User is signed out
