@@ -4,34 +4,31 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 export default function UserNavbar({ userData }) {
-  const [imageClick, setImageClick] = useState(false);
-  const handleLogOut = () => {
-    signOut(auth)
-      .then(() => {
-        // Sign-out successful.
-      })
-      .catch((error) => {
-        // An error happened.
-      });
-  };
   return (
     <div className="flex flex-col lg:flex-row">
       <div className="flex flex-row px-5 py-2 mr-4 text-xl font-bold text-purple-800 lg:mt-0 hover:text-black max-h-14">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-10 mt-2 h-7"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+        <div className="relative hidden mr-3 md:mr-0 md:block">
+          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <svg
+              className="w-5 h-5 text-gray-500"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                clipRule="evenodd"
+              ></path>
+            </svg>
+          </div>
+          <input
+            type="text"
+            id="email-adress-icon"
+            className="block w-full p-2 pl-10 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Search..."
           />
-        </svg>
-        <input className="w-full px-2 py-1 ml-2 border-2 border-black rounded-2xl"></input>
+        </div>
       </div>
       <div className="inline-block px-5 py-2 mr-4 text-xl font-bold text-purple-800 lg:mt-0 hover:text-black">
         <Link href="/">
@@ -46,14 +43,16 @@ export default function UserNavbar({ userData }) {
         </Link>
       </div>
       <div className="inline-block px-5 py-2 mr-4 text-xl font-bold text-purple-800 lg:mt-0 hover:text-black">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-10 h-9"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
-        </svg>
+        <Link href="/notifications">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-10 h-9"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
+          </svg>
+        </Link>
       </div>
       <div className="inline-block px-5 py-2 mr-4 text-xl font-bold text-purple-800 lg:mt-0 hover:text-black">
         <Link href="/chats">
@@ -68,39 +67,6 @@ export default function UserNavbar({ userData }) {
           </svg>
         </Link>
       </div>
-      <div className="inline-block px-2 py-1 group">
-        <div onClick={(e) => setImageClick(!imageClick)}>
-          <div className="cursor-pointer">
-            <Image
-              src={userData?.photoURL}
-              height={42}
-              width={42}
-              alt="display picture"
-              className="rounded-full "
-            />
-          </div>
-        </div>
-      </div>
-      {imageClick ? (
-        <>
-          <div className="px-2 py-1 bg-white ">
-            <ul>
-              <li>
-                {" "}
-                <i>{<b>{userData?.displayName}</b>}</i>
-              </li>
-              <li className="px-2 py-2 mr-4 text-xl font-bold ">
-                <button
-                  onClick={handleLogOut}
-                  className="flex justify-center px-5 py-2 text-base font-semibold leading-none text-black bg-gray-200 border border-black rounded lg:mt-0 hover:font-bold hover:text-purple-800 hover:bg-gray-50"
-                >
-                  Sign Out
-                </button>
-              </li>
-            </ul>
-          </div>
-        </>
-      ) : null}
     </div>
   );
 }

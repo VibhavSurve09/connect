@@ -43,7 +43,7 @@ export default function () {
               </button>
 
               <button className="block px-3 py-2 text-sm font-semibold text-center text-gray-700 transition-colors duration-200 transform bg-gray-200 rounded-md lg:mx-4 hover:bg-gray-300">
-                Learn More
+                <Link href="#about">About Us</Link>
               </button>
             </div>
           </div>
@@ -61,7 +61,7 @@ export default function () {
           </div>
         </div>
       </div>
-      <About />
+      <About modalState={showModal} />
       <Statistics />
     </div>
   );

@@ -5,19 +5,25 @@ import { useState } from "react";
 import studentImage from "../../public/images/aboutus.png";
 import AuthenticationModal from "../Modal/AuthenticationModal";
 
-export default function () {
-  const [showModal, setShowModal] = useState(false);
+export default function ({ modalState }) {
   return (
-    <div className={`h-max ${styles.bodycolor}`}>
+    <div className={`h-max ${styles.bodycolor}`} id="about">
       <div className="lg:flex">
         <div className="w-full h-64 lg:w-1/2 lg:h-auto lg:mt-16 lg:ml-20">
           <div className="w-full h-full bg-cover">
             <div className="w-full h-full">
-              <Image
-                className={`${showModal && "opacity-10"}`}
-                src={studentImage}
-                alt="Student Picture"
-              />
+              {modalState ? (
+                <>
+                  {console.log(modalState)}
+                  <Image
+                    className={`${modalState && "opacity-5"}`}
+                    src={studentImage}
+                    alt="About us"
+                  />
+                </>
+              ) : (
+                <Image src={studentImage} alt="About us" />
+              )}
             </div>
           </div>
         </div>

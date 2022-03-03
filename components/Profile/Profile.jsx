@@ -45,18 +45,18 @@ export default function Profile({
             <div className="relative flex flex-col group">
               <div className="w-full shadow-lg">
                 <div className="flex flex-col p-5 bg-white border-t-4 border-indigo-400 rounded-lg lg:flex-row sm:flex-row">
-                  <div className="overflow-auto md:max-w-fit sm:w-7/12 lg:max-w-fit md:mx-2">
+                  <div className="flex items-center justify-center md:max-w-fit sm:w-7/12 lg:max-w-fit md:mx-4">
                     <Image
                       className="flex flex-col p-5 bg-white border-t-4 border-indigo-400 rounded-full lg:flex-row sm:flex-row"
                       src={imgUrl}
                       alt={`${userName} display picture`}
-                      height={300}
-                      width={300}
+                      height={200}
+                      width={200}
                     />
                   </div>
                   <div className="w-full px-4 py-5">
                     {" "}
-                    <span className="my-1 font-semibold leading-8 text-gray-900 lg:text-5xl sm:text-2xl md:text-3xl">
+                    <span className="my-1 text-2xl font-semibold leading-8 text-gray-900 lg:text-5xl sm:text-2xl md:text-3xl">
                       {userName}
                     </span>
                     <h3 className="mt-1 leading-6 text-gray-600 font-lg text-semibold lg:text-2xl">
@@ -73,6 +73,7 @@ export default function Profile({
                         <span className="ml-auto">Following: {following}</span>
                       </li>
                     </ul>
+                    <div className="mt-5"></div>
                     <div className="absolute flex flex-row bottom-4 right-4">
                       <button className="px-5 py-2 ml-2 font-medium text-white bg-indigo-400 rounded-lg hover:bg-indigo-600 w-fit">
                         Save
