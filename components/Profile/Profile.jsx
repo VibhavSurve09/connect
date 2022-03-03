@@ -3,8 +3,9 @@ import Image from 'next/image';
 import { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../../context/User';
 import { useUser } from '../../hooks/useUser';
-import { editUserAbout } from '../../services/firebase';
+import { editUserAbout, getProjects } from '../../services/firebase';
 import { useRouter } from 'next/router';
+import Projects from './Projects';
 export default function Profile({
   userName,
   bio,
@@ -284,11 +285,16 @@ export default function Profile({
                 <div className='px-2 text-lg font-semibold text-black md:text-2xl lg:text-3xl'>
                   Projects{' '}
                 </div>
+                {/* <div>{console.log(projects)}</div> */}
               </div>
               <div className='w-full px-2'>
                 {' '}
                 <p className='py-3 text-lg text-gray-500 lg:text-xl hover:text-gray-600'>
-                  {bio} hello and ya ya ye
+                  Coming soon...
+                  {projects.length > 0 &&
+                    projects.map((id, index) => {
+                      return <Projects key={index} docId={id} />;
+                    })}
                 </p>
               </div>
               <div className='absolute top-0 right-0 left-auto z-auto flex justify-end invisible px-2 py-2 text-black hover:text-gray-600 group-hover:visible'>
@@ -345,7 +351,7 @@ export default function Profile({
         <div className='px-2'>
           {' '}
           <p className='py-3 text-lg text-gray-500 lg:text-xl hover:text-gray-600'>
-            {bio} hello and ya ya ye
+            Coming soon..
           </p>
         </div>
       </div>

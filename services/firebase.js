@@ -212,8 +212,8 @@ export const addProject = async (projectData) => {
 };
 
 export const getProjects = async (docId) => {
-  const ref = doc(db, 'users', docId);
+  const ref = doc(db, 'projects', docId);
   const data = await getDoc(ref);
-  const project = data.data().projectsRef;
+  const project = data.data();
   return project;
 };
