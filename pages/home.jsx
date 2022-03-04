@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
 import Form from '../components/Form/Form';
 import Body from '../components/Home/Body';
@@ -8,6 +9,7 @@ import { useUser } from '../hooks/useUser';
 function Home() {
   const activeUser = useContext(UserContext);
   const { data, loading } = useUser(activeUser?.uid);
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -22,8 +24,8 @@ function Home() {
         <>
           <Body />
         </>
-      ) : data?.length > 0 && !loading ? (
-        <>THere is user</>
+      ) : data && !loading ? (
+        router.push(`/profile/${data.userName}`)
       ) : (
         <Form />
       )}

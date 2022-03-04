@@ -1,8 +1,9 @@
-import axios from "axios";
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "../../context/User";
-import { useUser } from "../../hooks/useUser";
-import NotificationList from "./NotificationList";
+import axios from 'axios';
+import Head from 'next/head';
+import { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../../context/User';
+import { useUser } from '../../hooks/useUser';
+import NotificationList from './NotificationList';
 
 export default function Notifications() {
   const activeUser = useContext(UserContext);
@@ -28,10 +29,13 @@ export default function Notifications() {
     }
   }, [data]);
   return (
-    <div className="w-3/4 min-h-screen lg:w-1/3">
+    <div className='w-3/4 min-h-screen lg:w-1/3'>
+      <Head>
+        <title>Notifications - Connect</title>
+      </Head>
       {notifications.length > 0 ? (
-        <div className="flex flex-col justify-center">
-          {" "}
+        <div className='flex flex-col justify-center'>
+          {' '}
           <NotificationList notifications={notifications[0]} />
         </div>
       ) : null}
