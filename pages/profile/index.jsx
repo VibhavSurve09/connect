@@ -1,9 +1,9 @@
-import { getUserDataById } from "../../services/firebase";
-import Profile from "../../components/Profile/Profile";
-import { getCookie } from "cookies-next";
-import { userWithIdSkills } from "../../services/neo4j";
-import DisplayOtherProfile from "../../components/Profile/DisplayOtherProfile";
-const jwt = require("jsonwebtoken");
+import { getUserDataById } from '../../services/firebase';
+import Profile from '../../components/Profile/Profile';
+import { getCookie } from 'cookies-next';
+import { userWithIdSkills } from '../../services/neo4j';
+import DisplayOtherProfile from '../../components/Profile/DisplayOtherProfile';
+const jwt = require('jsonwebtoken');
 const UserProfile = ({ data, self, skills }) => {
   const userData = JSON.parse(data);
   let { seconds, nanoseconds } = userData.accountCreatedOn;
@@ -23,6 +23,7 @@ const UserProfile = ({ data, self, skills }) => {
       date={date.toDateString()}
       docId={userData.docId}
       uid={userData.uid}
+      projects={userData.projectsRef}
     />
   );
 };
@@ -30,7 +31,7 @@ const UserProfile = ({ data, self, skills }) => {
 export default UserProfile;
 export async function getServerSideProps(context) {
   const { req, res } = context;
-  const cookie = getCookie("connect_auth_cookie", { req, res });
+  const cookie = getCookie('connect_auth_cookie', { req, res });
   let { email, uid } = jwt.decode(cookie, process.env.JWT_SECRET);
   const userData = await getUserDataById(uid);
   const skills = await userWithIdSkills(userData[0]?.uid);
