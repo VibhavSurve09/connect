@@ -12,6 +12,7 @@ import { useUser } from '../../hooks/useUser';
 import axios from 'axios';
 import { removeFriend } from '../../services/firebase';
 import { removeFriendNeo4j } from '../../services/neo4j';
+import ProfileYouMayKnow from './ProfileYouMayKnow';
 export default function DisplayOtherProfile({
   userName,
   bio,
@@ -288,15 +289,10 @@ export default function DisplayOtherProfile({
       <div className='w-4/5 h-auto p-5 mx-auto -mt-4 bg-white border-t-4 border-indigo-400 rounded-lg shadow-lg lg:mt-10 lg:mr-10 lg:min-h-40 lg:w-1/4 lg:h-2/4'>
         <div className='flex flex-row'>
           <div className='px-2 text-lg font-semibold text-black md:text-2xl lg:text-3xl'>
-            Profiles for you{' '}
+            Profiles you may know{' '}
           </div>
         </div>
-        <div className='px-2'>
-          {' '}
-          <p className='py-3 text-lg text-gray-500 lg:text-xl hover:text-gray-600'>
-            Comming soon..
-          </p>
-        </div>
+        <ProfileYouMayKnow />
       </div>
       <div className='my-4 lg:my-0'></div>
     </div>

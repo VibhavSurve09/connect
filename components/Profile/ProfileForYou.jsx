@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function ProfileYouMayKnow() {
+function ProfileForYou() {
   return (
     <div className='px-2'>
       {' '}
@@ -10,3 +10,5 @@ export default function ProfileYouMayKnow() {
     </div>
   );
 }
+
+export default ProfileForYou;

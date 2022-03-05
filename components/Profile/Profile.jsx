@@ -9,6 +9,7 @@ import {
 } from '../../services/firebase';
 import { useRouter } from 'next/router';
 import Projects from './Projects';
+import ProfileForYou from './ProfileForYou';
 export default function Profile({
   userName,
   bio,
@@ -429,12 +430,7 @@ export default function Profile({
             Profiles for you{' '}
           </div>
         </div>
-        <div className='px-2'>
-          {' '}
-          <p className='py-3 text-lg text-gray-500 lg:text-xl hover:text-gray-600'>
-            Coming soon..
-          </p>
-        </div>
+        <ProfileForYou />
       </div>
       <div className='my-4 lg:my-0'></div>
     </div>
