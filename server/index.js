@@ -91,7 +91,6 @@ chatsNamespace.on('connection', (socket) => {
 
   // forward the private message to the right recipient (and to other tabs of the sender)
   socket.on('private_message', ({ message, to, time }) => {
-    console.log('message', message, to, time);
     const _message = {
       message,
       from: socket.uid,
@@ -100,6 +99,13 @@ chatsNamespace.on('connection', (socket) => {
     };
     socket.to(to).to(socket.uid).emit('private_message', _message);
     messageStore.saveMessage(_message);
+  });
+  socket.on('username_change', ({ chatSession, newData }) => {
+    sessionStore.saveSession(chatSession, {
+      uid: socket.uid,
+      userData: newData,
+      connected: false,
+    });
   });
   socket.on('disconnect', async () => {
     activeUsersCount--;
