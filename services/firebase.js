@@ -217,3 +217,22 @@ export const getProjects = async (docId) => {
   const project = data.data();
   return project;
 };
+
+export const updateUserNameAndCollege = async (docId, toUpdateData) => {
+  const ref = doc(db, 'users', docId);
+  const userData = await getDoc(ref);
+  let { userName, collegeName } = userData.data();
+  let checkOldUserName = await doesUserNameExist(toUpdateData.userName);
+  if (
+    (checkOldUserName || toUpdateData.userName === userName) &&
+    toUpdateData.userName.trim() != ''
+  ) {
+    updateDoc(ref, {
+      userName: toUpdateData.userName,
+      collegeName: toUpdateData.college,
+    });
+    return true;
+  } else {
+    return false;
+  }
+};

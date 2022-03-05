@@ -3,7 +3,10 @@ import Image from 'next/image';
 import { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../../context/User';
 import { useUser } from '../../hooks/useUser';
-import { editUserAbout, getProjects } from '../../services/firebase';
+import {
+  editUserAbout,
+  updateUserNameAndCollege,
+} from '../../services/firebase';
 import { useRouter } from 'next/router';
 import Projects from './Projects';
 export default function Profile({
@@ -34,7 +37,24 @@ export default function Profile({
     editUserAbout(docId, changeAbout);
     router.push(`/profile`);
   };
-  // useEffect(() => {}, [bio]);
+  //*Username And College
+  const [editUserNameAndCollege, setEditUserNameCollege] = useState(false);
+  const [newUserNameAndCollege, setNewUserNameAndCollege] = useState({
+    userName,
+    college,
+  });
+  const [userNameAndCollegError, setUserNameAndCollegeError] = useState(false);
+  const changeUserNameAndCollege = async (e) => {
+    let updateInfo = await updateUserNameAndCollege(
+      docId,
+      newUserNameAndCollege
+    );
+    if (!updateInfo) {
+      setUserNameAndCollegeError(true);
+    } else {
+      setEditUserNameCollege(false);
+    }
+  };
   return (
     <div className='flex flex-col h-auto bg-gray-100 lg:flex-row'>
       <Head>
@@ -58,12 +78,60 @@ export default function Profile({
                   </div>
                   <div className='w-full px-4 py-5'>
                     {' '}
-                    <span className='my-1 text-2xl font-semibold leading-8 text-gray-900 lg:text-5xl sm:text-2xl md:text-3xl'>
-                      {userName}
-                    </span>
-                    <h3 className='mt-1 leading-6 text-gray-600 font-lg text-semibold lg:text-2xl'>
-                      STUDENT AT {college}
-                    </h3>{' '}
+                    {!editUserNameAndCollege ? (
+                      <>
+                        {' '}
+                        {newUserNameAndCollege.userName.trim() != '' ? (
+                          <span className='my-1 text-2xl font-semibold leading-8 text-gray-900 lg:text-5xl sm:text-2xl md:text-3xl'>
+                            {newUserNameAndCollege.userName}
+                          </span>
+                        ) : (
+                          <span className='my-1 text-2xl font-semibold leading-8 text-gray-900 lg:text-5xl sm:text-2xl md:text-3xl'>
+                            {userName}
+                          </span>
+                        )}
+                        <h3 className='mt-1 leading-6 text-gray-600 font-lg text-semibold lg:text-2xl'>
+                          STUDENT AT {newUserNameAndCollege.college}
+                        </h3>{' '}
+                      </>
+                    ) : (
+                      <>
+                        <span className='my-1 text-2xl font-semibold leading-8 text-gray-900 lg:text-5xl sm:text-2xl md:text-3xl'>
+                          <input
+                            className={`w-full px-2 py-3 text-lg text-black border-b-2 border-gray-500 lg:text-xl hover:text-gray-600 ${
+                              userNameAndCollegError && 'border-red-400'
+                            }`}
+                            value={newUserNameAndCollege.userName}
+                            type='text'
+                            onChange={(e) =>
+                              setNewUserNameAndCollege((prev) => ({
+                                ...prev,
+                                userName: e.target.value,
+                              }))
+                            }
+                            pattern='.{3,}'
+                            required
+                            title='3 characters minimum'
+                          />
+                        </span>
+                        <h3 className='mt-1 leading-6 text-gray-600 font-lg text-semibold lg:text-2xl'>
+                          <input
+                            className='w-full px-2 py-3 text-lg text-black border-b-2 border-gray-500 lg:text-xl hover:text-gray-600'
+                            value={newUserNameAndCollege.college}
+                            type='text'
+                            onChange={(e) =>
+                              setNewUserNameAndCollege((prev) => ({
+                                ...prev,
+                                college: e.target.value,
+                              }))
+                            }
+                            pattern='.{3,}'
+                            required
+                            title='3 characters minimum'
+                          />
+                        </h3>{' '}
+                      </>
+                    )}
                     <span className='sm:w-full md:w-full'></span>
                     <ul className='px-3 py-2 mt-3 text-gray-600 bg-gray-100 divide-y rounded shadow-sm hover:text-gray-700 hover:shadow'>
                       <li className='flex items-center py-3'>
@@ -76,33 +144,46 @@ export default function Profile({
                       </li>
                     </ul>
                     <div className='mt-5'></div>
-                    <div className='absolute flex flex-row bottom-4 right-4'>
-                      <button className='px-5 py-2 ml-2 font-medium text-white bg-indigo-400 rounded-lg hover:bg-indigo-600 w-fit'>
-                        Save
-                      </button>
-                      <button className='px-3 py-2 ml-2 font-medium text-white bg-red-400 rounded-lg w-fit hover:bg-red-500'>
-                        Cancel
-                      </button>
-                    </div>
+                    {editUserNameAndCollege ? (
+                      <>
+                        {' '}
+                        <div className='absolute flex flex-row bottom-4 right-4'>
+                          <button
+                            className='px-5 py-2 ml-2 font-medium text-white bg-indigo-400 rounded-lg hover:bg-indigo-600 w-fit'
+                            onClick={changeUserNameAndCollege}
+                          >
+                            Save
+                          </button>
+                          <button
+                            className='px-3 py-2 ml-2 font-medium text-white bg-red-400 rounded-lg w-fit hover:bg-red-500'
+                            onClick={(e) => setEditUserNameCollege(false)}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </>
+                    ) : null}
                   </div>
                 </div>
               </div>
 
               <div className='absolute top-0 right-0 left-auto z-auto flex justify-end invisible px-2 py-2 text-black hover:text-gray-600 group-hover:visible'>
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  className='w-6 h-6'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke='currentColor'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z'
-                  />
-                </svg>
+                <button onClick={(e) => setEditUserNameCollege(true)}>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    className='w-6 h-6'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    stroke='currentColor'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z'
+                    />
+                  </svg>
+                </button>
               </div>
             </div>
 
@@ -134,7 +215,7 @@ export default function Profile({
                 {!aboutEdit ? (
                   changeAbout.trim().length > 0 ? (
                     <p className='py-3 text-lg text-gray-500 lg:text-xl hover:text-gray-600'>
-                      {changeAbout}
+                      {bio || changeAbout}
                     </p>
                   ) : (
                     <>
