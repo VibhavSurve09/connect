@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import Image from 'next/image';
 function HeaderInformation({ status, name, profilePicture }) {
-  console.log(profilePicture);
   return (
     <div className='px-4 py-4 -mt-4 bg-indigo-300 rounded-md'>
       <div className='relative flex flex-row items-center'>
@@ -22,7 +21,6 @@ function HeaderInformation({ status, name, profilePicture }) {
             ></span>
           </>
         ) : null}
-
         <div className='flex flex-col -mt-2'>
           <p className='px-3 py-2 text-xl font-semibold'>{name}</p>
           <div className='ml-3 font-serif text-semibold'>

@@ -10,6 +10,7 @@ import {
 import { useRouter } from 'next/router';
 import Projects from './Projects';
 import ProfileForYou from './ProfileForYou';
+import { socketForChats } from '../../server';
 export default function Profile({
   userName,
   bio,
@@ -54,6 +55,21 @@ export default function Profile({
       setUserNameAndCollegeError(true);
     } else {
       setEditUserNameCollege(false);
+      let chatSession = localStorage.getItem('fetchChat');
+      if (!chatSession) {
+        return;
+      } else {
+        let newData = {
+          photoURL: imgUrl,
+          auid: uid,
+          userName: newUserNameAndCollege.userName,
+        };
+        socketForChats.connect();
+        socketForChats.emit('username_change', {
+          chatSession,
+          newData,
+        });
+      }
     }
   };
   return (

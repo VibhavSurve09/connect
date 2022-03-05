@@ -1,20 +1,19 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useEffect, useState } from "react";
-import { socketForChats } from "../server";
-import produce from "immer";
-import { getCookie } from "cookies-next";
-import { isUserMyFriend } from "../services/firebase";
-const jwt = require("jsonwebtoken");
+import { useEffect, useState } from 'react';
+import { socketForChats } from '../server';
+import produce from 'immer';
+import { getCookie } from 'cookies-next';
+import { isUserMyFriend } from '../services/firebase';
+const jwt = require('jsonwebtoken');
 export const useAllActiveUsers = () => {
   const [allActiveUsers, setAllActiveUsers] = useState([]);
   useEffect(() => {
-    let cookie = getCookie("connect_auth_cookie");
+    let cookie = getCookie('connect_auth_cookie');
     let { uid } = jwt.decode(cookie, process.env.JWT_SECRET);
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    socketForChats.on("user_connected", async (user) => {
+    socketForChats.on('user_connected', async (user) => {
       //This is causing a bug
       let isFriend = await isUserMyFriend(uid, user.userData.auid);
-      console.log(isFriend);
       if (isFriend) {
         const newUser = produce(allActiveUsers, (draft) => {
           for (let i = 0; i < allActiveUsers.length; i++) {
@@ -31,7 +30,7 @@ export const useAllActiveUsers = () => {
       }
     });
 
-    socketForChats.on("users", async (users) => {
+    socketForChats.on('users', async (users) => {
       const oldUser = produce(users, (draft) => {
         draft.forEach(async (u) => {
           u.messages.forEach((message) => {
@@ -67,7 +66,7 @@ export const useAllActiveUsers = () => {
         setAllActiveUsers([]);
       }
     });
-    socketForChats.on("user_disconnected", (id) => {
+    socketForChats.on('user_disconnected', (id) => {
       const user = produce(allActiveUsers, (draft) => {
         draft.forEach((u) => {
           if (u.uid === id) {
@@ -78,10 +77,10 @@ export const useAllActiveUsers = () => {
       setAllActiveUsers(user);
     });
     return () => {
-      socketForChats.off("user_connected");
-      socketForChats.off("users");
-      socketForChats.off("user_disconnected");
-      socketForChats.off("private_message");
+      socketForChats.off('user_connected');
+      socketForChats.off('users');
+      socketForChats.off('user_disconnected');
+      socketForChats.off('private_message');
     };
   }, [allActiveUsers]);
   return { allActiveUsers, setAllActiveUsers };
