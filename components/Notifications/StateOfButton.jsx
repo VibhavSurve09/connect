@@ -1,16 +1,24 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context/User';
+import { useUser } from '../../hooks/useUser';
 import { doIFollowTheUser, handleFollowUser } from '../../services/firebase';
 export default function StateOfButton({ docId, uid, receiverDocId }) {
   const [following, setFollowing] = useState(false);
   const activeUser = useContext(UserContext);
+  const { data, loading } = useUser(activeUser?.uid);
   const headers = {
     id: activeUser.uid,
     emailAddress: activeUser.email,
   };
   const followUser = async () => {
     setFollowing(true);
+    const notificationData = {
+      senderDocId: data.docId,
+      receiverDocId: docId,
+      senderUserName: data.userName,
+      senderPhotoURL: data.photoURL,
+    };
     await handleFollowUser(receiverDocId, docId);
     await axios.post(
       `${process.env.API_URI}/api/users/sendFriendReq`,
@@ -18,6 +26,11 @@ export default function StateOfButton({ docId, uid, receiverDocId }) {
       {
         headers,
       }
+    );
+    await axios.post(
+      `${process.env.API_URI}/api/notifications/following`,
+      notificationData,
+      { headers }
     );
   };
   useEffect(() => {

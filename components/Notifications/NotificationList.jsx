@@ -7,8 +7,8 @@ import StateOfButton from './StateOfButton';
 import moment from 'moment';
 function NotificationList({ notifications }) {
   const activeUser = useContext(UserContext);
-  const { data, loading } = useUser(activeUser?.uid);
-  useEffect(() => {}, [data]);
+
+  useEffect(() => {}, [activeUser]);
   return (
     <>
       {notifications.map((notification, index) => {
@@ -39,7 +39,7 @@ function NotificationList({ notifications }) {
               <StateOfButton
                 key={index}
                 docId={notification.senderDocId}
-                uid={data?.uid}
+                uid={activeUser?.uid}
                 receiverDocId={notification.receiverDocId}
               />{' '}
               <div className='flex'>
