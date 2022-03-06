@@ -90,3 +90,26 @@ export const removeFriendNeo4j = async (docId, uid) => {
     await db.close();
   }
 };
+
+/// Recommendation System for users
+export const profilesYouMayKnow = async (selfUID, searchUID) => {
+  let r_users = [];
+  const db = await dbConnect();
+  const session = db.session();
+  const queryForFriend = `MATCH (myself:USER {uid:$selfUID})-[:IS_FRIEND]->(:USER {uid:$searchUID})-[:IS_FRIEND]->(users:USER) WHERE myself<>users WITH users,rand() as r return users ORDER BY r LIMIT 7`;
+  try {
+    const readResult = await session.readTransaction((tx) =>
+      tx.run(queryForFriend, { selfUID, searchUID })
+    );
+
+    readResult.records.forEach((record) => {
+      const users = record.get('users');
+      r_users.push({ ...users.properties });
+    });
+  } catch {
+  } finally {
+    await session.close();
+    await db.close();
+  }
+  return r_users;
+};
