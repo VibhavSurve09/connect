@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import Projects from './Projects';
 import ProfileForYou from './ProfileForYou';
 import { socketForChats } from '../../server';
+import { updateUserName } from '../../services/neo4j';
 export default function Profile({
   userName,
   bio,
@@ -55,6 +56,7 @@ export default function Profile({
       setUserNameAndCollegeError(true);
     } else {
       setEditUserNameCollege(false);
+      await updateUserName(docId, newUserNameAndCollege.userName);
       let chatSession = localStorage.getItem('fetchChat');
       if (!chatSession) {
         return;
@@ -69,6 +71,7 @@ export default function Profile({
           chatSession,
           newData,
         });
+        socketForChats.disconnect();
       }
     }
   };

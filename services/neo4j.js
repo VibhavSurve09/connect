@@ -90,13 +90,27 @@ export const removeFriendNeo4j = async (docId, uid) => {
     await db.close();
   }
 };
-
+/// Change UserName
+export const updateUserName = async (docId, userName) => {
+  const db = await dbConnect();
+  const session = db.session();
+  const query = `MATCH (user:USER {docId:$docId}) SET user.userName=$userName`;
+  try {
+    const writeResult = await session.writeTransaction((tx) =>
+      tx.run(query, { docId, userName })
+    );
+  } catch {
+  } finally {
+    await session.close();
+    await db.close();
+  }
+};
 /// Recommendation System for users
 export const profilesYouMayKnow = async (selfUID, searchUID) => {
   let r_users = [];
   const db = await dbConnect();
   const session = db.session();
-  const queryForFriend = `MATCH (myself:USER {uid:$selfUID})-[:IS_FRIEND]->(:USER {uid:$searchUID})-[:IS_FRIEND]->(users:USER) WHERE myself<>users WITH users,rand() as r return users ORDER BY r LIMIT 7`;
+  const queryForFriend = `MATCH (self:USER {uid:$selfUID})-[:IS_FRIEND]->(friend:USER {uid:$searchUID})-[:IS_FRIEND]->(users:USER) WHERE self<>users AND NOT (self)-[:IS_FRIEND]->(users:USER)<-[:IS_FRIEND]-(friend)  WITH users,rand() as r return users ORDER BY r LIMIT 7`;
   try {
     const readResult = await session.readTransaction((tx) =>
       tx.run(queryForFriend, { selfUID, searchUID })
