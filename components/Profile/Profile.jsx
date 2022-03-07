@@ -11,7 +11,12 @@ import { useRouter } from 'next/router';
 import Projects from './Projects';
 import ProfileForYou from './ProfileForYou';
 import { socketForChats } from '../../server';
-import { updateUserName } from '../../services/neo4j';
+import {
+  removeSkillFromNeo4j,
+  updateUserName,
+  userSkillRelationShip,
+} from '../../services/neo4j';
+import axios from 'axios';
 export default function Profile({
   userName,
   bio,
@@ -32,6 +37,7 @@ export default function Profile({
   const activeUser = useContext(UserContext);
   const { data, loading } = useUser(activeUser?.uid);
   const router = useRouter();
+  let cancelToken;
   //*About
   const [aboutEdit, setAboutEdit] = useState(false);
   const [changeAbout, setChangeAbout] = useState(bio);
@@ -75,6 +81,72 @@ export default function Profile({
       }
     }
   };
+  //* For skills
+  const [editSkills, setEditSkills] = useState(false);
+  const [searchSkill, setSearchSkill] = useState('');
+  const [_skills, setSearchSkills] = useState([]);
+  const [oldSkills, setOldSkills] = useState(skills);
+  const [oldOldSkills, setOldOldSkills] = useState(skills);
+  const onSearch = async (e) => {
+    if (typeof cancelToken != typeof undefined) {
+      cancelToken.cancel();
+    }
+    cancelToken = axios.CancelToken.source();
+    setSearchSkill(e.target.value);
+    let __skills = await axios.get(
+      `${process.env.API_URI}/api/skills/${searchSkill}`,
+      {
+        headers: { id: uid, emailAddress: activeUser?.email },
+      },
+      { cancelToken: cancelToken.token }
+    );
+    setSearchSkills(__skills.data);
+  };
+  const addSkill = (skill) => {
+    const id = skill.split(',')[0];
+    const name = skill.split(',')[1];
+    const skillArr = { id: Number(id), name };
+    if (name != '') {
+      let doesExist = true;
+
+      for (let i = 0; i < oldSkills.length; i++) {
+        if (oldSkills[i].name == skillArr.name) {
+          doesExist = false;
+          break;
+        }
+      }
+      if (doesExist) setOldSkills((oldArr) => [...oldArr, skillArr]);
+    }
+    setSearchSkill('');
+  };
+  const removeSkill = async (skill) => {
+    oldSkills.splice(
+      oldSkills.findIndex((i) => i.id == skill.id),
+      1
+    );
+
+    setOldSkills([...oldSkills]);
+    await removeSkillFromNeo4j(uid, skill.name);
+  };
+  const saveSkills = async () => {
+    setEditSkills(false);
+    oldSkills.map(async (skill) => {
+      let oldUserSkill = false;
+      oldOldSkills.map((s) => {
+        if (s.id === skill.id) {
+          oldUserSkill = true;
+        }
+      });
+      if (!oldUserSkill) {
+        const skillWithUser = {
+          userId: uid,
+          skillId: skill.id,
+        };
+        await userSkillRelationShip(skillWithUser);
+      }
+    });
+  };
+
   return (
     <div className='flex flex-col h-auto bg-gray-100 lg:flex-row'>
       <Head>
@@ -321,46 +393,131 @@ export default function Profile({
               <div className='w-full px-2'>
                 <div className='py-3 text-lg text-gray-500 lg:text-xl hover:text-gray-600'>
                   <div className='w-full px-2'>
-                    <div className='py-3 overflow-auto text-lg text-gray-500 lg:text-xl hover:text-gray-600 max-h-72'>
-                      {skills.map((skill) => {
-                        return (
-                          <div
-                            key={skill.id}
-                            className='w-full px-4 py-2 mt-2 font-medium bg-gray-100 shadow-md rounded-xl'
+                    {}
+
+                    {editSkills ? (
+                      <>
+                        <div className='py-3 overflow-auto text-lg text-gray-500 lg:text-xl hover:text-gray-600 max-h-72'>
+                          {oldSkills.map((skill) => {
+                            return (
+                              <div
+                                key={skill.id}
+                                className='w-full px-4 py-2 mt-2 font-medium bg-gray-100 shadow-md rounded-xl'
+                              >
+                                <p className='text-black'>{skill.name}</p>
+                                <button
+                                  onClick={() => {
+                                    removeSkill({
+                                      id: skill.id,
+                                      name: skill.name,
+                                    });
+                                  }}
+                                  className='flex invisible justify-items-end group-hover:visible'
+                                >
+                                  <svg
+                                    xmlns='http://www.w3.org/2000/svg'
+                                    className='w-4 h-4 md:w-6 md:h-6'
+                                    fill='none'
+                                    viewBox='0 0 24 24'
+                                    stroke='currentColor'
+                                  >
+                                    <path d='M6 18L18 6M6 6l12 12' />
+                                  </svg>
+                                </button>
+                              </div>
+                            );
+                          })}
+                        </div>
+                        <input
+                          className='w-full px-2 py-3 text-lg text-black border-b-2 border-gray-500 lg:text-xl hover:text-gray-600'
+                          value={searchSkill}
+                          type='text'
+                          onChange={onSearch}
+                          pattern='.{3,}'
+                          required
+                          title='3 characters minimum'
+                        />
+                        <div className='block w-2/4 py-2 mt-1 border-black shadow-sm sm:text-sm'>
+                          <select
+                            className='w-full py-2 bg-gray-200'
+                            onChange={(e) => {
+                              addSkill(e.target.value);
+                            }}
                           >
-                            <p className='text-black'>{skill.name}</p>
-                          </div>
-                        );
-                      })}
-                    </div>
+                            {_skills.length > 0 &&
+                              _skills.map((skill) => {
+                                return (
+                                  <option
+                                    onClick={(e) => {
+                                      addSkill(e.target.value);
+                                    }}
+                                    className='font-lg'
+                                    key={skill.id}
+                                    value={`${skill.id},${skill.name}`}
+                                  >
+                                    {skill.name}
+                                  </option>
+                                );
+                              })}
+                          </select>
+                        </div>
+                      </>
+                    ) : (
+                      <div className='py-3 overflow-auto text-lg text-gray-500 lg:text-xl hover:text-gray-600 max-h-72'>
+                        {oldSkills.map((skill) => {
+                          return (
+                            <div
+                              key={skill.id}
+                              className='w-full px-4 py-2 mt-2 font-medium bg-gray-100 shadow-md rounded-xl'
+                            >
+                              <p className='text-black'>{skill.name}</p>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
 
               <div className='absolute top-0 right-0 left-auto z-auto flex justify-end invisible px-2 py-2 text-black hover:text-gray-600 group-hover:visible'>
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  className='w-6 h-6'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke='currentColor'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z'
-                  />
-                </svg>
-              </div>
-              <div className='flex flex-row justify-end'>
-                <button className='px-5 py-2 ml-2 font-medium text-white bg-indigo-400 rounded-lg w-fit hover:bg-indigo-600'>
-                  Save
-                </button>
-                <button className='px-3 py-2 ml-2 font-medium text-white bg-red-400 rounded-lg w-fit hover:bg-red-500'>
-                  Cancel
+                <button onClick={(e) => setEditSkills(true)}>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    className='w-6 h-6'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    stroke='currentColor'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z'
+                    />
+                  </svg>
                 </button>
               </div>
+              {editSkills ? (
+                <>
+                  {' '}
+                  <div className='flex flex-row justify-end'>
+                    <button
+                      className='px-5 py-2 ml-2 font-medium text-white bg-indigo-400 rounded-lg w-fit hover:bg-indigo-600'
+                      onClick={saveSkills}
+                    >
+                      Save
+                    </button>
+                    {/* Cancel Button Wont Be Shown  or If user removes a skill it is removed from DB*/}
+                    <button
+                      className='px-3 py-2 ml-2 font-medium text-white bg-red-400 rounded-lg w-fit hover:bg-red-500'
+                      onClick={(e) => setEditSkills(false)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </>
+              ) : null}
             </div>
 
             <div className='my-6'></div>

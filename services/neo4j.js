@@ -127,3 +127,19 @@ export const profilesYouMayKnow = async (selfUID, searchUID) => {
   }
   return r_users;
 };
+
+export const removeSkillFromNeo4j = async (uid, skillName) => {
+  const db = await dbConnect();
+  const session = db.session();
+  const query = `MATCH (user:USER {uid:$uid})-[has_a:HAS_A]->(skill:SKILL {name:$skillName}) DELETE has_a`;
+  try {
+    const writeResult = await session.writeTransaction((tx) =>
+      tx.run(query, { uid, skillName })
+    );
+  } catch (error) {
+    console.log('Something went wrong');
+  } finally {
+    await session.close();
+    await db.close();
+  }
+};
