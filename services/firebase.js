@@ -19,8 +19,8 @@ import { db, projectsCollectionRef, storage } from '../constants/firebase';
 import { userCollectionRef } from '../constants/firebase';
 // eslint-disable-next-line react-hooks/rules-of-hooks
 let path;
-export const uploadPhoto = async (displayName, profilePicture) => {
-  const imgRef = ref(storage, `profilePictures/${displayName}.png`);
+export const uploadPhoto = async (uid, profilePicture) => {
+  const imgRef = ref(storage, `profilePictures/${uid}.png`);
   const snapshot = await uploadBytes(imgRef, profilePicture);
   const uploadedUrl = await getDownloadURL(imgRef);
   return uploadedUrl;

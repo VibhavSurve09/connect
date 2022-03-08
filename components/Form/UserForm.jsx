@@ -30,7 +30,7 @@ function UserForm({ pageIncrementer }) {
       activeUser.displayName = userName;
       let imgUrl;
       if (profilePicture) {
-        imgUrl = await uploadPhoto(activeUser?.displayName, profilePicture);
+        imgUrl = await uploadPhoto(activeUser?.uid, profilePicture);
       }
 
       const userFormData = {
