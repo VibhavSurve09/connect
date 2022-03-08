@@ -1,19 +1,25 @@
 import Image from 'next/image';
 import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context/User';
-import { profilesYouMayKnow } from '../../services/neo4j';
+import { profilesYouMayKnow, randomUsers } from '../../services/neo4j';
 import ListOfProfileYouMayKnow from './ListOfProfileYouMayKnow';
 
-export default function ProfileYouMayKnow({ uid }) {
+export default function ProfileYouMayKnow({ uid, isFriend }) {
   const activeUser = useContext(UserContext);
   const [profiles, setProfiles] = useState([]);
   useEffect(() => {
     if (activeUser) {
-      profilesYouMayKnow(activeUser?.uid, uid).then((profiles) => {
+      profilesYouMayKnow(activeUser?.uid, uid, isFriend).then((profiles) => {
         setProfiles(profiles);
       });
+      // if (profiles.length <= 0) {
+      //   console.log('Random User Call');
+      //   randomUsers(uid).then((prof) => {
+      //     setProfiles(prof);
+      //   });
+      // }
     }
-  }, [activeUser]);
+  }, [activeUser, isFriend]);
   return (
     <div className='px-2'>
       {' '}

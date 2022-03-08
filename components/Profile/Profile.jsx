@@ -606,7 +606,7 @@ export default function Profile({
             Profiles for you{' '}
           </div>
         </div>
-        <ProfileForYou />
+        <ProfileForYou uid={uid} />
       </div>
       <div className='my-4 lg:my-0'></div>
     </div>

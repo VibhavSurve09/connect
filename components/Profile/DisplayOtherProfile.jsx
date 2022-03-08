@@ -292,7 +292,7 @@ export default function DisplayOtherProfile({
             Profiles you may know{' '}
           </div>
         </div>
-        <ProfileYouMayKnow uid={uid} />
+        <ProfileYouMayKnow uid={uid} isFriend={isFriend} />
       </div>
       <div className='my-4 lg:my-0'></div>
     </div>

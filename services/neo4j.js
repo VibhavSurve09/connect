@@ -106,26 +106,46 @@ export const updateUserName = async (docId, userName) => {
   }
 };
 /// Recommendation System for users
-export const profilesYouMayKnow = async (selfUID, searchUID) => {
+export const profilesYouMayKnow = async (selfUID, searchUID, isFriend) => {
   let r_users = [];
   const db = await dbConnect();
   const session = db.session();
-  const queryForFriend = `MATCH (self:USER {uid:$selfUID})-[:IS_FRIEND]->(friend:USER {uid:$searchUID})-[:IS_FRIEND]->(users:USER) WHERE self<>users AND NOT (self)-[:IS_FRIEND]->(users:USER)<-[:IS_FRIEND]-(friend)  WITH users,rand() as r return users ORDER BY r LIMIT 7`;
-  try {
-    const readResult = await session.readTransaction((tx) =>
-      tx.run(queryForFriend, { selfUID, searchUID })
-    );
+  if (isFriend) {
+    const queryForFriend = `MATCH (self:USER {uid:$selfUID})-[:IS_FRIEND]->(friend:USER {uid:$searchUID})-[:IS_FRIEND]->(users:USER) WHERE self<>users AND NOT (self)-[:IS_FRIEND]->(users:USER)<-[:IS_FRIEND]-(friend)  WITH users,rand() as r return users ORDER BY r LIMIT 7`;
+    try {
+      console.log('Calling Friend Query');
+      const readResult = await session.readTransaction((tx) =>
+        tx.run(queryForFriend, { selfUID, searchUID })
+      );
 
-    readResult.records.forEach((record) => {
-      const users = record.get('users');
-      r_users.push({ ...users.properties });
-    });
-  } catch {
-  } finally {
-    await session.close();
-    await db.close();
+      readResult.records.forEach((record) => {
+        const users = record.get('users');
+        r_users.push({ ...users.properties });
+      });
+    } catch {
+    } finally {
+      await session.close();
+      await db.close();
+    }
+    return r_users;
+  } else {
+    const queryForFriend = `MATCH (self:USER {uid:$selfUID}),(users:USER),(searchedUser:USER {uid:$searchUID}) WHERE self<>users AND users<>searchedUser AND NOT (self)-[:IS_FRIEND]->(users)  WITH users,rand() as r return users ORDER BY r LIMIT 7`;
+    try {
+      const readResult = await session.readTransaction((tx) =>
+        tx.run(queryForFriend, { selfUID, searchUID })
+      );
+
+      readResult.records.forEach((record) => {
+        const users = record.get('users');
+        r_users.push({ ...users.properties });
+      });
+    } catch {
+    } finally {
+      await session.close();
+      await db.close();
+    }
+    return r_users;
   }
-  return r_users;
 };
 
 export const removeSkillFromNeo4j = async (uid, skillName) => {
@@ -142,4 +162,47 @@ export const removeSkillFromNeo4j = async (uid, skillName) => {
     await session.close();
     await db.close();
   }
+};
+
+export const profilesForYou = async (uid) => {
+  let r_users = [];
+  const db = await dbConnect();
+  const session = db.session();
+  const query = `MATCH (user:USER {uid:$uid})-[h:HAS_A]->(:SKILL)<-[:HAS_A]-(users:USER) WHERE user<>users AND NOT (user)-[:IS_FRIEND]->(:USER)<-[:IS_FRIEND]-(users) WITH users,rand() AS r RETURN users ORDER BY r LIMIT 7`;
+  try {
+    const readResult = await session.readTransaction((tx) =>
+      tx.run(query, { uid })
+    );
+
+    readResult.records.forEach((record) => {
+      const users = record.get('users');
+      r_users.push({ ...users.properties });
+    });
+  } catch {
+  } finally {
+    await session.close();
+    await db.close();
+  }
+  return r_users;
+};
+export const randomUsers = async (uid) => {
+  let r_users = [];
+  const db = await dbConnect();
+  const session = db.session();
+  const query = `MATCH (user:USER {uid:$uid}),(users:USER) WHERE users<>user AND NOT (user)-[:IS_FRIEND]->(users) WITH users,rand() as r RETURN users ORDER BY r LIMIT 7`;
+  try {
+    const readResult = await session.readTransaction((tx) =>
+      tx.run(query, { uid })
+    );
+
+    readResult.records.forEach((record) => {
+      const users = record.get('users');
+      r_users.push({ ...users.properties });
+    });
+  } catch {
+  } finally {
+    await session.close();
+    await db.close();
+  }
+  return r_users;
 };

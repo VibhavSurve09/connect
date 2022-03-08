@@ -5,7 +5,7 @@ import { UserContext } from '../../context/User';
 import { useUser } from '../../hooks/useUser';
 import { handleFollowUser } from '../../services/firebase';
 
-export default function ListOfProfileYouMayKnow({ profile }) {
+export default function ListOfProfilesForYou({ profile }) {
   const [follow, setFollow] = useState(false);
   const activeUser = useContext(UserContext);
   const { data, loading } = useUser(activeUser?.uid);
