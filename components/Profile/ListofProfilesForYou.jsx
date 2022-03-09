@@ -1,9 +1,9 @@
-import axios from 'axios';
-import Image from 'next/image';
-import React, { useContext, useState } from 'react';
-import { UserContext } from '../../context/User';
-import { useUser } from '../../hooks/useUser';
-import { handleFollowUser } from '../../services/firebase';
+import axios from "axios";
+import Image from "next/image";
+import React, { useContext, useState } from "react";
+import { UserContext } from "../../context/User";
+import { useUser } from "../../hooks/useUser";
+import { handleFollowUser } from "../../services/firebase";
 
 export default function ListOfProfilesForYou({ profile }) {
   const [follow, setFollow] = useState(false);
@@ -38,15 +38,25 @@ export default function ListOfProfilesForYou({ profile }) {
     }
   };
   return (
-    <>
-      <Image
-        src={profile.photoURL}
-        alt={`${profile.userName} display picture`}
-        height={20}
-        width={20}
-      />
-      <>{profile.userName}</>
-      <button onClick={addFriend}>Follow</button>
-    </>
+    <div className="flex flex-row items-center">
+      <div className="flex items-center">
+        <Image
+          src={profile.photoURL}
+          alt={`${profile.userName} display picture`}
+          height={30}
+          width={30}
+          className="rounded-full"
+        />
+      </div>
+      <div className="px-2 font-medium">{profile.userName}</div>
+      <div className="flex justify-end text-black hover:text-gray-600">
+        <button
+          onClick={addFriend}
+          className="px-2 py-1 text-white bg-indigo-600 rounded-lg hover:bg-indigo-500"
+        >
+          Follow
+        </button>
+      </div>
+    </div>
   );
 }

@@ -4,6 +4,8 @@ import { UserContext } from "../context/User";
 import UserNavbar from "./UserNavbar";
 import NonUserNavbar from "./NonUserNavbar";
 import Profilepic from "./Profilepic";
+import Logo from "../public/images/logo1.png";
+import Image from "next/image";
 export default function Navbar() {
   const user = useContext(UserContext);
   const [isHamburgerActive, setActive] = useState(false);
@@ -11,9 +13,9 @@ export default function Navbar() {
     <nav
       className={`w-full px-6 py-3 lg:flex bg-gradient-to-r to-indigo-300 via-indigo-200 from-indigo-50  ${styles.boxshadow}`}
     >
-      <div className="flex justify-between py-3">
+      <div className="flex items-center justify-between">
         <div className="items-center flex-shrink-0 inline-block px-5 py-2 text-xl font-bold text-black">
-          <h1>📱 ConnectU</h1>
+          <Image src={Logo} height={40} width={165} alt="logo" />
         </div>
       </div>
 
@@ -35,7 +37,7 @@ export default function Navbar() {
       <div
         className={`${
           isHamburgerActive ? "max-h-48" : "max-h-0 lg:max-h-32"
-        }  overflow-auto w-full items-center flex-grow lg:flex lg:justify-center  lg:px-3`}
+        } overflow-auto lg:overflow-visible  w-full items-center flex-grow lg:flex lg:justify-center  lg:px-3`}
       >
         {user ? (
           <>

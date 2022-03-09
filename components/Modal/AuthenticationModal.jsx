@@ -51,38 +51,40 @@ export default function AuthenticationModal({ closeButton }) {
       });
   };
   return (
-    <div className="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-slate-800 bg-opacity-70 sm:bg-opacity-60">
-      <div className="bg-white px-16 py-14 rounded-md text-center">
-        <button
-          onClick={() => {
-            closeButton(false);
-          }}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 fill-current text-gray-700 cursor-pointer -mt-12 hover:fill-gray-50"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
+    <div className="fixed bottom-0 left-0 flex items-center justify-center w-full h-full bg-slate-800 bg-opacity-70 sm:bg-opacity-60">
+      <div className="px-16 text-center bg-white rounded-md py-14">
+        <div className="flex justify-center">
+          <button
+            onClick={() => {
+              closeButton(false);
+            }}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
-        <h1 className="text-xl mb-4 font-bold text-slate-500">Sign-up using</h1>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-6 h-6 -mt-12 text-gray-700 cursor-pointer fill-current hover:fill-gray-50"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+        <h1 className="mb-4 text-xl font-bold text-slate-500">Sign-up using</h1>
         <button
           onClick={googleSignIn}
-          className="bg-red-500 px-4 py-2 rounded-md text-md text-white"
+          className="px-4 py-2 text-white bg-red-500 rounded-md text-md"
         >
           Google
         </button>
         <button
           onClick={gitHubSignIn}
-          className="bg-black px-7 py-2 ml-2 rounded-md text-md text-white font-semibold"
+          className="py-2 ml-2 font-semibold text-white bg-black rounded-md px-7 text-md"
         >
           Github
         </button>

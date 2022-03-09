@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../context/User";
 import { useUser } from "../../hooks/useUser";
+import Posts from "./Posts";
 import {
   editUserAbout,
   updateUserNameAndCollege,
@@ -368,6 +369,71 @@ export default function Profile({
             </div>
             <div className="my-6"></div>
 
+            <div className="relative flex flex-col p-5 mx-auto bg-white border-t-4 border-indigo-400 rounded-lg shadow-lg group">
+              <div className="flex flex-row">
+                <div className="text-black">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6 lg:mt-2 md:mt-1 sm:mt-0"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                    />
+                  </svg>
+                </div>
+                <div className="px-2 text-lg font-semibold text-black md:text-2xl lg:text-3xl">
+                  Your Posts{" "}
+                </div>
+              </div>
+              <div className="overflow-auto max-h-44">
+                <Posts />
+              </div>
+              <div className="absolute top-0 right-0 left-auto z-auto flex justify-end invisible px-2 py-2 text-black hover:text-gray-600 group-hover:visible">
+                <button onClick={(e) => setAboutEdit(true)}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                    />
+                  </svg>
+                </button>
+              </div>
+              {aboutEdit ? (
+                <>
+                  <div className="flex flex-row justify-end">
+                    <button
+                      className="px-5 py-2 ml-2 font-medium text-white bg-indigo-400 rounded-lg hover:bg-indigo-600 w-fit"
+                      onClick={editAbout}
+                    >
+                      Save
+                    </button>
+                    <button
+                      className="px-3 py-2 ml-2 font-medium text-white bg-red-400 rounded-lg w-fit hover:bg-red-500"
+                      onClick={(e) => setAboutEdit(false)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </>
+              ) : null}
+            </div>
+
+            <div className="my-6"></div>
+
             <div className="relative flex flex-col p-5 mx-auto bg-white border-t-4 border-indigo-400 rounded-lg shadow-lg group ">
               <div className="flex flex-row">
                 <div className="text-black">
@@ -404,26 +470,30 @@ export default function Profile({
                                 key={skill.id}
                                 className="flex flex-col w-full px-4 py-2 mt-2 font-medium bg-gray-100 shadow-md rounded-xl"
                               >
-                                <p className="text-black">{skill.name}</p>
-                                <button
-                                  onClick={() => {
-                                    removeSkill({
-                                      id: skill.id,
-                                      name: skill.name,
-                                    });
-                                  }}
-                                  className="flex invisible justify-items-end group-hover:visible"
-                                >
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    className="w-4 h-4 md:w-6 md:h-6"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                  >
-                                    <path d="M6 18L18 6M6 6l12 12" />
-                                  </svg>
-                                </button>
+                                <div className="flex flex-row">
+                                  <p className="text-black">{skill.name}</p>
+                                  <div className="flex justify-end w-full">
+                                    <button
+                                      onClick={() => {
+                                        removeSkill({
+                                          id: skill.id,
+                                          name: skill.name,
+                                        });
+                                      }}
+                                      className="invisible group-hover:visible"
+                                    >
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        className="w-4 h-4 md:w-6 md:h-6"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor"
+                                      >
+                                        <path d="M6 18L18 6M6 6l12 12" />
+                                      </svg>
+                                    </button>
+                                  </div>
+                                </div>
                               </div>
                             );
                           })}
@@ -435,6 +505,7 @@ export default function Profile({
                           onChange={onSearch}
                           pattern=".{3,}"
                           required
+                          placeholder="Add your latest skills..."
                           title="3 characters minimum"
                         />
                         <div className="block w-2/4 py-2 mt-1 border-black shadow-sm sm:text-sm">

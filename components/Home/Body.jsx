@@ -22,7 +22,7 @@ export default function () {
               today
             </h2>
 
-            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 lg:text-base">
+            <p className="mt-2 text-base text-gray-800 dark:text-gray-400 lg:text-lg">
               Welcome to your community. Find other students based on your
               preferences and collaborate on projects. Build something
               innovative.

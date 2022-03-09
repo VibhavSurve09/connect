@@ -1,9 +1,10 @@
-import app from '../lib/firebase';
-import { getStorage } from '@firebase/storage';
-import { collection, getFirestore } from '@firebase/firestore';
-import { getAuth } from '@firebase/auth';
+import app from "../lib/firebase";
+import { getStorage } from "@firebase/storage";
+import { collection, getFirestore } from "@firebase/firestore";
+import { getAuth } from "@firebase/auth";
 export const storage = getStorage(app);
 export const db = getFirestore(app);
-export const userCollectionRef = collection(db, 'users');
+export const userCollectionRef = collection(db, "users");
 export const auth = getAuth(app);
-export const projectsCollectionRef = collection(db, 'projects');
+export const projectsCollectionRef = collection(db, "projects");
+export const postsReff = collection(db, "posts");

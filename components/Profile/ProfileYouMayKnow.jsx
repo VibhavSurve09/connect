@@ -1,8 +1,8 @@
-import Image from 'next/image';
-import React, { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../../context/User';
-import { profilesYouMayKnow, randomUsers } from '../../services/neo4j';
-import ListOfProfileYouMayKnow from './ListOfProfileYouMayKnow';
+import Image from "next/image";
+import React, { useContext, useEffect, useState } from "react";
+import { UserContext } from "../../context/User";
+import { profilesYouMayKnow, randomUsers } from "../../services/neo4j";
+import ListOfProfileYouMayKnow from "./ListOfProfileYouMayKnow";
 
 export default function ProfileYouMayKnow({ uid, isFriend }) {
   const activeUser = useContext(UserContext);
@@ -21,9 +21,9 @@ export default function ProfileYouMayKnow({ uid, isFriend }) {
     }
   }, [activeUser, isFriend]);
   return (
-    <div className='px-2'>
-      {' '}
-      <p className='py-3 text-lg text-gray-500 lg:text-xl hover:text-gray-600'>
+    <div className="px-2 py-3">
+      {" "}
+      <p className="flex items-center px-3 py-3 text-lg text-gray-500 bg-gray-200 rounded-md lg:text-xl hover:text-gray-600">
         {profiles.length > 0 ? (
           <>
             {profiles.map((profile) => {
