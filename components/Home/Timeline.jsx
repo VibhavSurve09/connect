@@ -1,14 +1,13 @@
-import React from 'react';
+import React from "react";
 
 export default function Timeline({ posts }) {
   return (
     <div>
-      Timeline
       {posts.length > 0 ? (
         <>
           {posts.map((post, index) => {
             return (
-              <div key={index}>
+              <div key={index} className="bg-red-300 rounded-md">
                 <p>{post.userName}</p>
                 <p>{post.postContent}</p>
               </div>
