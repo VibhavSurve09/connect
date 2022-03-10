@@ -256,3 +256,30 @@ export const getPosts = async (docId) => {
   const post = data.data();
   return post;
 };
+
+export const getCountOfUsers = async () => {
+  const querySnapshot = await getDocs(userCollectionRef);
+  let count = [];
+  querySnapshot.forEach((doc) => {
+    count.push({ ...doc.data() });
+  });
+  return count.length;
+};
+
+export const getCountOfPosts = async () => {
+  const querySnapshot = await getDocs(postsReff);
+  let count = [];
+  querySnapshot.forEach((doc) => {
+    count.push({ ...doc.data() });
+  });
+  return count.length;
+};
+
+export const getCountOfProjects = async () => {
+  const querySnapshot = await getDocs(postsReff);
+  let count = [];
+  querySnapshot.forEach((doc) => {
+    count.push({ ...doc.data() });
+  });
+  return count.length;
+};
