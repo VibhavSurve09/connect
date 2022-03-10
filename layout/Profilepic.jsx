@@ -66,6 +66,7 @@ export default function Profilepic({ userData }) {
                 <li>
                   <hr />
                 </li>
+
                 <li className="flex justify-center px-2 py-2 mr-4 text-xl font-bold ">
                   <button
                     onClick={handleLogOut}

@@ -19,8 +19,12 @@ export default function Feed() {
     id: data?.uid,
     emailAddress: data?.emailAddress,
   };
+  const closePost = () => {
+    setDivClick(false);
+    setInput("");
+  };
   const savePostToFB = async () => {
-    if (data && !loading) {
+    if (data && !loading && !input.trim() == "") {
       const post = {
         userName: data.userName,
         userNameDocId: data.docId,
@@ -71,9 +75,9 @@ export default function Feed() {
   }, [timeline]);
   return (
     <div className="flex justify-center min-h-screen bg-gray-200 ">
-      <div className="relative flex flex-row justify-center w-full top-7">
+      <div className="flex flex-row justify-center w-full">
         {data && !loading ? (
-          <div className="flex w-full lg:w-2/4 justify-">
+          <div className="flex w-full mt-3 lg:w-2/4">
             <div className="w-full bg-white border-t-4 border-indigo-400 rounded-md shadow-md h-fit">
               <div>
                 {" "}
@@ -108,7 +112,7 @@ export default function Feed() {
                     </button>
                     <button
                       className="px-3 py-2 ml-2 font-medium text-white bg-red-500 rounded-lg w-fit hover:bg-red-400"
-                      onClick={(e) => setDivClick(false)}
+                      onClick={closePost}
                     >
                       Cancel
                     </button>
