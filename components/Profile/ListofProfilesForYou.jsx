@@ -38,21 +38,24 @@ export default function ListOfProfilesForYou({ profile }) {
     }
   };
   return (
-    <div className="flex flex-row items-center">
-      <div className="flex items-center">
+    <div className="flex flex-col w-full py-2 mt-3 overflow-auto bg-gray-100 border-2 border-indigo-400 lg:max-h-screen">
+      <div className="flex items-center justify-center px-2">
         <Image
           src={profile.photoURL}
           alt={`${profile.userName} display picture`}
-          height={30}
-          width={30}
+          height={90}
+          width={90}
           className="rounded-full"
         />
       </div>
-      <div className="px-2 font-medium">{profile.userName}</div>
-      <div className="flex justify-end text-black hover:text-gray-600">
+
+      <div className="flex justify-center px-2 font-serif text-xl font-semibold">
+        {profile.userName}
+      </div>
+      <div className="flex justify-center text-black hover:text-gray-600">
         <button
           onClick={addFriend}
-          className="px-2 py-1 text-white bg-indigo-600 rounded-lg hover:bg-indigo-500"
+          className="px-2 py-1 text-sm text-white bg-indigo-600 rounded-lg hover:bg-indigo-500"
         >
           Follow
         </button>

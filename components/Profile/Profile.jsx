@@ -157,7 +157,7 @@ export default function Profile({
       <div className="w-full text-white lg:max-w-7xl bg-main-color ">
         <div className="flex flex-row max-w-screen-xl px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
           <div className="container p-5 mx-auto my-5">
-            <div className="flex flex-col  group">
+            <div className="flex flex-col group">
               <div className="w-full shadow-lg">
                 <div className="flex flex-col p-5 bg-white border-t-4 border-indigo-400 rounded-lg lg:flex-row sm:flex-row">
                   <div className="flex items-center justify-center md:max-w-fit sm:w-7/12 lg:max-w-fit md:mx-4">
@@ -657,22 +657,6 @@ export default function Profile({
 
       <div className="w-4/5 h-auto p-5 mx-auto -mt-4 bg-white border-t-4 border-indigo-400 rounded-lg shadow-lg lg:mt-10 lg:mr-10 lg:min-h-40 lg:w-1/4 lg:h-2/4">
         <div className="flex flex-row">
-          <div className="text-black">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-6 h-6 lg:mt-2 md:mt-1 sm:mt-0"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-              />
-            </svg>
-          </div>
           <div className="px-2 text-lg font-semibold text-black md:text-2xl lg:text-3xl">
             Profiles for you{" "}
           </div>

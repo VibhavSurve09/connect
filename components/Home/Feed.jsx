@@ -73,7 +73,7 @@ export default function Feed() {
     <div className="flex justify-center min-h-screen bg-gray-200 ">
       <div className="relative flex flex-row justify-center w-full top-7">
         {data && !loading ? (
-          <div className="flex w-full lg:w-1/3 justify-">
+          <div className="flex w-full lg:w-2/4 justify-">
             <div className="w-full bg-white border-t-4 border-indigo-400 rounded-md shadow-md h-fit">
               <div>
                 {" "}

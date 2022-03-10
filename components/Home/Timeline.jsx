@@ -1,11 +1,15 @@
 import React from "react";
 import Image from "next/image";
+import moment from "moment";
 export default function Timeline({ posts }) {
   return (
-    <div className="flex flex-col w-full lg:w-1/3">
+    <div className="flex flex-col w-full lg:w-2/4">
       {posts.length > 0 ? (
         <>
           {posts.map((post, index) => {
+            if (index > 15) {
+              return;
+            }
             return (
               <div
                 key={index}
@@ -13,7 +17,6 @@ export default function Timeline({ posts }) {
               >
                 <div className="w-full pb-3">
                   {/* <Image src={post.photoURL} height={30} width={30}></Image> */}
-                  {console.log(post.photoURL, post)}
                   <p className="block font-bold text-black">{post.userName}</p>
 
                   <p className="block mt-2 text-xl leading-snug text-black dark:text-white">
@@ -21,6 +24,9 @@ export default function Timeline({ posts }) {
                   </p>
                 </div>
                 <div className="py-1">
+                  <p className="text-sm text-gray-500">
+                    {moment.unix(post.timeStamp.seconds).format("LLL")}
+                  </p>
                   <button>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

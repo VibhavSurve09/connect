@@ -23,7 +23,7 @@ function ProfileForYou({ uid }) {
   return (
     <div className="px-2 py-3">
       {" "}
-      <p className="flex items-center px-3 py-3 text-lg text-gray-500 bg-gray-200 rounded-md lg:text-xl hover:text-gray-600">
+      <p className="flex flex-col items-center px-3 py-3 text-lg text-gray-500 rounded-md lg:text-xl hover:text-gray-600">
         {profiles.length > 0 ? (
           <>
             {profiles.map((profile) => {
