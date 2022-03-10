@@ -1,30 +1,52 @@
+import { useEffect, useState } from 'react';
+import { useShowCount } from '../../hooks/useShowCount';
+import {
+  getCountOfPosts,
+  getCountOfProjects,
+  getCountOfUsers,
+} from '../../services/firebase';
 export default function Statistics() {
+  const [activeusers, setActiveusers] = useState(0);
+  const [projects, setProjects] = useState(0);
+  const [ideas, setIdeas] = useState(0);
+  let count = useShowCount();
+  useEffect(() => {
+    getCountOfUsers().then((c) => {
+      setActiveusers(c);
+    });
+    getCountOfPosts().then((c) => {
+      setIdeas(c);
+    });
+    getCountOfProjects().then((c) => {
+      setProjects(c);
+    });
+  }, []);
   return (
-    <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20 z-20">
-      <div className="grid grid-cols-2 row-gap-8 md:grid-cols-4">
-        <div className="text-center">
-          <h6 className="text-3xl font-bold text-deep-purple-accent-400">
-            144K
+    <div className='z-20 px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20'>
+      <div className='grid grid-cols-2 row-gap-8 md:grid-cols-4'>
+        <div className='text-center'>
+          <h6 className='text-3xl font-bold text-deep-purple-accent-400'>
+            {activeusers}+
           </h6>
-          <p className="font-bold">Downloads</p>
+          <p className='font-bold'>Users</p>
         </div>
-        <div className="text-center">
-          <h6 className="text-3xl font-bold text-deep-purple-accent-400">
-            32.1K
+        <div className='text-center'>
+          <h6 className='text-3xl font-bold text-deep-purple-accent-400'>
+            {count}+
           </h6>
-          <p className="font-bold">Users</p>
+          <p className='font-bold'>Online Right Now</p>
         </div>
-        <div className="text-center">
-          <h6 className="text-3xl font-bold text-deep-purple-accent-400">
-            12.9K
+        <div className='text-center'>
+          <h6 className='text-3xl font-bold text-deep-purple-accent-400'>
+            {ideas}+
           </h6>
-          <p className="font-bold">Subscribers</p>
+          <p className='font-bold'>Ideas Shared</p>
         </div>
-        <div className="text-center">
-          <h6 className="text-3xl font-bold text-deep-purple-accent-400">
-            24.5K
+        <div className='text-center'>
+          <h6 className='text-3xl font-bold text-deep-purple-accent-400'>
+            {projects}
           </h6>
-          <p className="font-bold">Cookies</p>
+          <p className='font-bold'>Projects Shared</p>
         </div>
       </div>
     </div>
