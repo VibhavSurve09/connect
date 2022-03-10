@@ -168,7 +168,7 @@ export const profilesForYou = async (uid) => {
   let r_users = [];
   const db = await dbConnect();
   const session = db.session();
-  const query = `MATCH (user:USER {uid:$uid})-[h:HAS_A]->(:SKILL)<-[:HAS_A]-(users:USER) WHERE user<>users AND NOT (user)-[:IS_FRIEND]->(:USER)<-[:IS_FRIEND]-(users) WITH users,rand() AS r RETURN users ORDER BY r LIMIT 7`;
+  const query = `MATCH (user:USER {uid:$uid})-[h:HAS_A]->(:SKILL)<-[:HAS_A]-(users:USER) WHERE user<>users AND NOT (user)-[:IS_FRIEND]->(users) WITH users,rand() AS r RETURN users ORDER BY r LIMIT 7`;
   try {
     const readResult = await session.readTransaction((tx) =>
       tx.run(query, { uid })
