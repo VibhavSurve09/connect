@@ -23,7 +23,7 @@ function Posts() {
   return (
     <div>
       {posts.length > 0 ? (
-        <div className="w-full">
+        <div className="flex justify-center w-full">
           <ListOfPosts posts={posts} />
         </div>
       ) : (

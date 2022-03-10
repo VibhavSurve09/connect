@@ -157,7 +157,7 @@ export default function Profile({
       <div className="w-full text-white lg:max-w-7xl bg-main-color ">
         <div className="flex flex-row max-w-screen-xl px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
           <div className="container p-5 mx-auto my-5">
-            <div className="relative flex flex-col group">
+            <div className="flex flex-col  group">
               <div className="w-full shadow-lg">
                 <div className="flex flex-col p-5 bg-white border-t-4 border-indigo-400 rounded-lg lg:flex-row sm:flex-row">
                   <div className="flex items-center justify-center md:max-w-fit sm:w-7/12 lg:max-w-fit md:mx-4">
@@ -391,7 +391,7 @@ export default function Profile({
                   Your Posts{" "}
                 </div>
               </div>
-              <div className="overflow-auto max-h-44">
+              <div className="overflow-auto max-h-96">
                 <Posts />
               </div>
               <div className="absolute top-0 right-0 left-auto z-auto flex justify-end invisible px-2 py-2 text-black hover:text-gray-600 group-hover:visible">
