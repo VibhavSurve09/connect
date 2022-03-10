@@ -14,7 +14,6 @@ function Posts() {
       let { postsRef } = data;
       if (postsRef) {
         postsRef.map((ref) => {
-          console.log(ref);
           getPosts(ref).then((postData) => {
             setAllPosts((oldPosts) => [...oldPosts, postData]);
           });
