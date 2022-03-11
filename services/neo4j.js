@@ -283,14 +283,14 @@ export const postsOfMe = async (userName) => {
   return posts;
 };
 
-export const postsThatIhaveLiked = async (uid) => {
+export const postsThatIhaveLiked = async (userName) => {
   const db = await dbConnect();
   const session = db.session();
   let posts = [];
-  const query = `MATCH (user:USER {uid:$uid})-[:LIKED]->(post:POST) RETURN post`;
+  const query = `MATCH (user:USER {userName:$userName})-[:LIKED]->(post:POST) RETURN post ORDER BY post.timeStamp`;
   try {
     const readResult = await session.readTransaction((tx) =>
-      tx.run(query, { uid })
+      tx.run(query, { userName })
     );
 
     readResult.records.forEach((record) => {
