@@ -1,8 +1,8 @@
-import { getUserDataByUserName } from '../../services/firebase';
-import Profile from '../../components/Profile/Profile';
+import { getUserDataByUserName } from '../../../services/firebase';
+import Profile from '../../../components/Profile/Profile';
 import { getCookie } from 'cookies-next';
-import { userWithIdSkills } from '../../services/neo4j';
-import DisplayOtherProfile from '../../components/Profile/DisplayOtherProfile';
+import { userWithIdSkills } from '../../../services/neo4j';
+import DisplayOtherProfile from '../../../components/Profile/DisplayOtherProfile';
 const jwt = require('jsonwebtoken');
 const UserProfile = ({ data, self, skills }) => {
   const userData = JSON.parse(data);
