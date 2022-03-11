@@ -2,10 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import Image from "next/image";
 import { UserContext } from "../../context/User";
 import moment from "moment";
-<<<<<<< HEAD
 import { useRouter } from "next/router";
-=======
->>>>>>> utkarsh/ui
 import { disLikePost, haveILikedThePost, likePost } from "../../services/neo4j";
 import {
   decreaseLikeCountInFB,
@@ -45,15 +42,15 @@ function Post({ postInfo }) {
     router.push(`/p/${docId}`);
   };
   return (
-    <div
-      className="px-3 py-3 mt-2 mb-3 bg-white border-2 border-indigo-400 divide-y-2 divide-gray-500 rounded-lg hover:cursor-pointer hover:px-6 bg-white-300"
-      onClick={redirectToPost}
-    >
+    <div className="px-3 py-3 mt-2 mb-3 bg-white border-2 border-indigo-400 divide-y-2 divide-gray-500 rounded-lg hover:px-6 bg-white-300">
       <div className="w-full pb-3">
         {/* <Image src={post.photoURL} height={30} width={30}></Image> */}
         <p className="block font-bold text-black">{post.userName}</p>
 
-        <p className="block mt-2 overflow-auto text-xl leading-snug text-black max-h-64">
+        <p
+          className="block mt-2 overflow-auto text-xl leading-snug text-black max-h-64 hover:cursor-pointer"
+          onClick={redirectToPost}
+        >
           {post.postContent}
         </p>
       </div>
