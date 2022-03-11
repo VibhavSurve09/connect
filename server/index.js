@@ -107,6 +107,14 @@ chatsNamespace.on('connection', (socket) => {
       connected: false,
     });
   });
+
+  socket.on('profilephoto_change', ({ chatSession, newData }) => {
+    sessionStore.saveSession(chatSession, {
+      uid: socket.uid,
+      userData: newData,
+      connected: false,
+    });
+  });
   socket.on('disconnect', async () => {
     activeUsersCount--;
     const matchingSockets = await io.in(socket.uid).allSockets();
