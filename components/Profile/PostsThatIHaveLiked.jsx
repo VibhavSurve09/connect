@@ -1,8 +1,8 @@
-import { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../../context/User';
-import { useUser } from '../../hooks/useUser';
-import { getPosts } from '../../services/firebase';
-import { postsThatIhaveLiked } from '../../services/neo4j';
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../../context/User";
+import { useUser } from "../../hooks/useUser";
+import { getPosts } from "../../services/firebase";
+import { postsThatIhaveLiked } from "../../services/neo4j";
 export default function PostsThatIHaveLiked({ username }) {
   const [refs, setRefs] = useState([]);
   const [posts, setPosts] = useState([]);

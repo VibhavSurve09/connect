@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import Image from "next/image";
 import { UserContext } from "../../context/User";
 import moment from "moment";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { disLikePost, haveILikedThePost, likePost } from "../../services/neo4j";
 import {
@@ -58,7 +59,7 @@ function Post({ postInfo }) {
               ></Image>
             </div>
             <p className="block px-3 text-lg font-bold text-black">
-              {post.userName}
+              <Link href={`/profile/${post.userName}`}>{post.userName}</Link>
             </p>
           </div>
         )}

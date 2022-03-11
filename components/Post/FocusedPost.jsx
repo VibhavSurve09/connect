@@ -8,6 +8,7 @@ import { disLikePost } from "../../services/neo4j";
 import { decreaseLikeCountInFB } from "../../services/firebase";
 import { haveILikedThePost } from "../../services/neo4j";
 import { getUserByDocId } from "../../services/firebase";
+import Link from "next/link";
 import moment from "moment";
 function FocusedPost({ docId }) {
   const [postData, setPostData] = useState({});
@@ -67,7 +68,9 @@ function FocusedPost({ docId }) {
                 />
               ) : null}
               <p className="pl-3 text-2xl font-medium">
-                {userDataWhoPosted.userName}
+                {/* <Link href={`/profile/${userDataWhoPosted?.userName}`}> */}
+                {userDataWhoPosted?.userName}
+                {/* </Link> */}
               </p>
             </div>
             <p className="py-3 mt-2 overflow-auto text-lg max-h-96">

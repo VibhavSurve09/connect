@@ -1,9 +1,9 @@
-import React from 'react';
-import AllPostsOfUser from '../../../components/Profile/UserPosts';
+import React from "react";
+import AllPostsOfUser from "../../../components/Profile/UserPosts";
 
 function UserPosts({ userName }) {
   return (
-    <div>
+    <div className="flex justify-center mt-2 bg-gray-100">
       <AllPostsOfUser username={userName} />
     </div>
   );
