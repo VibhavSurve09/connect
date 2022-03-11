@@ -191,7 +191,7 @@ export default function Profile({
                       <>
                         <span className="my-1 text-2xl font-semibold leading-8 text-gray-900 lg:text-5xl sm:text-2xl md:text-3xl">
                           <input
-                            className={`w-full px-2 py-3 text-lg text-black border-b-2 border-gray-500 lg:text-xl hover:text-gray-600 ${
+                            className={`w-full px-2 py-1 text-lg text-black border-b-2 border-gray-500 lg:text-xl hover:text-gray-600 ${
                               userNameAndCollegError && "border-red-400"
                             }`}
                             value={newUserNameAndCollege.userName}
@@ -209,7 +209,7 @@ export default function Profile({
                         </span>
                         <h3 className="mt-1 leading-6 text-gray-600 font-lg text-semibold lg:text-2xl">
                           <input
-                            className="w-full px-2 py-3 text-lg text-black border-b-2 border-gray-500 lg:text-xl hover:text-gray-600"
+                            className="w-full px-2 py-1 text-lg text-black border-b-2 border-gray-500 lg:text-xl hover:text-gray-600"
                             value={newUserNameAndCollege.college}
                             type="text"
                             onChange={(e) =>
@@ -223,6 +223,16 @@ export default function Profile({
                             title="3 characters minimum"
                           />
                         </h3>{" "}
+                        <span className="my-1 text-2xl font-semibold leading-8 text-gray-900 lg:text-5xl sm:text-2xl md:text-3xl">
+                          <input
+                            id="file-upload"
+                            name="file-upload"
+                            type="file"
+                            className="text-sm "
+                            accept="image/*"
+                            // onChange={onImageChange}
+                          />
+                        </span>
                       </>
                     )}
                     <span className="sm:w-full md:w-full"></span>
@@ -320,13 +330,14 @@ export default function Profile({
                   )
                 ) : (
                   <input
-                    className="w-full px-2 py-3 text-lg text-black border-b-2 border-gray-500 lg:text-xl hover:text-gray-600"
+                    className="w-full px-2 py-1 text-lg text-black border-b-2 border-gray-500 lg:text-xl hover:text-gray-600"
                     value={changeAbout}
                     type="text"
                     onChange={(e) => setChangeAbout(e.target.value)}
                     pattern=".{3,}"
                     required
                     title="3 characters minimum"
+                    // style="display:none"
                   />
                 )}
               </div>

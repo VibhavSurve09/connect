@@ -256,6 +256,7 @@ function UserForm({ pageIncrementer }) {
                               id="file-upload"
                               name="file-upload"
                               type="file"
+                              accept="image/*"
                               className="sr-only"
                               onChange={onImageChange}
                             />
