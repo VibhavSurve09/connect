@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import Image from "next/image";
 import { UserContext } from "../../context/User";
 import moment from "moment";
+import { useRouter } from "next/router";
 import { disLikePost, haveILikedThePost, likePost } from "../../services/neo4j";
 import {
   decreaseLikeCountInFB,
@@ -10,6 +11,7 @@ import {
 function Post({ postInfo }) {
   const activeUser = useContext(UserContext);
   const { post, docId } = postInfo;
+  const router = useRouter();
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(0);
   const addLike = async () => {
@@ -36,14 +38,35 @@ function Post({ postInfo }) {
   useEffect(() => {
     setLikes(post.interested);
   }, [post.interested]);
-
+  const redirectToPost = () => {
+    router.push(`/p/${docId}`);
+  };
   return (
-    <div className="px-3 py-3 mt-2 mb-3 bg-white border-2 border-indigo-400 divide-y-2 divide-gray-500 rounded-lg hover:px-6 hover:cursor-pointer bg-white-300">
+    <div className="px-5 py-3 mt-2 mb-3 bg-white border-2 border-indigo-400 divide-y-2 divide-gray-500 rounded-lg hover:px-8 bg-white-300">
       <div className="w-full pb-3">
-        {/* <Image src={post.photoURL} height={30} width={30}></Image> */}
-        <p className="block font-bold text-black">{post.userName}</p>
+        {!post.photoURL ? (
+          <p className="block font-bold text-black">{post.userName}</p>
+        ) : (
+          <div className="flex flex-row items-center">
+            <div className="flex items-center">
+              <Image
+                src={post.photoURL}
+                height={36}
+                width={36}
+                alt="display picture"
+                className="rounded-full"
+              ></Image>
+            </div>
+            <p className="block px-3 text-lg font-bold text-black">
+              {post.userName}
+            </p>
+          </div>
+        )}
 
-        <p className="block mt-2 text-xl leading-snug text-black">
+        <p
+          className="block mt-2 overflow-auto text-xl leading-snug text-black max-h-64 hover:cursor-pointer"
+          onClick={redirectToPost}
+        >
           {post.postContent}
         </p>
       </div>
