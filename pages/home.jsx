@@ -13,7 +13,7 @@ function Home() {
   return (
     <>
       <Head>
-        <title>Connect</title>
+        <title>ConnectU</title>
         <meta
           name='description'
           content='Connect- Developer Collaboration Platform'

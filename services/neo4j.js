@@ -206,3 +206,57 @@ export const randomUsers = async (uid) => {
   }
   return r_users;
 };
+
+export const haveILikedThePost = async (postDocId, uid) => {
+  const db = await dbConnect();
+  const session = db.session();
+  let likedPost = [];
+  const query = `MATCH (user:USER {uid:$uid})-[:LIKED]->(post:POST {postDocId:$postDocId}) RETURN post`;
+  try {
+    const readResult = await session.readTransaction((tx) =>
+      tx.run(query, { uid, postDocId })
+    );
+
+    readResult.records.forEach((record) => {
+      const post = record.get('post');
+      likedPost.push({ ...post.properties });
+    });
+  } catch {
+  } finally {
+    await session.close();
+    await db.close();
+  }
+  return likedPost;
+};
+
+export const likePost = async (uid, postDocId) => {
+  const db = await dbConnect();
+  const session = db.session();
+  const query = `MATCH (user:USER {uid:$uid}),(post:POST {postDocId:$postDocId}) CREATE (user)-[liked:LIKED]->(post) SET liked.timeStamp=timestamp()`;
+  try {
+    const writeResult = await session.writeTransaction((tx) =>
+      tx.run(query, { uid, postDocId })
+    );
+  } catch (error) {
+    console.log('Something went wrong');
+  } finally {
+    await session.close();
+    await db.close();
+  }
+};
+
+export const disLikePost = async (uid, postDocId) => {
+  const db = await dbConnect();
+  const session = db.session();
+  const query = `MATCH (user:USER {uid:$uid})-[liked:LIKED]->(post:POST {postDocId:$postDocId}) DELETE liked`;
+  try {
+    const writeResult = await session.writeTransaction((tx) =>
+      tx.run(query, { uid, postDocId })
+    );
+  } catch (error) {
+    console.log('Something went wrong');
+  } finally {
+    await session.close();
+    await db.close();
+  }
+};

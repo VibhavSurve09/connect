@@ -283,3 +283,20 @@ export const getCountOfProjects = async () => {
   });
   return count.length;
 };
+
+export const increaseLikeCountInFB = async (docId) => {
+  const ref = doc(db, 'posts', docId);
+  const data = await getDoc(ref);
+  let { interested } = data.data();
+  updateDoc(ref, {
+    interested: interested + 1,
+  });
+};
+export const decreaseLikeCountInFB = async (docId) => {
+  const ref = doc(db, 'posts', docId);
+  const data = await getDoc(ref);
+  let { interested } = data.data();
+  updateDoc(ref, {
+    interested: interested - 1,
+  });
+};
