@@ -43,7 +43,7 @@ function Post({ postInfo }) {
         {/* <Image src={post.photoURL} height={30} width={30}></Image> */}
         <p className="block font-bold text-black">{post.userName}</p>
 
-        <p className="block mt-2 text-xl leading-snug text-black dark:text-white">
+        <p className="block mt-2 text-xl leading-snug text-black">
           {post.postContent}
         </p>
       </div>
