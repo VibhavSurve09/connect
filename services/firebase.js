@@ -18,6 +18,7 @@ import {
 import { postsReff } from '../constants/firebase';
 import { db, projectsCollectionRef, storage } from '../constants/firebase';
 import { userCollectionRef } from '../constants/firebase';
+import { async } from '@firebase/util';
 // eslint-disable-next-line react-hooks/rules-of-hooks
 let path;
 export const uploadPhoto = async (uid, profilePicture) => {
@@ -298,5 +299,12 @@ export const decreaseLikeCountInFB = async (docId) => {
   let { interested } = data.data();
   updateDoc(ref, {
     interested: interested - 1,
+  });
+};
+
+export const updatePhotoURL = async (docId, newPhotoURL) => {
+  const ref = doc(db, 'users', docId);
+  updateDoc(ref, {
+    photoURL: newPhotoURL,
   });
 };
