@@ -260,3 +260,47 @@ export const disLikePost = async (uid, postDocId) => {
     await db.close();
   }
 };
+
+export const postsOfMe = async (userName) => {
+  const db = await dbConnect();
+  const session = db.session();
+  let posts = [];
+  const query = `MATCH (user:USER {userName:$userName})-[:POSTED]->(post:POST) RETURN post ORDER BY post.timeStamp`;
+  try {
+    const readResult = await session.readTransaction((tx) =>
+      tx.run(query, { userName })
+    );
+
+    readResult.records.forEach((record) => {
+      const post = record.get('post');
+      posts.push({ ...post.properties });
+    });
+  } catch {
+  } finally {
+    await session.close();
+    await db.close();
+  }
+  return posts;
+};
+
+export const postsThatIhaveLiked = async (uid) => {
+  const db = await dbConnect();
+  const session = db.session();
+  let posts = [];
+  const query = `MATCH (user:USER {uid:$uid})-[:LIKED]->(post:POST) RETURN post`;
+  try {
+    const readResult = await session.readTransaction((tx) =>
+      tx.run(query, { uid })
+    );
+
+    readResult.records.forEach((record) => {
+      const post = record.get('post');
+      posts.push({ ...post.properties });
+    });
+  } catch {
+  } finally {
+    await session.close();
+    await db.close();
+  }
+  return posts;
+};
