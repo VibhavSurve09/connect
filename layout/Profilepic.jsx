@@ -42,7 +42,7 @@ export default function Profilepic({ userData }) {
                   <i>
                     <b className="flex flex-row px-2 py-3">
                       <p className="flex items-center">
-                        <Link href="/profile">
+                        <Link href="/profile" passHref>
                           <Image
                             src={userData?.photoURL}
                             height={40}
@@ -57,9 +57,15 @@ export default function Profilepic({ userData }) {
                           {userData?.userName}
                         </span>
                         <span className="flex justify-center mt-1 bg-indigo-300 rounded-md hover:text-white hover:bg-indigo-400">
-                          {" "}
                           <Link href={`/profile/${userData.userName}/posts`}>
                             My Posts
+                          </Link>
+                        </span>
+                        <span className="flex justify-center mt-1 bg-indigo-300 rounded-md hover:text-white hover:bg-indigo-400">
+                          <Link
+                            href={`/profile/${userData.userName}/postsliked`}
+                          >
+                            Liked Posts
                           </Link>{" "}
                         </span>
                       </p>

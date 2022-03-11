@@ -10,9 +10,13 @@ import {
 } from "../../services/firebase";
 import { useUser } from "../../hooks/useUser";
 import axios from "axios";
+import Link from "next/link";
 import { removeFriend } from "../../services/firebase";
 import { removeFriendNeo4j } from "../../services/neo4j";
 import ProfileYouMayKnow from "./ProfileYouMayKnow";
+import { getLatestPost } from "../../services/neo4j";
+import { getPosts } from "../../services/firebase";
+import moment from "moment";
 export default function DisplayOtherProfile({
   userName,
   bio,
@@ -34,6 +38,7 @@ export default function DisplayOtherProfile({
   const router = useRouter();
   const { data, loading } = useUser(activeUser?.uid);
   const [isFriend, setIsFriend] = useState(false);
+  const [latestPost, setLatestPost] = useState({});
   const [unfollowModal, setUnfollowModal] = useState(false);
   useEffect(() => {
     if (data?.docId) {
@@ -84,6 +89,14 @@ export default function DisplayOtherProfile({
     await removeFriendNeo4j(data.docId, uid);
     router.push(`/profile/${userName}`);
   };
+  useEffect(() => {
+    getLatestPost(userName).then((node) => {
+      getPosts(node[0].postDocId).then((postData) => {
+        setLatestPost(postData);
+      });
+    });
+  }, []);
+
   return (
     <div className="flex flex-col h-auto bg-gray-100 lg:flex-row">
       <Head>
@@ -96,7 +109,7 @@ export default function DisplayOtherProfile({
             <div className="flex flex-col">
               <div className="w-full shadow-lg">
                 <div className="flex flex-col p-5 bg-white border-t-4 border-indigo-400 rounded-lg lg:flex-row sm:flex-row">
-                  <div className="flex items-center justify-center overflow-auto md:max-w-fit sm:w-7/12 lg:max-w-fit md:mx-2">
+                  <div className="flex items-center justify-center md:max-w-fit sm:w-7/12 lg:max-w-fit md:mx-2">
                     <Image
                       className="flex flex-col p-5 bg-white border-t-4 border-indigo-400 rounded-full lg:flex-row sm:flex-row"
                       src={imgUrl}
@@ -202,6 +215,79 @@ export default function DisplayOtherProfile({
                   {bio}
                 </p>
               </div>
+            </div>
+            <div className="my-6"></div>
+            <div className="relative flex flex-col p-5 mx-auto bg-white border-t-4 border-indigo-400 rounded-lg shadow-lg">
+              <div className="flex flex-row">
+                <div className="text-black">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6 lg:mt-2 md:mt-1 sm:mt-0"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                    />
+                  </svg>
+                </div>
+                <div className="px-2 text-lg font-semibold text-black md:text-2xl lg:text-3xl">
+                  Posts
+                </div>
+              </div>
+              {latestPost ? (
+                <div className="flex flex-col items-center w-full px-2 py-4 lg:flex-row md:flex-row">
+                  <div className="flex flex-col items-center justify-start w-full px-6 py-1 bg-gray-100 border-2 border-indigo-400 shadow-lg lg:w-2/4 rounded-xl bg-white-300 h-fit">
+                    <div className="w-full divide-y-2 divide-gray-500">
+                      <div className="flex flex-col py-5">
+                        {" "}
+                        <div className="flex flex-row items-center">
+                          {latestPost.photoURL ? (
+                            <Image
+                              src={latestPost?.photoURL}
+                              height={40}
+                              width={40}
+                              className="rounded-full"
+                            />
+                          ) : null}
+                          <p className="pl-3 text-2xl font-medium text-black">
+                            {/* <Link href={`/profile/${userDataWhoPosted?.userName}`}> */}
+                            {latestPost?.userName}
+                            {/* </Link> */}
+                          </p>
+                        </div>
+                        <p className="py-3 mt-2 overflow-auto text-lg text-black max-h-96">
+                          {latestPost.postContent}
+                        </p>
+                      </div>
+                      <div className="py-5">
+                        <p className="text-sm text-gray-500">
+                          {moment
+                            .unix(latestPost?.timeStamp?.seconds)
+                            .format("LLL")}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="px-2 ml-3 font-serif text-lg font-medium text-black sm:mt-2 sm:py-2 hover:text-blue-600 hover:underline hover:cursor-pointer">
+                      <Link href={`/profile/${latestPost.userName}/posts`}>
+                        Check Out More Posts!
+                      </Link>
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <p className="py-2 font-serif text-xl text-gray-700">
+                    No posts yet!
+                  </p>
+                </div>
+              )}
             </div>
             <div className="my-6"></div>
 

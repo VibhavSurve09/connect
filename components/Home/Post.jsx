@@ -72,7 +72,7 @@ function Post({ postInfo }) {
         </p>
       </div>
       <div className="py-1">
-        <p className="text-sm text-gray-500">
+        <p className="font-serif text-base font-medium text-gray-400 lg:text-sm">
           {moment.unix(post.timeStamp.seconds).format("LLL")}
         </p>
         {!liked ? (

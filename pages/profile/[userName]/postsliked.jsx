@@ -1,10 +1,9 @@
-import React from 'react';
-import PostsThatIHaveLiked from '../../../components/Profile/PostsThatIHaveLiked';
+import React from "react";
+import PostsThatIHaveLiked from "../../../components/Profile/PostsThatIHaveLiked";
 
 export default function LikedPosts({ userName }) {
   return (
-    <div>
-      LikedPosts
+    <div className="flex justify-center mt-2 bg-gray-100">
       <PostsThatIHaveLiked username={userName} />
     </div>
   );
