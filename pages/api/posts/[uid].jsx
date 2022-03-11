@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     case 'GET':
       let allPosts = [];
       const timelineQuery =
-        'MATCH (user:USER {uid:$uid})-[:IS_FRIEND]->(friends:USER)-[:POSTED]->(posts:POST) RETURN posts ORDER BY posts.timeStamp  UNION MATCH (user:USER {uid:$uid})-[:IS_FRIEND]->(friends:USER)-[:LIKED]->(posts:POST) RETURN posts ORDER BY posts.timeStamp';
+        'MATCH (user:USER {uid:$uid})-[:IS_FRIEND]->(friends:USER)-[:POSTED]->(posts:POST) RETURN posts ORDER BY posts.timeStamp  UNION MATCH (user:USER {uid:$uid})-[:IS_FRIEND]->(friends:USER)-[:LIKED]->(posts:POST) WHERE NOT (user)-[:LIKED]->(posts) RETURN posts ORDER BY posts.timeStamp';
       try {
         const readResult = await session.readTransaction((tx) =>
           tx.run(timelineQuery, { uid })
