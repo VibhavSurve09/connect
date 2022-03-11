@@ -1,9 +1,10 @@
-import { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../../context/User';
-import { useUser } from '../../hooks/useUser';
-import { getPosts } from '../../services/firebase';
-import { postsOfMe } from '../../services/neo4j';
-import ListOfPosts from './ListOfPosts';
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../../context/User";
+import { useUser } from "../../hooks/useUser";
+import { getPosts } from "../../services/firebase";
+import { postsOfMe } from "../../services/neo4j";
+import Post from "../Home/Post";
+import ListOfPosts from "./ListOfPosts";
 
 export default function AllPostsOfUser({ username }) {
   const [refs, setRefs] = useState([]);
@@ -19,16 +20,25 @@ export default function AllPostsOfUser({ username }) {
   useEffect(() => {
     refs.map((postMetaData) => {
       getPosts(postMetaData.postDocId).then((data) => {
-        setPosts((oldArr) => [data, ...oldArr]);
+        setPosts((oldArr) => [
+          { ...data, docId: postMetaData.postDocId },
+          ...oldArr,
+        ]);
       });
     });
   }, [refs]);
   return (
-    <div>
-      AllPostsOfUser
+    <div className="w-full h-screen py-5 overflow-auto bg-gray-100 lg:w-2/4 md:w-3/4">
       {posts.length > 0 &&
         posts.map((post, index) => {
-          return <p key={index}>{post.postContent}</p>;
+          let postInfo = { post, docId: post.docId };
+          return (
+            <div key={index} className="w-full mt-4">
+              <div>
+                <Post postInfo={postInfo} />
+              </div>
+            </div>
+          );
         })}
     </div>
   );
