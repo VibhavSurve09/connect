@@ -3,7 +3,6 @@ import { UserContext } from '../../context/User';
 import { useUser } from '../../hooks/useUser';
 import { getPosts } from '../../services/firebase';
 import { postsOfMe } from '../../services/neo4j';
-import ListOfPosts from './ListOfPosts';
 
 export default function AllPostsOfUser({ username }) {
   const [refs, setRefs] = useState([]);
