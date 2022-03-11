@@ -2,7 +2,10 @@ import React, { useState, useEffect, useContext } from "react";
 import Image from "next/image";
 import { UserContext } from "../../context/User";
 import moment from "moment";
+<<<<<<< HEAD
 import { useRouter } from "next/router";
+=======
+>>>>>>> utkarsh/ui
 import { disLikePost, haveILikedThePost, likePost } from "../../services/neo4j";
 import {
   decreaseLikeCountInFB,
