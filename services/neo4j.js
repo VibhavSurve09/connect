@@ -325,3 +325,28 @@ export const getLatestPost = async (userName) => {
   }
   return posts;
 };
+
+export const getWhoLikedThePost = async (docId) => {
+  const db = await dbConnect();
+  const session = db.session();
+  let likes = [];
+  const query = `MATCH (post:POST {postDocId:$docId})<-[:LIKED]-(user:USER) RETURN user`;
+  try {
+    const readResult = await session.readTransaction((tx) =>
+      tx.run(query, { docId })
+    );
+
+    readResult.records.forEach((record) => {
+      const user = record.get('user');
+      likes.push({ ...user.properties });
+    });
+  } catch {
+    console.log('Err');
+  } finally {
+    await session.close();
+    await db.close();
+  }
+  return likes;
+};
+
+export const deletePost = () => {};
