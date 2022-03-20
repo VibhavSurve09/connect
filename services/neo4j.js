@@ -349,4 +349,82 @@ export const getWhoLikedThePost = async (docId) => {
   return likes;
 };
 
-export const deletePost = () => {};
+export const deleteLikes = async (docId) => {
+  const db = await dbConnect();
+  const session = db.session();
+  const query = `MATCH (u:USER)-[liked:LIKED]->(post:POST {postDocId:$docId}) DELETE liked`;
+  try {
+    const readResult = await session.readTransaction((tx) =>
+      tx.run(query, { docId })
+    );
+  } catch {
+    console.log('Err');
+  } finally {
+    await session.close();
+    await db.close();
+  }
+};
+export const deletePostRel = async (docId) => {
+  const db = await dbConnect();
+  const session = db.session();
+  const query = `MATCH (u:USER)-[posted:POSTED]->(post:POST {postDocId:$docId}) DELETE posted`;
+  try {
+    const readResult = await session.readTransaction((tx) =>
+      tx.run(query, { docId })
+    );
+  } catch {
+    console.log('Err');
+  } finally {
+    await session.close();
+    await db.close();
+  }
+};
+
+export const deletePost = async (docId) => {
+  const db = await dbConnect();
+  const session = db.session();
+  await deleteLikes(docId);
+  const query = `MATCH (post:POST {postDocId:$docId}) DELETE post`;
+  try {
+    const readResult = await session.readTransaction((tx) =>
+      tx.run(query, { docId })
+    );
+  } catch {
+    console.log('Err');
+  } finally {
+    await session.close();
+    await db.close();
+  }
+};
+
+export const deleteUser = async (uid) => {
+  const db = await dbConnect();
+  const session = db.session();
+  const query = `MATCH (user:USER {uid:uid}) DELETE user`;
+  try {
+    const readResult = await session.readTransaction((tx) =>
+      tx.run(query, { uid })
+    );
+  } catch {
+    console.log('Err');
+  } finally {
+    await session.close();
+    await db.close();
+  }
+};
+
+export const updateDisplayPicture = async (uid, url) => {
+  const db = await dbConnect();
+  const session = db.session();
+  const query = `MATCH (user:USER {uid:$uid}) SET user.photoURL=$url`;
+  try {
+    const writeResult = await session.writeTransaction((tx) =>
+      tx.run(query, { uid, url })
+    );
+  } catch (error) {
+    console.log('Something went wrong');
+  } finally {
+    await session.close();
+    await db.close();
+  }
+};

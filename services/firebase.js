@@ -314,3 +314,5 @@ export const getUserByDocId = async (docId) => {
   const data = dataDoc.data();
   return data;
 };
+
+export const deletePost = async (docId) => {};
