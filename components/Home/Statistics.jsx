@@ -5,20 +5,24 @@ import {
   getCountOfProjects,
   getCountOfUsers,
 } from '../../services/firebase';
+import { getAllSkills } from '../../services/neo4j';
 export default function Statistics() {
   const [activeusers, setActiveusers] = useState(0);
   const [projects, setProjects] = useState(0);
   const [ideas, setIdeas] = useState(0);
-  let count = useShowCount();
+  const [skillsCount, setSkillsCount] = useState(40);
   useEffect(() => {
     getCountOfUsers().then((c) => {
-      setActiveusers(c);
+      setActiveusers(c - 1);
     });
     getCountOfPosts().then((c) => {
-      setIdeas(c);
+      setIdeas(c - 1);
     });
     getCountOfProjects().then((c) => {
-      setProjects(c);
+      setProjects(c - 1);
+    });
+    getAllSkills().then((arr) => {
+      setSkillsCount(arr.length - 1);
     });
   }, []);
   return (
@@ -32,9 +36,9 @@ export default function Statistics() {
         </div>
         <div className='text-center'>
           <h6 className='text-3xl font-bold text-deep-purple-accent-400'>
-            {count}+
+            {skillsCount}+
           </h6>
-          <p className='font-bold'>Online Right Now</p>
+          <p className='font-bold'>Skills to Choose</p>
         </div>
         <div className='text-center'>
           <h6 className='text-3xl font-bold text-deep-purple-accent-400'>
@@ -44,7 +48,7 @@ export default function Statistics() {
         </div>
         <div className='text-center'>
           <h6 className='text-3xl font-bold text-deep-purple-accent-400'>
-            {projects}
+            {projects}+
           </h6>
           <p className='font-bold'>Projects Shared</p>
         </div>

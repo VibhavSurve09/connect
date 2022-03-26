@@ -275,7 +275,7 @@ export default function DisplayOtherProfile({
                   </div>
                   <div>
                     <p className='px-2 ml-3 font-serif text-lg font-medium text-black sm:mt-2 sm:py-2 hover:text-blue-600 hover:underline hover:cursor-pointer'>
-                      <Link href={`/profile/${latestPost.userName}/posts`}>
+                      <Link href={`/profile/${userName}/posts`}>
                         Check Out More Posts!
                       </Link>
                     </p>
