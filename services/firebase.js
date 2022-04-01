@@ -316,3 +316,17 @@ export const getUserByDocId = async (docId) => {
 };
 
 export const deletePost = async (docId) => {};
+
+export const editProjectFB = async (docId, project) => {
+  console.log('What', project);
+  const ref = doc(db, 'projects', docId);
+  updateDoc(ref, {
+    title: project.projectName,
+  });
+  updateDoc(ref, {
+    link: project.projectLink,
+  });
+  updateDoc(ref, {
+    description: project.projectDis,
+  });
+};
