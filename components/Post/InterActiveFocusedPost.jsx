@@ -125,6 +125,7 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
             {userLikes.length > 0 ? (
               <>
                 {userLikes.map((user, index) => {
+                  console.log('User', userLikes);
                   return (
                     <div key={index}>
                       <p>{user.userName}</p>
@@ -133,6 +134,14 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
                 })}
               </>
             ) : null}
+            {postData?.comments?.length > 0 ? (
+              <>
+                {postData?.comments.map((comment, index) => {
+                  return <p key={index}>{comment}</p>;
+                })}
+              </>
+            ) : null}
+            {console.log(postData, userLikes)}
           </div>
         </div>
       </div>
