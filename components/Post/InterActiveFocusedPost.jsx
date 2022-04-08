@@ -143,6 +143,7 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
             )}
             {userLikes.length > 0 ? (
               <div className="flex flex-row overflow-auto">
+                liked by
                 {userLikes.map((user, index) => {
                   return (
                     <div key={index}>
