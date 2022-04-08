@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { getPosts } from "../../services/firebase";
+import { addCommentToFB, getPosts } from "../../services/firebase";
 import { UserContext } from "../../context/User";
 import { likePost } from "../../services/neo4j";
 import Image from "next/image";
@@ -10,6 +10,7 @@ import { haveILikedThePost } from "../../services/neo4j";
 import { getUserByDocId } from "../../services/firebase";
 import Link from "next/link";
 import moment from "moment";
+import UserComment from "./UserComment";
 function InterActiveFocusedPost({ docId, userLikes, owner }) {
   const [postData, setPostData] = useState({});
   const activeUser = useContext(UserContext);
@@ -17,6 +18,17 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
   const [likes, setLikes] = useState(0);
   const [toggleComment, setToggleComment] = useState(false);
   const [userDataWhoPosted, setUserDataWhoPosted] = useState([]);
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
+  const addComment = () => {
+    const commentObject = {
+      commentOwner: activeUser?.uid,
+      commentData: comment,
+    };
+    addCommentToFB(commentObject, docId);
+    comments.push(commentObject);
+    setComment("");
+  };
   const addLike = async () => {
     setLikes(likes + 1);
     setLiked(true);
@@ -32,6 +44,7 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
   useEffect(() => {
     getPosts(docId).then((data) => {
       setPostData(data);
+      setComments(data.comments);
     });
   }, [docId]);
   useEffect(() => {
@@ -163,19 +176,37 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
             ) : null}
 
             {postData?.comments?.length > 0 ? (
-              <>
-                {postData?.comments.map((comment, index) => {
-                  return <p key={index}>{comment}</p>;
+              <div className="overflow-auto max-h-72">
+                {comments.map((comment, index) => {
+                  return (
+                    <div key={index}>
+                      <div className="px-2 py-1 mt-2 border-b-2 border-indigo-400 rounded-md bg-gray-50">
+                        <UserComment uid={comment.commentOwner} />
+                        <b>User</b>
+                        <span className="px-3">{comment.commentData}</span>
+                      </div>
+                    </div>
+                  );
                 })}
-              </>
+              </div>
             ) : null}
             <br></br>
             {toggleComment ? (
-              <textarea
-                className="w-full px-2 py-1 border-2 border-indigo-400 rounded-md resize-none lg:w-4/5"
-                height={2}
-                placeholder="Add a comment.."
-              />
+              <>
+                <textarea
+                  className="w-full px-2 py-1 border-2 border-indigo-400 rounded-md resize-none lg:w-4/5"
+                  height={2}
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  placeholder="Add a comment.."
+                />
+                <button
+                  onClick={addComment}
+                  className="flex items-center px-3 py-1 font-semibold bg-indigo-400 rounded-md hover:text-white hover:bg-indigo-600 hover:font-bold"
+                >
+                  Post
+                </button>
+              </>
             ) : null}
           </div>
         </div>
