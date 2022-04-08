@@ -96,44 +96,64 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
               {moment.unix(postData?.timeStamp?.seconds).format("LLL")}
             </p>
             {!liked ? (
-              <>
-                {" "}
-                <button onClick={addLike}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6 mt-2"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                    />
-                  </svg>
-                  {likes}
-                </button>
-              </>
+              <div className="flex flex-row">
+                <div>
+                  <button onClick={addLike}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-6 h-6 mt-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                      />
+                    </svg>
+                    {likes}
+                  </button>
+                </div>
+                <div>
+                  <button onClick={(e) => setToggleComment(!toggleComment)}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-6 h-6 mt-2 ml-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
             ) : (
               <div className="flex flex-row">
-                {" "}
-                <button onClick={removeLike}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="mt-2 text-red-600 w-7 h-7 "
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  {likes}
-                </button>
+                <div>
+                  <button onClick={removeLike}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="mt-2 text-red-600 w-7 h-7 "
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    {likes}
+                  </button>
+                </div>
                 <div>
                   <button onClick={(e) => setToggleComment(!toggleComment)}>
                     <svg
@@ -154,6 +174,7 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
                 </div>
               </div>
             )}
+
             {userLikes.length > 0 ? (
               <div className="flex flex-row overflow-auto">
                 liked by
@@ -176,14 +197,15 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
             ) : null}
 
             {postData?.comments?.length > 0 ? (
-              <div className="overflow-auto max-h-72">
+              <div className="mt-4 overflow-auto border-t-2 max-h-52 border-slate-500">
                 {comments.map((comment, index) => {
                   return (
                     <div key={index}>
-                      <div className="px-2 py-1 mt-2 border-b-2 border-indigo-400 rounded-md bg-gray-50">
+                      <div className="flex flex-row items-center px-2 py-1 mt-2 border-b-2 border-indigo-400 rounded-md bg-gray-50">
                         <UserComment uid={comment.commentOwner} />
-                        <b>User</b>
-                        <span className="px-3">{comment.commentData}</span>
+                        <span className="px-2 overflow-auto lg:max-w-lg max-h-16">
+                          {comment.commentData}
+                        </span>
                       </div>
                     </div>
                   );
