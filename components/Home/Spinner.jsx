@@ -6,7 +6,7 @@ function Spinner() {
     router.push("/");
   }, [router]);
   return (
-    <div>
+    <div className="flex items-center justify-center">
       <span className="flex">
         <svg
           role="status"

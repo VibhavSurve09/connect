@@ -38,6 +38,7 @@ export default function DisplayOtherProfile({
   const router = useRouter();
   const { data, loading } = useUser(activeUser?.uid);
   const [isFriend, setIsFriend] = useState(false);
+  const [fetchLatestPostLoading, setFetchLatesPostLoading] = useState(false);
   const [latestPost, setLatestPost] = useState({});
   const [unfollowModal, setUnfollowModal] = useState(false);
   useEffect(() => {
@@ -90,12 +91,14 @@ export default function DisplayOtherProfile({
     router.push(`/profile/${userName}`);
   };
   useEffect(() => {
+    setFetchLatesPostLoading(true);
     getLatestPost(userName).then((node) => {
-      getPosts(node[0].postDocId).then((postData) => {
+      getPosts(node[0]?.postDocId).then((postData) => {
         setLatestPost(postData);
       });
     });
-  }, []);
+    setFetchLatesPostLoading(false);
+  }, [userName]);
 
   return (
     <div className="flex flex-col h-auto bg-gray-100 lg:flex-row">
@@ -239,7 +242,8 @@ export default function DisplayOtherProfile({
                   Posts
                 </div>
               </div>
-              {latestPost ? (
+              {Object.keys(latestPost).length != 0 &&
+              !fetchLatestPostLoading ? (
                 <div className="flex flex-col items-center w-full px-2 py-4 lg:flex-row md:flex-row">
                   <div className="flex flex-col items-center justify-start w-full px-6 py-1 bg-gray-100 border-2 border-indigo-400 shadow-lg lg:w-2/4 rounded-xl bg-white-300 h-fit">
                     <div className="w-full divide-y-2 divide-gray-500">
@@ -275,7 +279,7 @@ export default function DisplayOtherProfile({
                   </div>
                   <div>
                     <p className="px-2 ml-3 font-serif text-lg font-medium text-black sm:mt-2 sm:py-2 hover:text-blue-600 hover:underline hover:cursor-pointer">
-                      <Link href={`/profile/${latestPost.userName}/posts`}>
+                      <Link href={`/profile/${userName}/posts`}>
                         Check Out More Posts!
                       </Link>
                     </p>

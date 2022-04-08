@@ -18,7 +18,6 @@ import {
 import { postsReff } from "../constants/firebase";
 import { db, projectsCollectionRef, storage } from "../constants/firebase";
 import { userCollectionRef } from "../constants/firebase";
-import { async } from "@firebase/util";
 // eslint-disable-next-line react-hooks/rules-of-hooks
 let path;
 export const uploadPhoto = async (uid, profilePicture) => {
@@ -277,7 +276,7 @@ export const getCountOfPosts = async () => {
 };
 
 export const getCountOfProjects = async () => {
-  const querySnapshot = await getDocs(postsReff);
+  const querySnapshot = await getDocs(projectsCollectionRef);
   let count = [];
   querySnapshot.forEach((doc) => {
     count.push({ ...doc.data() });
@@ -314,4 +313,20 @@ export const getUserByDocId = async (docId) => {
   const dataDoc = await getDoc(ref);
   const data = dataDoc.data();
   return data;
+};
+
+export const deletePost = async (docId) => {};
+
+export const editProjectFB = async (docId, project) => {
+  console.log("What", project);
+  const ref = doc(db, "projects", docId);
+  updateDoc(ref, {
+    title: project.projectName,
+  });
+  updateDoc(ref, {
+    link: project.projectLink,
+  });
+  updateDoc(ref, {
+    description: project.projectDis,
+  });
 };
