@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useContext } from 'react';
-import FocusedPost from '../../components/Post/FocusedPost';
-import InterActiveFocusedPost from '../../components/Post/InterActiveFocusedPost';
-import { UserContext } from '../../context/User';
-import { getPosts } from '../../services/firebase';
-import { getWhoLikedThePost } from '../../services/neo4j';
+import React, { useEffect, useState, useContext } from "react";
+import FocusedPost from "../../components/Post/FocusedPost";
+import InterActiveFocusedPost from "../../components/Post/InterActiveFocusedPost";
+import { UserContext } from "../../context/User";
+import { getPosts } from "../../services/firebase";
+import { getWhoLikedThePost } from "../../services/neo4j";
 
 function PostPage({ id }) {
   const [userLikes, setUserLikes] = useState([]);
@@ -31,7 +31,7 @@ function PostPage({ id }) {
         />
       ) : (
         <>
-          {' '}
+          {" "}
           <FocusedPost docId={id} />
         </>
       )}

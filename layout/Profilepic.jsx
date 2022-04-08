@@ -41,20 +41,11 @@ export default function Profilepic({ userData }) {
                   {" "}
                   <i>
                     <b className="flex flex-row px-2 py-3">
-                      <p className="flex items-center">
-                        <Link href="/profile" passHref>
-                          <Image
-                            src={userData?.photoURL}
-                            height={40}
-                            width={40}
-                            alt="display picture"
-                            className="rounded-full cursor-pointer"
-                          />
-                        </Link>
-                      </p>
                       <p className="flex flex-col px-2">
-                        <span className="flex items-center px-2">
-                          {userData?.userName}
+                        <span className="flex items-center px-2 hover:text-indigo-600">
+                          <Link href="/profile" passHref>
+                            {userData?.userName}
+                          </Link>
                         </span>
                         <span className="flex justify-center mt-1 bg-indigo-300 rounded-md hover:text-white hover:bg-indigo-400">
                           <Link href={`/profile/${userData.userName}/posts`}>
@@ -77,10 +68,10 @@ export default function Profilepic({ userData }) {
                   <hr />
                 </li>
 
-                <li className="flex justify-center px-2 py-2 mr-4 text-xl font-bold ">
+                <li className="flex justify-center px-2 py-2 text-xl font-bold ">
                   <button
                     onClick={handleLogOut}
-                    className="px-5 py-2 text-base font-semibold leading-none text-black bg-gray-200 border border-black rounded lg:mt-0 hover:font-bold hover:text-purple-800 hover:bg-gray-50"
+                    className="px-5 py-2 text-base font-semibold leading-none text-black bg-gray-200 border border-black rounded lg:mt-0 hover:font-bold hover:text-indigo-600 hover:bg-gray-50"
                   >
                     Sign Out
                   </button>
