@@ -613,7 +613,7 @@ export default function Profile({
                 <p className='py-3 text-lg text-gray-500 lg:text-xl hover:text-gray-600'>
                   {projects.length > 0 &&
                     projects.map((id, index) => {
-                      return <Projects key={index} docId={id} />;
+                      return <Projects key={index} docId={id} self={true} />;
                     })}
                 </p>
               </div>

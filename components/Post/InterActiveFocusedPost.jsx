@@ -151,15 +151,22 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
           </div>
           <div className='py-5'>
             <p className='text-sm text-gray-500'>
-              {postData?.edit ? (
+              {postData?.timeStamp?.seconds ? (
                 <>
-                  {' '}
-                  Edited{' '}
-                  {moment.unix(postData?.timeStamp?.seconds).format('LLL')}
+                  {postData?.edit ? (
+                    <>
+                      {' '}
+                      Edited{' '}
+                      {moment.unix(postData?.timeStamp?.seconds).format('LLL')}
+                    </>
+                  ) : (
+                    <>
+                      {' '}
+                      {moment.unix(postData?.timeStamp?.seconds).format('LLL')}
+                    </>
+                  )}
                 </>
-              ) : (
-                <> {moment.unix(postData?.timeStamp?.seconds).format('LLL')}</>
-              )}
+              ) : null}
             </p>
             {!liked ? (
               <div className='flex'>
