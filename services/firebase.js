@@ -14,6 +14,7 @@ import {
   setDoc,
   updateDoc,
   getDoc,
+  serverTimestamp,
 } from 'firebase/firestore';
 import { postsReff } from '../constants/firebase';
 import { db, projectsCollectionRef, storage } from '../constants/firebase';
@@ -338,5 +339,19 @@ export const addCommentToFB = async (commentObj, docId) => {
   comments.push(commentObj);
   updateDoc(ref, {
     comments: comments,
+  });
+};
+
+export const editPostFB = async (docId, content) => {
+  const ref = doc(db, 'posts', docId);
+  const dataDoc = await getDoc(ref);
+  updateDoc(ref, {
+    postContent: content,
+  });
+  updateDoc(ref, {
+    edit: true,
+  });
+  updateDoc(ref, {
+    timeStamp: serverTimestamp(),
   });
 };

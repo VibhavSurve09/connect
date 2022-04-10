@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { addCommentToFB, getPosts } from '../../services/firebase';
+import { addCommentToFB, editPostFB, getPosts } from '../../services/firebase';
 import { UserContext } from '../../context/User';
 import { likePost } from '../../services/neo4j';
 import Image from 'next/image';
@@ -11,6 +11,7 @@ import { getUserByDocId } from '../../services/firebase';
 import Link from 'next/link';
 import moment from 'moment';
 import UserComment from './UserComment';
+import Head from 'next/head';
 function InterActiveFocusedPost({ docId, userLikes, owner }) {
   const [postData, setPostData] = useState({});
   const activeUser = useContext(UserContext);
@@ -20,6 +21,9 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
   const [userDataWhoPosted, setUserDataWhoPosted] = useState([]);
   const [comment, setComment] = useState('');
   const [comments, setComments] = useState([]);
+  const [editPost, setEditPost] = useState(false);
+  const [editPostContent, setEditPostContent] = useState('');
+  const [savedPressed, setSavePressed] = useState(false);
   const addComment = () => {
     const commentObject = {
       commentOwner: activeUser?.uid,
@@ -44,6 +48,7 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
   useEffect(() => {
     getPosts(docId).then((data) => {
       setPostData(data);
+      setEditPostContent(data.postContent);
       setComments(data.comments);
     });
   }, [docId]);
@@ -66,12 +71,39 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
   useEffect(() => {
     setLikes(postData.interested);
   }, [postData.interested]);
+  const saveEditPost = () => {
+    editPostFB(docId, editPostContent);
+    setEditPost(false);
+    setSavePressed(true);
+  };
   return (
     <div className='flex items-center justify-center w-full h-screen bg-gray-100'>
+      <Head>
+        <title>Post - ConnectU</title>
+      </Head>
       <div className='flex flex-col items-center justify-start w-full px-6 py-4 bg-white border-2 border-indigo-400 shadow-lg lg:w-2/4 rounded-xl bg-white-300 h-fit'>
         <div className='w-full divide-y-2 divide-gray-500'>
           <div className='flex flex-col py-5'>
             {' '}
+            {/* Edit Post */}
+            {owner ? (
+              <button
+                onClick={(e) => {
+                  setEditPost(!editPost);
+                  setSavePressed(false);
+                }}
+              >
+                Edit Post
+              </button>
+            ) : null}
+            {editPost ? (
+              <>
+                <button onClick={saveEditPost}>Save</button>{' '}
+                <button onClick={(e) => setEditPost(false)}>Cancel</button>
+              </>
+            ) : (
+              <></>
+            )}
             <div className='flex flex-row items-center'>
               {userDataWhoPosted.photoURL ? (
                 <Image
@@ -87,13 +119,47 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
                 {/* </Link> */}
               </p>
             </div>
-            <p className='py-3 mt-2 overflow-auto text-lg max-h-96'>
-              {postData.postContent}
-            </p>
+            {!editPost ? (
+              <>
+                {' '}
+                {savedPressed ? (
+                  <>
+                    {' '}
+                    <p className='py-3 mt-2 overflow-auto text-lg max-h-96'>
+                      {editPostContent}
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    {' '}
+                    <p className='py-3 mt-2 overflow-auto text-lg max-h-96'>
+                      {postData.postContent}
+                    </p>
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                {' '}
+                <input
+                  className='py-3 mt-2 overflow-auto text-lg max-h-96'
+                  value={editPostContent}
+                  onChange={(e) => setEditPostContent(e.target.value)}
+                />
+              </>
+            )}
           </div>
           <div className='py-5'>
             <p className='text-sm text-gray-500'>
-              {moment.unix(postData?.timeStamp?.seconds).format('LLL')}
+              {postData?.edit ? (
+                <>
+                  {' '}
+                  Edited{' '}
+                  {moment.unix(postData?.timeStamp?.seconds).format('LLL')}
+                </>
+              ) : (
+                <> {moment.unix(postData?.timeStamp?.seconds).format('LLL')}</>
+              )}
             </p>
             {!liked ? (
               <>

@@ -36,6 +36,7 @@ export default function Feed() {
         owner: data.uid,
         timeStamp: serverTimestamp(),
         comments: [],
+        edit: false,
       };
 
       let postId = await savePost(post, data.docId);
