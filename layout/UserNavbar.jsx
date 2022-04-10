@@ -58,7 +58,7 @@ export default function UserNavbar({ userData }) {
               value={searchText}
               id="email-adress-icon"
               className="block w-full p-2 pl-10 text-gray-900 border border-gray-300 rounded-lg group bg-gray-50 sm:text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Search Username/Skills..."
+              placeholder="Search Username"
               onChange={onType}
               autoComplete="off"
             ></input>
