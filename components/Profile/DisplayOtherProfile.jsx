@@ -126,7 +126,7 @@ export default function DisplayOtherProfile({
                       {userName}
                     </span>
                     <h3 className="mt-1 leading-6 text-gray-600 font-lg text-semibold lg:text-2xl">
-                      STUDENT AT {college}
+                      Student At <span className="font-serif">{college}</span>
                     </h3>{" "}
                     <span className="sm:w-full md:w-full">
                       {" "}
@@ -174,11 +174,13 @@ export default function DisplayOtherProfile({
                       )}
                     </span>
                     <ul className="px-3 py-2 mt-3 text-gray-600 bg-gray-100 divide-y rounded shadow-sm hover:text-gray-700 hover:shadow">
-                      <li className="flex items-center py-3">
+                      <li className="flex items-center py-3 font-serif text-xl italic text-slate-800">
                         <span>Member since</span>
-                        <span className="ml-auto">{date}</span>
+                        <span className="ml-auto font-semibold text-indigo-700">
+                          {date}
+                        </span>
                       </li>
-                      <li className="flex items-center py-3">
+                      <li className="flex items-center py-3 font-serif text-xl italic text-slate-800">
                         <span>Followers: {followers}</span>
                         <span className="ml-auto">Following: {following}</span>
                       </li>
@@ -213,7 +215,7 @@ export default function DisplayOtherProfile({
               </div>
               <div className="w-full px-2">
                 {" "}
-                <p className="py-3 text-lg text-gray-500 lg:text-xl hover:text-gray-600">
+                <p className="py-3 font-serif text-lg text-gray-500 lg:text-xl hover:text-gray-600">
                   {bio}
                 </p>
               </div>

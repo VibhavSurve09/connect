@@ -33,7 +33,9 @@ function ProfileForYou({ uid }) {
             })}
           </>
         ) : (
-          <>Try choosing some other skills..</>
+          <p className="font-serif text-xl text-slate-800">
+            Try choosing some other skills..
+          </p>
         )}
       </div>
     </div>

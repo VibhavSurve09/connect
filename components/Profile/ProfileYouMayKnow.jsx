@@ -36,7 +36,7 @@ export default function ProfileYouMayKnow({ uid, isFriend }) {
             })}
           </>
         ) : (
-          <>Loading..</>
+          <p className="font-serif text-xl text-slate-800">Loading..</p>
         )}
       </div>
     </div>
