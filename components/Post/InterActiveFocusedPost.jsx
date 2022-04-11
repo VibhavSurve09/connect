@@ -121,9 +121,7 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
                 />
               ) : null}
               <p className="pl-3 text-2xl font-medium">
-                {/* <Link href={`/profile/${userDataWhoPosted?.userName}`}> */}
                 {userDataWhoPosted?.userName}
-                {/* </Link> */}
               </p>
             </div>
             {!editPost ? (

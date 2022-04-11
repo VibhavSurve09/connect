@@ -40,7 +40,7 @@ export default function Profilepic({ userData }) {
                 <li className="py-1">
                   {" "}
                   <i>
-                    <b className="flex flex-row px-2 py-3">
+                    <b className="flex flex-row px-2 py-2">
                       <p className="flex flex-col px-2">
                         <span className="flex items-center px-2 hover:text-indigo-600">
                           <u className="text-lg">
@@ -66,6 +66,16 @@ export default function Profilepic({ userData }) {
                   </i>
                 </li>
 
+                <li>
+                  <hr />
+                </li>
+                <span className="flex justify-center px-2 mt-1 bg-indigo-300 rounded-md hover:text-white hover:bg-indigo-400 w-fit">
+                  <b>
+                    <Link href={`/profile/${userData.userName}/posts`}>
+                      Delete Profile
+                    </Link>
+                  </b>
+                </span>
                 <li>
                   <hr />
                 </li>
