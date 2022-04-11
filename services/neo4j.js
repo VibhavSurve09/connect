@@ -1,4 +1,4 @@
-import dbConnect from '../db/dbConnect';
+import dbConnect from "../db/dbConnect";
 
 export const postUser = async (userData) => {
   const db = await dbConnect();
@@ -9,7 +9,7 @@ export const postUser = async (userData) => {
       tx.run(postQuery, { userData })
     );
   } catch {
-    console.log('Something went wrong');
+    console.log("Something went wrong");
   } finally {
     await session.close();
     await db.close();
@@ -25,7 +25,7 @@ export const userSkillRelationShip = async ({ userId, skillId }) => {
       tx.run(query, { userId, skillId })
     );
   } catch (error) {
-    console.log('Something went wrong');
+    console.log("Something went wrong");
   } finally {
     await session.close();
     await db.close();
@@ -36,12 +36,12 @@ export const userSkillRelationShip = async ({ userId, skillId }) => {
 export const getAllSkills = async () => {
   const db = await dbConnect();
   const session = db.session();
-  const query = 'MATCH (skills:SKILL) return (skills)';
+  const query = "MATCH (skills:SKILL) return (skills)";
   const tempData = [];
   try {
     const readResult = await session.readTransaction((tx) => tx.run(query));
     readResult.records.forEach((record) => {
-      const skills = record.get('skills');
+      const skills = record.get("skills");
       tempData.push({ ...skills.properties, id: skills.identity.low });
     });
   } catch {
@@ -57,17 +57,17 @@ export const userWithIdSkills = async (uid) => {
   const session = db.session();
   let userSkills = [];
   const query =
-    'MATCH (user:USER {uid:$uid})-[:HAS_A]->(skills:SKILL) RETURN skills';
+    "MATCH (user:USER {uid:$uid})-[:HAS_A]->(skills:SKILL) RETURN skills";
   try {
     const readResult = await session.readTransaction((tx) =>
       tx.run(query, { uid })
     );
     readResult.records.forEach((record) => {
-      const sk = record.get('skills');
+      const sk = record.get("skills");
       userSkills.push({ ...sk.properties, id: sk.identity.low });
     });
   } catch {
-    console.log('Something went wrong!!');
+    console.log("Something went wrong!!");
   } finally {
     await session.close();
     await db.close();
@@ -84,7 +84,7 @@ export const removeFriendNeo4j = async (docId, uid) => {
       tx.run(query, { docId, uid })
     );
   } catch {
-    console.log('Err..');
+    console.log("Err..");
   } finally {
     await session.close();
     await db.close();
@@ -118,7 +118,7 @@ export const profilesYouMayKnow = async (selfUID, searchUID, isFriend) => {
       );
 
       readResult.records.forEach((record) => {
-        const users = record.get('users');
+        const users = record.get("users");
         r_users.push({ ...users.properties });
       });
     } catch {
@@ -135,7 +135,7 @@ export const profilesYouMayKnow = async (selfUID, searchUID, isFriend) => {
       );
 
       readResult.records.forEach((record) => {
-        const users = record.get('users');
+        const users = record.get("users");
         r_users.push({ ...users.properties });
       });
     } catch {
@@ -156,7 +156,7 @@ export const removeSkillFromNeo4j = async (uid, skillName) => {
       tx.run(query, { uid, skillName })
     );
   } catch (error) {
-    console.log('Something went wrong');
+    console.log("Something went wrong");
   } finally {
     await session.close();
     await db.close();
@@ -174,7 +174,7 @@ export const profilesForYou = async (uid) => {
     );
 
     readResult.records.forEach((record) => {
-      const users = record.get('users');
+      const users = record.get("users");
       r_users.push({ ...users.properties });
     });
   } catch {
@@ -195,7 +195,7 @@ export const randomUsers = async (uid) => {
     );
 
     readResult.records.forEach((record) => {
-      const users = record.get('users');
+      const users = record.get("users");
       r_users.push({ ...users.properties });
     });
   } catch {
@@ -217,7 +217,7 @@ export const haveILikedThePost = async (postDocId, uid) => {
     );
 
     readResult.records.forEach((record) => {
-      const post = record.get('post');
+      const post = record.get("post");
       likedPost.push({ ...post.properties });
     });
   } catch {
@@ -237,7 +237,7 @@ export const likePost = async (uid, postDocId) => {
       tx.run(query, { uid, postDocId })
     );
   } catch (error) {
-    console.log('Something went wrong');
+    console.log("Something went wrong");
   } finally {
     await session.close();
     await db.close();
@@ -253,7 +253,7 @@ export const disLikePost = async (uid, postDocId) => {
       tx.run(query, { uid, postDocId })
     );
   } catch (error) {
-    console.log('Something went wrong');
+    console.log("Something went wrong");
   } finally {
     await session.close();
     await db.close();
@@ -271,7 +271,7 @@ export const postsOfMe = async (userName) => {
     );
 
     readResult.records.forEach((record) => {
-      const post = record.get('post');
+      const post = record.get("post");
       posts.push({ ...post.properties });
     });
   } catch {
@@ -293,7 +293,7 @@ export const postsThatIhaveLiked = async (userName) => {
     );
 
     readResult.records.forEach((record) => {
-      const post = record.get('post');
+      const post = record.get("post");
       posts.push({ ...post.properties });
     });
   } catch {
@@ -315,7 +315,7 @@ export const getLatestPost = async (userName) => {
     );
 
     readResult.records.forEach((record) => {
-      const post = record.get('post');
+      const post = record.get("post");
       posts.push({ ...post.properties });
     });
   } catch {
@@ -337,11 +337,11 @@ export const getWhoLikedThePost = async (docId) => {
     );
 
     readResult.records.forEach((record) => {
-      const user = record.get('user');
+      const user = record.get("user");
       likes.push({ ...user.properties });
     });
   } catch {
-    console.log('Err');
+    console.log("Err");
   } finally {
     await session.close();
     await db.close();
@@ -358,7 +358,7 @@ export const deleteLikes = async (docId) => {
       tx.run(query, { docId })
     );
   } catch {
-    console.log('Err');
+    console.log("Err");
   } finally {
     await session.close();
     await db.close();
@@ -373,7 +373,7 @@ export const deletePostRel = async (docId) => {
       tx.run(query, { docId })
     );
   } catch {
-    console.log('Err');
+    console.log("Err");
   } finally {
     await session.close();
     await db.close();
@@ -390,7 +390,7 @@ export const deletePost = async (docId) => {
       tx.run(query, { docId })
     );
   } catch {
-    console.log('Err');
+    console.log("Err");
   } finally {
     await session.close();
     await db.close();
@@ -406,7 +406,7 @@ export const deleteUser = async (uid) => {
       tx.run(query, { uid })
     );
   } catch {
-    console.log('Err');
+    console.log("Err");
   } finally {
     await session.close();
     await db.close();
@@ -422,7 +422,7 @@ export const updateDisplayPicture = async (uid, url) => {
       tx.run(query, { uid, url })
     );
   } catch (error) {
-    console.log('Something went wrong');
+    console.log("Something went wrong");
   } finally {
     await session.close();
     await db.close();
@@ -464,9 +464,53 @@ export const deleteProfile = async (uid) => {
     //   tx.run(queryToDelete, { uid })
     // );
   } catch (error) {
-    console.log('Something went wrong');
+    console.log("Something went wrong");
   } finally {
     await session.close();
     await db.close();
   }
+};
+
+export const getFollowing = async (uid) => {
+  const db = await dbConnect();
+  const session = db.session();
+  let following = [];
+  const query = `MATCH (u:USER {uid:$uid})-[friends:IS_FRIEND]->(users:USER) RETURN users`;
+  try {
+    const readResult = await session.readTransaction((tx) =>
+      tx.run(query, { uid })
+    );
+    readResult.records.forEach((record) => {
+      const user = record.get("users");
+      following.push({ ...user.properties });
+    });
+  } catch {
+    console.log("Err");
+  } finally {
+    await session.close();
+    await db.close();
+  }
+  return following;
+};
+
+export const getFollowers = async (uid) => {
+  const db = await dbConnect();
+  const session = db.session();
+  let followers = [];
+  const query = `MATCH (u:USER {uid:$uid})<-[friends:IS_FRIEND]-(users:USER) RETURN users`;
+  try {
+    const readResult = await session.readTransaction((tx) =>
+      tx.run(query, { uid })
+    );
+    readResult.records.forEach((record) => {
+      const user = record.get("users");
+      followers.push({ ...user.properties });
+    });
+  } catch {
+    console.log("Err");
+  } finally {
+    await session.close();
+    await db.close();
+  }
+  return followers;
 };
