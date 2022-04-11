@@ -278,9 +278,8 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
                 {comments.map((comment, index) => {
                   return (
                     <div key={index}>
-                      <div className="px-2 py-1 mt-2 border-b-2 border-indigo-400 rounded-md bg-gray-50">
+                      <div className="flex flex-row items-center px-2 py-1 mt-2 border-b-2 border-indigo-400 rounded-md bg-gray-50">
                         <UserComment uid={comment.commentOwner} />
-                        <b>User</b>
                         <span className="px-3">{comment.commentData}</span>
                       </div>
                     </div>
