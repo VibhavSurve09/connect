@@ -4,9 +4,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../constants/firebase";
 import { useState } from "react";
 import Link from "next/link";
-
 export default function Profilepic({ userData }) {
-  const [showModal, setShowModal] = useState(false);
   const [imageClick, setImageClick] = useState(false);
   const handleLogOut = () => {
     signOut(auth)
@@ -71,15 +69,12 @@ export default function Profilepic({ userData }) {
                 <li>
                   <hr />
                 </li>
-                <li className="flex justify-center ">
-                  <span>
-                    <b
-                      className={`${showModal} flex flex-col space-y-3 lg:space-y-0 lg:flex-row`}
-                    >
-                      <span className="px-2 py-1 mt-1 text-base font-semibold text-orange-200 bg-red-600 rounded-md w-fit hover:text-white hover:bg-red-400">
-                        {" "}
-                        <Link href="/deleteprofile">Delete Profile</Link>
-                      </span>
+                <li className="flex justify-center">
+                  <span className="px-2 mt-1 text-base bg-red-500 rounded-md hover:text-white hover:bg-red-400 w-fit">
+                    <b>
+                      <Link href={`/profile/${userData.userName}/posts`}>
+                        Delete Profile
+                      </Link>
                     </b>
                   </span>
                 </li>

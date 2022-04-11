@@ -6,7 +6,7 @@ import Image from "next/image";
 import { increaseLikeCountInFB } from "../../services/firebase";
 import { disLikePost } from "../../services/neo4j";
 import { decreaseLikeCountInFB } from "../../services/firebase";
-import { haveILikedThePost } from "../../services/neo4j";
+import { haveILikedThePost, getWhoLikedThePost } from "../../services/neo4j";
 import { getUserByDocId } from "../../services/firebase";
 import Link from "next/link";
 import moment from "moment";
@@ -23,6 +23,7 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
   const [comments, setComments] = useState([]);
   const [editPost, setEditPost] = useState(false);
   const [editPostContent, setEditPostContent] = useState("");
+  const [interActive, setInteractive] = useState(false);
   const [savedPressed, setSavePressed] = useState(false);
   const addComment = () => {
     const commentObject = {
@@ -48,6 +49,7 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
   useEffect(() => {
     getPosts(docId).then((data) => {
       setPostData(data);
+      setInteractive(data.isInteractive);
       setEditPostContent(data.postContent);
       setComments(data.comments);
     });
@@ -69,12 +71,16 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
     });
   }, [activeUser, docId]);
   useEffect(() => {
-    setLikes(postData.interested);
-  }, [postData.interested]);
+    getWhoLikedThePost(docId).then((likes) => {
+      setLikes(likes.length);
+    });
+  }, [docId]);
   const saveEditPost = () => {
-    editPostFB(docId, editPostContent);
-    setEditPost(false);
-    setSavePressed(true);
+    if (editPostContent.trim() != "") {
+      editPostFB(docId, editPostContent, interActive);
+      setEditPost(false);
+      setSavePressed(true);
+    }
   };
   return (
     <div className="flex items-center justify-center w-full h-screen bg-gray-100">
@@ -278,7 +284,7 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
                     <div key={index}>
                       <div className="flex flex-row items-center px-2 py-1 mt-2 border-b-2 border-indigo-400 rounded-md bg-gray-50">
                         <UserComment uid={comment.commentOwner} />
-                        <span className="px-3">{comment.commentData}</span>
+                        <span className="px-1">{comment.commentData}</span>
                       </div>
                     </div>
                   );
@@ -307,19 +313,59 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
         </div>
 
         {editPost ? (
-          <div className="flex flex-row">
-            <button
-              onClick={saveEditPost}
-              className="flex items-center px-3 py-1 font-bold text-white bg-indigo-500 rounded-md hover:text-black hover:bg-indigo-600 hover:font-semibold"
-            >
-              Save
-            </button>{" "}
-            <button
-              onClick={(e) => setEditPost(false)}
-              className="flex items-center px-3 py-1 ml-1 font-bold text-white bg-red-500 rounded-md hover:text-black hover:bg-red-600 hover:font-semibold"
-            >
-              Cancel
-            </button>
+          <div className="flex flex-col lg:flex-row">
+            {postData.isInteractive ? (
+              <>
+                {" "}
+                <label className="relative flex items-start justify-start p-1 group">
+                  <span className="flex items-center ml-5 text-sm font-medium">
+                    <i>Interactive</i>
+                  </span>
+                  <input
+                    type="checkbox"
+                    className="absolute w-full h-full -translate-x-1/2 rounded-md appearance-none left-1/2 peer"
+                    onChange={(e) => setInteractive(!interActive)}
+                  />
+                  <span className="flex items-center flex-shrink-0 w-16 h-5 p-1 ml-4 duration-100 ease-in-out bg-indigo-400 rounded-full peer-checked:bg-gray-300 after:w-8 after:h-8 after:bg-white after:rounded-full after:shadow-md after:duration-100 peer-checked:after:translate-x-6 group-hover:after:translate-x-1"></span>
+                  <span className="ml-3 text-sm font-medium">
+                    <i>Normal</i>
+                  </span>
+                </label>
+              </>
+            ) : (
+              <>
+                {" "}
+                <label className="relative flex items-start justify-start p-1 group">
+                  <span className="flex items-center ml-5 text-sm font-medium">
+                    <i>Normal</i>
+                  </span>
+                  <input
+                    type="checkbox"
+                    className="absolute w-full h-full -translate-x-1/2 rounded-md appearance-none left-1/2 peer"
+                    onChange={(e) => setInteractive(!interActive)}
+                  />
+                  <span className="flex items-center flex-shrink-0 w-16 h-5 p-1 ml-4 duration-100 ease-in-out bg-gray-300 rounded-full peer-checked:bg-indigo-400 after:w-8 after:h-8 after:bg-white after:rounded-full after:shadow-md after:duration-100 peer-checked:after:translate-x-6 group-hover:after:translate-x-1"></span>
+                  <span className="ml-3 text-sm font-medium">
+                    <i>Interactive</i>
+                  </span>
+                </label>
+              </>
+            )}
+
+            <div className="flex ml-10">
+              <button
+                onClick={saveEditPost}
+                className="flex items-center px-3 py-1 font-bold text-white bg-indigo-500 rounded-md hover:text-black hover:bg-indigo-600 hover:font-semibold"
+              >
+                Save
+              </button>{" "}
+              <button
+                onClick={(e) => setEditPost(false)}
+                className="flex items-center px-3 py-1 ml-1 font-bold text-white bg-red-500 rounded-md hover:text-black hover:bg-red-600 hover:font-semibold"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         ) : (
           <></>

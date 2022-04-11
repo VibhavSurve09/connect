@@ -617,30 +617,6 @@ export default function Profile({
                     })}
                 </div>
               </div>
-              {/* <div className="absolute top-0 right-0 left-auto z-auto flex justify-end invisible px-2 py-2 text-black hover:text-gray-600 group-hover:visible">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 h-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                  />
-                </svg>
-              </div> */}
-              {/* <div className="flex flex-row justify-end">
-                <button className="px-5 py-2 ml-2 font-medium text-white bg-indigo-400 rounded-lg w-fit hover:bg-indigo-600">
-                  Save
-                </button>
-                <button className="px-3 py-2 ml-2 font-medium text-white bg-red-400 rounded-lg w-fit hover:bg-red-500">
-                  Cancel
-                </button>
-              </div> */}
             </div>
           </div>
         </div>

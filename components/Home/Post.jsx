@@ -4,7 +4,12 @@ import { UserContext } from "../../context/User";
 import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { disLikePost, haveILikedThePost, likePost } from "../../services/neo4j";
+import {
+  disLikePost,
+  haveILikedThePost,
+  likePost,
+  getWhoLikedThePost,
+} from "../../services/neo4j";
 import {
   decreaseLikeCountInFB,
   getUserByDocId,
@@ -17,10 +22,11 @@ function Post({ postInfo }) {
   const [postOwnerData, setPostOwernData] = useState(null);
   const [likeReadyToDisplay, setLikeReadyToDisplay] = useState(false);
   useEffect(() => {
+    console.log("Rendering");
     getUserByDocId(post.userNameDocId).then((user) => {
       setPostOwernData(user);
     });
-  }, [post.userNameDocId]);
+  }, [postOwnerData?.userName]);
   const router = useRouter();
   const [liked, setLiked] = useState(false);
   const [likes, setLikes] = useState(0);
@@ -48,7 +54,9 @@ function Post({ postInfo }) {
     });
   }, [docId]);
   useEffect(() => {
-    setLikes(post.interested);
+    getWhoLikedThePost(docId).then((likes) => {
+      setLikes(likes.length);
+    });
   }, [post.interested]);
   const redirectToPost = () => {
     router.push(`/p/${docId}`);

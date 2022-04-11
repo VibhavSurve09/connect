@@ -15,6 +15,7 @@ export default function Feed() {
   const { data, loading } = useUser(activeUser?.uid);
   const [timeline, setTimeLine] = useState([]);
   const [timelinePost, setTimelinePosts] = useState([]);
+  const [interActive, setInteractive] = useState(false);
   const headers = {
     id: data?.uid,
     emailAddress: data?.emailAddress,
@@ -30,7 +31,7 @@ export default function Feed() {
         userNameDocId: data.docId,
         photoURL: data.photoURL,
         postContent: input,
-        isInteractive: false,
+        isInteractive: interActive,
         interested: 0,
         emailAddress: data.emailAddress,
         owner: data.uid,
@@ -79,6 +80,7 @@ export default function Feed() {
       });
     });
   }, [timeline]);
+  // console.log("Interactive", interActive);
   return (
     <div className="flex justify-center min-h-screen bg-gray-200 ">
       <div className="flex flex-row justify-center w-full">
@@ -117,6 +119,7 @@ export default function Feed() {
                       <input
                         type="checkbox"
                         className="absolute w-full h-full -translate-x-1/2 rounded-md appearance-none left-1/2 peer"
+                        onChange={(e) => setInteractive(!interActive)}
                       />
                       <span className="flex items-center flex-shrink-0 w-16 h-5 p-1 ml-4 duration-100 ease-in-out bg-gray-300 rounded-full peer-checked:bg-indigo-400 after:w-8 after:h-8 after:bg-white after:rounded-full after:shadow-md after:duration-100 peer-checked:after:translate-x-6 group-hover:after:translate-x-1"></span>
                       <span className="ml-3 text-sm font-medium">
