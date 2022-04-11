@@ -14,6 +14,7 @@ import {
   setDoc,
   updateDoc,
   getDoc,
+  deleteDoc,
   serverTimestamp,
 } from "firebase/firestore";
 import { postsReff } from "../constants/firebase";
@@ -357,4 +358,15 @@ export const editPostFB = async (docId, content, interactive) => {
   updateDoc(ref, {
     isInteractive: interactive,
   });
+};
+
+export const deleteProfileFB = async (docId) => {
+  let user = await getUserByDocId(docId);
+  let { postsRef, projectsRef } = user;
+  for (let i = 0; i < postsRef.length; i++) {
+    await deleteDoc(doc(db, "posts", postsRef[i]));
+  }
+  for (let i = 0; i < projectsRef.length; i++) {
+    await deleteDoc(doc(db, "projects", projectsRef[i]));
+  }
 };
