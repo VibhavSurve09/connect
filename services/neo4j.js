@@ -432,35 +432,85 @@ export const updateDisplayPicture = async (uid, url) => {
 export const deleteProfile = async (uid) => {
   const db = await dbConnect();
   const session = db.session();
-  const queryToDeleteLikedRel = `MATCH (user:USER {uid:$uid})-[liked:LIKED]->(p:POST) DELETE liked`;
-  const queryToDeleteFriends = `MATCH (user:USER {uid:$uid})-[friend:IS_FRIEND]->(u:USER) DELETE friend`;
-  const queryToDeleteFollowers = `MATCH (user:USER {uid:$uid})<-[friend:IS_FRIEND]<-(u:USER) DELETE friend`;
-  const queryToDeletePOST = `MATCH (user:USER {uid:$uid})-[p:POSTED]->(post:POST)<-[liked:LIKED]-(u:USER) DELETE liked`;
-  const queryToDeletePOSTT = `MATCH (user:USER {uid:$uid})-[p:POSTED]->(post:POST) DELETE post`;
-  const queryToDelete = `MATCH (user:USER {uid:$uid}) DELETE user`;
+  const queryToDeleteLikedRel = `MATCH (user:USER {uid:$uid}) DETACH DELETE user`;
+  const queryToDeletePosts = `MATCH (n:POST)
+   WHERE size((n)--())=0
+   DELETE (n)`;
+  // const queryToDeleteFollowers = `MATCH (user:USER {uid:$uid})<-[friend:IS_FRIEND]<-(u:USER) DELETE friend`;
+  // const queryToDeletePOST = `MATCH (user:USER {uid:$uid})-[p:POSTED]->(post:POST)<-[liked:LIKED]-(u:USER) DELETE liked`;
+  // const queryToDeletePOSTT = `MATCH (user:USER {uid:$uid})-[p:POSTED]->(post:POST) DELETE p`;
+  // const queryToDeleteSKills = `MATCH (user:USER {uid:$uid})-[p:HAS_A]->(skill:SKILL) DELETE p`;
+  // const queryToDelete = `MATCH (user:USER {uid:$uid}) DELETE user`;
   try {
     const writeResult = await session.writeTransaction((tx) =>
       tx.run(queryToDeleteLikedRel, { uid })
     );
     const writeResult2 = await session.writeTransaction((tx) =>
-      tx.run(queryToDeleteFriends, { uid })
+      tx.run(queryToDeletePosts)
     );
-    const writeResult3 = await session.writeTransaction((tx) =>
-      tx.run(queryToDeleteFollowers, { uid })
-    );
-    const writeResult4 = await session.writeTransaction((tx) =>
-      tx.run(queryToDeletePOST, { uid })
-    );
-    const writeResult5 = await session.writeTransaction((tx) =>
-      tx.run(queryToDeletePOSTT, { uid })
-    );
-    const writeResul6 = await session.writeTransaction((tx) =>
-      tx.run(queryToDelete, { uid })
-    );
+    // const writeResult3 = await session.writeTransaction((tx) =>
+    //   tx.run(queryToDeleteFollowers, { uid })
+    // );
+    // const writeResult4 = await session.writeTransaction((tx) =>
+    //   tx.run(queryToDeletePOST, { uid })
+    // );
+    // const writeResult5 = await session.writeTransaction((tx) =>
+    //   tx.run(queryToDeletePOSTT, { uid })
+    // );
+    // const writeResul7 = await session.writeTransaction((tx) =>
+    //   tx.run(queryToDeleteSKills, { uid })
+    // );
+    // const writeResul6 = await session.writeTransaction((tx) =>
+    //   tx.run(queryToDelete, { uid })
+    // );
   } catch (error) {
     console.log("Something went wrong");
   } finally {
     await session.close();
     await db.close();
   }
+};
+
+export const getFollowing = async (uid) => {
+  const db = await dbConnect();
+  const session = db.session();
+  let following = [];
+  const query = `MATCH (u:USER {uid:$uid})-[friends:IS_FRIEND]->(users:USER) RETURN users`;
+  try {
+    const readResult = await session.readTransaction((tx) =>
+      tx.run(query, { uid })
+    );
+    readResult.records.forEach((record) => {
+      const user = record.get("users");
+      following.push({ ...user.properties });
+    });
+  } catch {
+    console.log("Err");
+  } finally {
+    await session.close();
+    await db.close();
+  }
+  return following;
+};
+
+export const getFollowers = async (uid) => {
+  const db = await dbConnect();
+  const session = db.session();
+  let followers = [];
+  const query = `MATCH (u:USER {uid:$uid})<-[friends:IS_FRIEND]-(users:USER) RETURN users`;
+  try {
+    const readResult = await session.readTransaction((tx) =>
+      tx.run(query, { uid })
+    );
+    readResult.records.forEach((record) => {
+      const user = record.get("users");
+      followers.push({ ...user.properties });
+    });
+  } catch {
+    console.log("Err");
+  } finally {
+    await session.close();
+    await db.close();
+  }
+  return followers;
 };
