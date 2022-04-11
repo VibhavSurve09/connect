@@ -1,6 +1,8 @@
 import styles from "./UserForm.module.css";
 import Fireworks from "../Confetti/Confetti";
 import React from "react";
+import { signOut } from "firebase/auth";
+import { auth } from "../constants/firebase";
 import { useContext } from "react";
 import { UserContext } from "../../context/User";
 import { useUser } from "../../hooks/useUser";
@@ -29,7 +31,7 @@ function Submitted() {
           Your ConnectU account has been succesfully created!
         </p>
         <br />
-        <p className="text-center align-middle lg:text-2xl">
+        <div className="text-center align-middle lg:text-2xl">
           Please{" "}
           <span
             className="text-indigo-400 cursor-pointer"
@@ -38,7 +40,7 @@ function Submitted() {
             <u>Login</u>
           </span>{" "}
           again to get started.
-        </p>
+        </div>
       </div>
     </div>
   );

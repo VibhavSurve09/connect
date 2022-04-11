@@ -362,11 +362,12 @@ export const editPostFB = async (docId, content, interactive) => {
 
 export const deleteProfileFB = async (docId) => {
   let user = await getUserByDocId(docId);
-  let { postsRef, projectsRef } = user;
+  let { postsRef, projectsRef, following } = user;
   for (let i = 0; i < postsRef.length; i++) {
     await deleteDoc(doc(db, "posts", postsRef[i]));
   }
   for (let i = 0; i < projectsRef.length; i++) {
     await deleteDoc(doc(db, "projects", projectsRef[i]));
   }
+  // for(let i)
 };
