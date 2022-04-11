@@ -35,7 +35,7 @@ export default function Profilepic({ userData }) {
       <div>
         {imageClick ? (
           <>
-            <div className="absolute px-2 py-1 -mt-5 bg-white border-2 border-slate-600 lg:right-11 lg:mt-0">
+            <div className="absolute px-2 py-1 -mt-5 overflow-auto bg-white border-2 border-slate-600 lg:right-11 lg:mt-0 max-h-32">
               <ul>
                 <li className="py-1">
                   {" "}
@@ -43,9 +43,11 @@ export default function Profilepic({ userData }) {
                     <b className="flex flex-row px-2 py-3">
                       <p className="flex flex-col px-2">
                         <span className="flex items-center px-2 hover:text-indigo-600">
-                          <Link href="/profile" passHref>
-                            {userData?.userName}
-                          </Link>
+                          <u className="text-lg">
+                            <Link href="/profile" passHref>
+                              {userData?.userName}
+                            </Link>
+                          </u>
                         </span>
                         <span className="flex justify-center mt-1 bg-indigo-300 rounded-md hover:text-white hover:bg-indigo-400">
                           <Link href={`/profile/${userData.userName}/posts`}>

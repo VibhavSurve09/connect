@@ -65,7 +65,7 @@ export default function UserNavbar({ userData }) {
             {/* {searchText} */}
             {searchUserData.length > 0 ? (
               <div
-                className="invisible bg-white border-2 border-gray-400 h-fit group-hover:visible"
+                className="invisible overflow-auto bg-white border-2 border-gray-400 h-fit group-hover:visible max-h-14"
                 aria-autocomplete="none"
               >
                 {searchUserData.map((user, index) => (

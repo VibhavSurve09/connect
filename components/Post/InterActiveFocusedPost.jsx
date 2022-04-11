@@ -1,17 +1,17 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { addCommentToFB, editPostFB, getPosts } from '../../services/firebase';
-import { UserContext } from '../../context/User';
-import { likePost } from '../../services/neo4j';
-import Image from 'next/image';
-import { increaseLikeCountInFB } from '../../services/firebase';
-import { disLikePost } from '../../services/neo4j';
-import { decreaseLikeCountInFB } from '../../services/firebase';
-import { haveILikedThePost } from '../../services/neo4j';
-import { getUserByDocId } from '../../services/firebase';
-import Link from 'next/link';
-import moment from 'moment';
-import UserComment from './UserComment';
-import Head from 'next/head';
+import React, { useEffect, useState, useContext } from "react";
+import { addCommentToFB, editPostFB, getPosts } from "../../services/firebase";
+import { UserContext } from "../../context/User";
+import { likePost } from "../../services/neo4j";
+import Image from "next/image";
+import { increaseLikeCountInFB } from "../../services/firebase";
+import { disLikePost } from "../../services/neo4j";
+import { decreaseLikeCountInFB } from "../../services/firebase";
+import { haveILikedThePost } from "../../services/neo4j";
+import { getUserByDocId } from "../../services/firebase";
+import Link from "next/link";
+import moment from "moment";
+import UserComment from "./UserComment";
+import Head from "next/head";
 function InterActiveFocusedPost({ docId, userLikes, owner }) {
   const [postData, setPostData] = useState({});
   const activeUser = useContext(UserContext);
@@ -19,10 +19,10 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
   const [likes, setLikes] = useState(0);
   const [toggleComment, setToggleComment] = useState(false);
   const [userDataWhoPosted, setUserDataWhoPosted] = useState([]);
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [editPost, setEditPost] = useState(false);
-  const [editPostContent, setEditPostContent] = useState('');
+  const [editPostContent, setEditPostContent] = useState("");
   const [savedPressed, setSavePressed] = useState(false);
   const addComment = () => {
     const commentObject = {
@@ -31,7 +31,7 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
     };
     addCommentToFB(commentObject, docId);
     comments.push(commentObject);
-    setComment('');
+    setComment("");
   };
   const addLike = async () => {
     setLikes(likes + 1);
@@ -77,43 +77,50 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
     setSavePressed(true);
   };
   return (
-    <div className='flex items-center justify-center w-full h-screen bg-gray-100'>
+    <div className="flex items-center justify-center w-full h-screen bg-gray-100">
       <Head>
         <title>Post - ConnectU</title>
       </Head>
-      <div className='flex flex-col items-center justify-start w-full px-6 py-4 bg-white border-2 border-indigo-400 shadow-lg lg:w-2/4 rounded-xl bg-white-300 h-fit'>
-        <div className='w-full divide-y-2 divide-gray-500'>
-          <div className='flex flex-col py-5'>
-            {' '}
+      <div className="flex flex-col items-center justify-start w-full px-6 py-4 bg-white border-2 border-indigo-400 shadow-lg group lg:w-2/4 rounded-xl bg-white-300 h-fit">
+        <div className="w-full divide-y-2 divide-gray-500">
+          <div className="flex flex-col py-2">
+            {" "}
             {/* Edit Post */}
             {owner ? (
-              <button
-                onClick={(e) => {
-                  setEditPost(!editPost);
-                  setSavePressed(false);
-                }}
-              >
-                Edit Post
-              </button>
+              <div className="flex justify-end invisible group-hover:visible">
+                <button
+                  onClick={(e) => {
+                    setEditPost(!editPost);
+                    setSavePressed(false);
+                  }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                    />
+                  </svg>
+                </button>
+              </div>
             ) : null}
-            {editPost ? (
-              <>
-                <button onClick={saveEditPost}>Save</button>{' '}
-                <button onClick={(e) => setEditPost(false)}>Cancel</button>
-              </>
-            ) : (
-              <></>
-            )}
-            <div className='flex flex-row items-center'>
+            <div className="flex flex-row items-center">
               {userDataWhoPosted.photoURL ? (
                 <Image
                   src={userDataWhoPosted?.photoURL}
                   height={40}
                   width={40}
-                  className='rounded-full'
+                  className="rounded-full"
                 />
               ) : null}
-              <p className='pl-3 text-2xl font-medium'>
+              <p className="pl-3 text-2xl font-medium">
                 {/* <Link href={`/profile/${userDataWhoPosted?.userName}`}> */}
                 {userDataWhoPosted?.userName}
                 {/* </Link> */}
@@ -121,18 +128,18 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
             </div>
             {!editPost ? (
               <>
-                {' '}
+                {" "}
                 {savedPressed ? (
                   <>
-                    {' '}
-                    <p className='py-3 mt-2 overflow-auto text-lg max-h-96'>
+                    {" "}
+                    <p className="py-3 mt-2 overflow-auto text-lg max-h-96">
                       {editPostContent}
                     </p>
                   </>
                 ) : (
                   <>
-                    {' '}
-                    <p className='py-3 mt-2 overflow-auto text-lg max-h-96'>
+                    {" "}
+                    <p className="py-3 mt-2 overflow-auto text-lg max-h-96">
                       {postData.postContent}
                     </p>
                   </>
@@ -140,50 +147,50 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
               </>
             ) : (
               <>
-                {' '}
+                {" "}
                 <input
-                  className='py-3 mt-2 overflow-auto text-lg max-h-96'
+                  className="px-2 py-1 mt-2 overflow-auto text-lg border-2 border-indigo-400 rounded-md max-h-96"
                   value={editPostContent}
                   onChange={(e) => setEditPostContent(e.target.value)}
                 />
               </>
             )}
           </div>
-          <div className='py-5'>
-            <p className='text-sm text-gray-500'>
+          <div className="py-5">
+            <p className="text-sm text-gray-500">
               {postData?.timeStamp?.seconds ? (
                 <>
                   {postData?.edit ? (
                     <>
-                      {' '}
-                      Edited{' '}
-                      {moment.unix(postData?.timeStamp?.seconds).format('LLL')}
+                      {" "}
+                      Edited{" "}
+                      {moment.unix(postData?.timeStamp?.seconds).format("LLL")}
                     </>
                   ) : (
                     <>
-                      {' '}
-                      {moment.unix(postData?.timeStamp?.seconds).format('LLL')}
+                      {" "}
+                      {moment.unix(postData?.timeStamp?.seconds).format("LLL")}
                     </>
                   )}
                 </>
               ) : null}
             </p>
             {!liked ? (
-              <div className='flex'>
-                {' '}
+              <div className="flex">
+                {" "}
                 <button onClick={addLike}>
                   <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    className='w-6 h-6 mt-2'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    stroke='currentColor'
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6 mt-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
                     strokeWidth={2}
                   >
                     <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
                     />
                   </svg>
                   {likes}
@@ -191,36 +198,36 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
                 <div>
                   <button onClick={(e) => setToggleComment(!toggleComment)}>
                     <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      className='w-6 h-6 mt-2 ml-2'
-                      fill='none'
-                      viewBox='0 0 24 24'
-                      stroke='currentColor'
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-6 h-6 mt-2 ml-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
                       strokeWidth={2}
                     >
                       <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
                       />
                     </svg>
                   </button>
                 </div>
               </div>
             ) : (
-              <div className='flex flex-row'>
-                {' '}
+              <div className="flex flex-row">
+                {" "}
                 <button onClick={removeLike}>
                   <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    className='mt-2 text-red-600 w-7 h-7 '
-                    viewBox='0 0 24 24'
-                    fill='currentColor'
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="mt-2 text-red-600 w-7 h-7 "
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
                   >
                     <path
-                      fillRule='evenodd'
-                      d='M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z'
-                      clipRule='evenodd'
+                      fillRule="evenodd"
+                      d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                      clipRule="evenodd"
                     />
                   </svg>
                   {likes}
@@ -228,17 +235,17 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
                 <div>
                   <button onClick={(e) => setToggleComment(!toggleComment)}>
                     <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      className='w-6 h-6 mt-2 ml-2'
-                      fill='none'
-                      viewBox='0 0 24 24'
-                      stroke='currentColor'
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-6 h-6 mt-2 ml-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
                       strokeWidth={2}
                     >
                       <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
                       />
                     </svg>
                   </button>
@@ -246,15 +253,15 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
               </div>
             )}
             {userLikes.length > 0 ? (
-              <div className='flex flex-row overflow-auto'>
+              <div className="flex flex-row overflow-auto">
                 liked by
                 {userLikes.map((user, index) => {
                   return (
                     <div key={index}>
                       {index < 3 ? (
                         <>
-                          {' '}
-                          <p className='px-1 font-medium'>
+                          {" "}
+                          <p className="px-1 font-medium">
                             <i>{user.userName}</i>,
                           </p>
                         </>
@@ -267,14 +274,14 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
             ) : null}
 
             {postData?.comments?.length > 0 ? (
-              <div className='overflow-auto max-h-72'>
+              <div className="overflow-auto max-h-72">
                 {comments.map((comment, index) => {
                   return (
                     <div key={index}>
-                      <div className='px-2 py-1 mt-2 border-b-2 border-indigo-400 rounded-md bg-gray-50'>
+                      <div className="px-2 py-1 mt-2 border-b-2 border-indigo-400 rounded-md bg-gray-50">
                         <UserComment uid={comment.commentOwner} />
                         <b>User</b>
-                        <span className='px-3'>{comment.commentData}</span>
+                        <span className="px-3">{comment.commentData}</span>
                       </div>
                     </div>
                   );
@@ -285,15 +292,15 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
             {toggleComment ? (
               <>
                 <textarea
-                  className='w-full px-2 py-1 border-2 border-indigo-400 rounded-md resize-none lg:w-4/5'
+                  className="w-full px-2 py-1 border-2 border-indigo-400 rounded-md resize-none lg:w-4/5"
                   height={2}
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
-                  placeholder='Add a comment..'
+                  placeholder="Add a comment.."
                 />
                 <button
                   onClick={addComment}
-                  className='flex items-center px-3 py-1 font-semibold bg-indigo-400 rounded-md hover:text-white hover:bg-indigo-600 hover:font-bold'
+                  className="flex items-center px-3 py-1 font-semibold bg-indigo-400 rounded-md hover:text-white hover:bg-indigo-600 hover:font-bold"
                 >
                   Post
                 </button>
@@ -301,6 +308,25 @@ function InterActiveFocusedPost({ docId, userLikes, owner }) {
             ) : null}
           </div>
         </div>
+
+        {editPost ? (
+          <div className="flex flex-row">
+            <button
+              onClick={saveEditPost}
+              className="flex items-center px-3 py-1 font-bold text-white bg-indigo-500 rounded-md hover:text-black hover:bg-indigo-600 hover:font-semibold"
+            >
+              Save
+            </button>{" "}
+            <button
+              onClick={(e) => setEditPost(false)}
+              className="flex items-center px-3 py-1 ml-1 font-bold text-white bg-red-500 rounded-md hover:text-black hover:bg-red-600 hover:font-semibold"
+            >
+              Cancel
+            </button>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
