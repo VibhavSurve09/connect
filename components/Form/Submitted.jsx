@@ -1,5 +1,7 @@
 import styles from "./UserForm.module.css";
 import Fireworks from "../Confetti/Confetti";
+import { signOut } from "firebase/auth";
+import { auth } from "../../constants/firebase";
 import React from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "../constants/firebase";
