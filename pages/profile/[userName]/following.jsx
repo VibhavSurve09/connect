@@ -13,7 +13,7 @@ export default function Following() {
   }, [activeUser?.uid]);
   return (
     <div className="fixed bottom-0 left-0 flex items-center justify-center w-full h-screen bg-indigo-400">
-      <div className="w-1/3 px-8 py-6 text-center bg-white rounded-md">
+      <div className="w-1/3 px-8 py-6 overflow-auto text-center bg-white rounded-md max-h-96">
         <Link href="/profile">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -33,25 +33,31 @@ export default function Following() {
         <span className="mb-4 text-2xl italic font-bold underline text-slate-900">
           Following :
         </span>
-        {following.length > 0 ? (
-          <>
-            {following.map((user, index) => {
-              return (
-                <div className="flex" key={index}>
-                  <Image
-                    src={user.photoURL}
-                    height={30}
-                    width={30}
-                    className="rounded-full"
-                  />
-                  <p>{user.userName}</p>
-                </div>
-              );
-            })}
-          </>
-        ) : (
-          <></>
-        )}
+        <div className="flex justify-center">
+          {following.length > 0 ? (
+            <div className="flex flex-col">
+              {following.map((user, index) => {
+                return (
+                  <div className="flex items-center w-full py-4" key={index}>
+                    <Image
+                      src={user.photoURL}
+                      height={40}
+                      width={40}
+                      className="rounded-full"
+                    />
+                    <p className="px-3 text-xl font-semibold">
+                      {user.userName}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="font-serif">
+              You Do Not Follow Anyone! Connect With More People!
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

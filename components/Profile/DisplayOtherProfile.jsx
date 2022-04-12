@@ -133,7 +133,7 @@ export default function DisplayOtherProfile({
                       {isFriend ? (
                         <div className="flex flex-col lg:flex-row">
                           <button
-                            className="px-4 py-3 mt-2 font-medium bg-indigo-600 rounded-2xl lg:max-w-fit hover:bg-indigo-500"
+                            className="px-4 py-2 mt-2 text-xl font-medium bg-indigo-600 rounded-2xl lg:max-w-fit hover:bg-indigo-500"
                             onClick={(e) => setUnfollowModal(true)}
                           >
                             Following
@@ -166,7 +166,7 @@ export default function DisplayOtherProfile({
                         </div>
                       ) : (
                         <button
-                          className="px-4 py-3 mt-2 font-medium bg-red-500 rounded-2xl lg:max-w-fit hover:bg-red-400"
+                          className="px-4 py-2 mt-2 text-xl font-medium bg-red-500 rounded-2xl lg:max-w-fit hover:bg-red-400"
                           onClick={addFriend}
                         >
                           Connect
@@ -366,10 +366,19 @@ export default function DisplayOtherProfile({
               <div className="w-full px-2">
                 {" "}
                 <div className="py-3 mt-2 mb-4 overflow-auto text-lg text-gray-500 lg:text-xl hover:text-gray-600 max-h-80">
-                  {projects.length > 0 &&
-                    projects.map((id, index) => {
-                      return <Projects key={index} docId={id} self={false} />;
-                    })}
+                  {projects.length > 0 ? (
+                    <>
+                      {" "}
+                      {projects.length > 0 &&
+                        projects.map((id, index) => {
+                          return (
+                            <Projects key={index} docId={id} self={false} />
+                          );
+                        })}
+                    </>
+                  ) : (
+                    <>No Projects Found 😔</>
+                  )}
                 </div>
               </div>
             </div>

@@ -13,7 +13,7 @@ export default function Followers() {
   }, [activeUser?.uid]);
   return (
     <div className="fixed bottom-0 left-0 flex items-center justify-center w-full h-screen bg-indigo-400">
-      <div className="w-1/3 px-8 py-6 text-center bg-white rounded-md">
+      <div className="w-1/3 px-8 py-6 overflow-auto text-center bg-white rounded-md shadow-lg max-h-96">
         <Link href="/profile">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -30,33 +30,36 @@ export default function Followers() {
             />
           </svg>
         </Link>
-        <span className="mb-4 text-3xl italic font-bold underline text-slate-900">
+        <span className="mb-4 text-2xl italic font-bold underline text-slate-900">
           Your Followers :
         </span>
-        <div className="flex items-center justify-center w-full py-3">
-          <ul className="w-full divi">
-            {/* <li className="text-xl">UserName</li> */}
-          </ul>
+        <div className="flex justify-center">
+          {followers.length > 0 ? (
+            <div className="flex flex-col">
+              {followers.map((user, index) => {
+                return (
+                  <div className="flex items-center w-full py-4" key={index}>
+                    <Image
+                      src={user.photoURL}
+                      height={40}
+                      width={40}
+                      className="rounded-full"
+                      alt=""
+                    />
+
+                    <div className="px-3 text-xl font-semibold">
+                      {user.userName}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="font-serif">
+              No Followers Yet! Connect With More People!
+            </div>
+          )}
         </div>
-        {followers.length > 0 ? (
-          <>
-            {followers.map((user, index) => {
-              return (
-                <div className="flex" key={index}>
-                  <Image
-                    src={user.photoURL}
-                    height={30}
-                    width={30}
-                    className="rounded-full"
-                  />
-                  <p>{user.userName}</p>
-                </div>
-              );
-            })}
-          </>
-        ) : (
-          <></>
-        )}
       </div>
     </div>
   );

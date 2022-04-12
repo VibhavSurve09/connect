@@ -2,6 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../context/User";
+import Link from "next/link";
 import { useUser } from "../../hooks/useUser";
 import Posts from "./Posts";
 import {
@@ -291,8 +292,18 @@ export default function Profile({
                         </span>
                       </li>
                       <li className="flex items-center py-3 font-serif text-xl italic text-slate-800">
-                        <span>Followers: {followers}</span>
-                        <span className="ml-auto">Following: {following}</span>
+                        <span className="cursor-pointer hover:font-semibold">
+                          <Link href={`/profile/${userName}/followers`}>
+                            Followers:
+                          </Link>
+                          {followers}
+                        </span>
+                        <span className="ml-auto cursor-pointer hover:font-semibold">
+                          <Link href={`/profile/${userName}/following`}>
+                            Following:
+                          </Link>
+                          {following}
+                        </span>
                       </li>
                     </ul>
                     <div className="mt-5"></div>
@@ -588,7 +599,7 @@ export default function Profile({
             </div>
 
             <div className="my-6"></div>
-            <div className="relative flex flex-col p-5 mx-auto bg-white border-t-4 border-indigo-400 rounded-lg shadow-lg group">
+            <div className="relative flex flex-col p-5 mx-auto overflow-auto bg-white border-t-4 border-indigo-400 rounded-lg shadow-lg max-h-96">
               <div className="flex flex-row">
                 <div className="text-black">
                   <svg
@@ -621,6 +632,24 @@ export default function Profile({
                       return <Projects key={index} docId={id} self={true} />;
                     })}
                 </div>
+              </div>
+              <div className="flex justify-end">
+                <Link href="/addproject">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-8 h-8 text-black cursor-pointer"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                    />
+                  </svg>
+                </Link>
               </div>
             </div>
           </div>
