@@ -2,7 +2,7 @@ import Logo from "../public/images/logo1.png";
 import Image from "next/image";
 export default function Footer() {
   return (
-    <footer className="p-2 bg-gradient-to-r to-zinc-100 via-zinc-200 from-zinc-300">
+    <footer className="p-2 border-t-2 border-black bg-zinc-300">
       <div className="flex items-center justify-center py-1 ">
         <div className="flex items-center px-5 py-2 text-xl font-bold text-black">
           <Image src={Logo} height={40} width={165} alt="logo" />
@@ -28,8 +28,8 @@ export default function Footer() {
           <span className="px-1">connectt.uu@gmail.com</span>
         </div>
       </div>
-      <hr className="border-gray-200" />
-      <div className="flex justify-center py-1 text-sm font-semibold text-gray-800 ">
+      <hr className="border-gray-600" />
+      <div className="flex justify-center py-3 text-sm font-semibold text-gray-800 ">
         © 2022 ConnectU™ . All Rights Reserved.
       </div>
     </footer>

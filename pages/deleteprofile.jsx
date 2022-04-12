@@ -21,7 +21,7 @@ export default function DeleteProfile({ closeButton }) {
       });
   };
   return (
-    <div className="fixed bottom-0 left-0 flex items-center justify-center w-full h-full bg-indigo-400">
+    <div className="bottom-0 left-0 flex items-center justify-center w-full min-h-screen bg-indigo-400">
       <div className="px-16 text-center bg-white rounded-md py-14">
         <div className="flex justify-center"></div>
         <h1 className="mb-4 text-xl font-bold text-slate-500">

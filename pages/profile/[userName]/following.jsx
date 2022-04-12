@@ -12,7 +12,7 @@ export default function Following() {
     });
   }, [activeUser?.uid]);
   return (
-    <div className="fixed bottom-0 left-0 flex items-center justify-center w-full h-screen bg-indigo-400">
+    <div className="bottom-0 left-0 flex items-center justify-center w-full min-h-screen bg-indigo-400">
       <div className="w-1/3 px-8 py-6 overflow-auto text-center bg-white rounded-md max-h-96">
         <Link href="/profile">
           <svg
