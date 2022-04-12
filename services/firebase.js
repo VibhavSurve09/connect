@@ -20,6 +20,10 @@ import {
 import { postsReff } from '../constants/firebase';
 import { db, projectsCollectionRef, storage } from '../constants/firebase';
 import { userCollectionRef } from '../constants/firebase';
+import { getAuth, deleteUser } from 'firebase/auth';
+import app from '../lib/firebase';
+const auth = getAuth(app);
+
 // eslint-disable-next-line react-hooks/rules-of-hooks
 let path;
 export const uploadPhoto = async (uid, profilePicture) => {
@@ -385,4 +389,14 @@ export const deleteProfileFB = async (docId) => {
     removeFriend(docId, followingData[0].uid);
   }
   await deleteDoc(doc(db, 'users', docId));
+  const userr = auth.currentUser;
+  console.log('Userr', userr);
+  deleteUser(userr)
+    .then(() => {
+      // User deleted.
+    })
+    .catch((error) => {
+      // An error ocurred
+      // ...
+    });
 };
