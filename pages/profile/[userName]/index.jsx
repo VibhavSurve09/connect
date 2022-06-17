@@ -2,15 +2,22 @@ import { getUserDataByUserName } from '../../../services/firebase';
 import Profile from '../../../components/Profile/Profile';
 import { getCookie } from 'cookies-next';
 import { userWithIdSkills } from '../../../services/neo4j';
+import { useEffect, useState } from 'react';
 import DisplayOtherProfile from '../../../components/Profile/DisplayOtherProfile';
+import { async } from '@firebase/util';
 const jwt = require('jsonwebtoken');
-const UserProfile = ({ data, self, skills }) => {
+const UserProfile = ({ data, self }) => {
   const userData = JSON.parse(data);
   let { seconds, nanoseconds } = userData.accountCreatedOn;
   const date = new Date(seconds * 1000 + nanoseconds / 1000000);
+  const [skills, setSkills] = useState([]);
+  useEffect(async () => {
+    const skills = await userWithIdSkills(userData.uid);
+    setSkills(skills);
+  }, [userData.uid]);
   return (
     <>
-      {self ? (
+      {self && skills.length > 0 ? (
         <Profile
           userName={userData.userName}
           gender={userData.gender}
@@ -64,13 +71,11 @@ export async function getServerSideProps(context) {
   if (email === userData[0]?.emailAddress && uid === userData[0]?.uid) {
     self = true;
   }
-  const skills = await userWithIdSkills(userData[0].uid);
 
   return {
     props: {
       data: JSON.stringify(userData[0]),
       self,
-      skills,
     }, // will be passed to the page component as props
   };
 }
