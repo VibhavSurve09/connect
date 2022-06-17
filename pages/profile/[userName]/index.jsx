@@ -49,7 +49,6 @@ const UserProfile = ({ data, self, skills }) => {
   );
 };
 
-export default UserProfile;
 export async function getServerSideProps(context) {
   const { userName } = context.params;
   let self = false;
@@ -75,3 +74,5 @@ export async function getServerSideProps(context) {
     }, // will be passed to the page component as props
   };
 }
+
+export default UserProfile;
