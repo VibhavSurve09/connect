@@ -1,11 +1,11 @@
 const dbConnect = async () => {
   const neo4j = require('neo4j-driver');
 
-  const uri = 'neo4j+s://38091235.databases.neo4j.io';
+  const uri = process.env.NEXT_PUBLIC_NEO4J_URI;
 
   const user = 'neo4j';
 
-  const password = 'b-84QhE-zwI13jCujRV5-TiLotYQMlgGlXxz_c1PnHQ';
+  const password = process.env.NEXT_PUBLIC_NEO4J_PASSWORD;
 
   return neo4j.driver(uri, neo4j.auth.basic(user, password));
 };

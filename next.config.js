@@ -11,8 +11,7 @@ module.exports = {
     JWT_SECRET: process.env.JWT_SECRET,
     SOCKET_URI: process.env.SOCKET_URI,
     API_URI: process.env.API_URI,
-    MONGO_URI:
-      'mongodb+srv://dev:utkvib01@connect-notifications.kay2p.mongodb.net/Connect?retryWrites=true&w=majority',
+    MONGO_URI: process.env.MONGO_URI,
   },
   eslint: {
     // Warning: This allows production builds to successfully complete even if
